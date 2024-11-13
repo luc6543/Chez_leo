@@ -13,27 +13,21 @@ class ProductsSeeder extends Seeder
      */
     public function run(): void
     {
-        // Path to the CSV file
-        $csvPath = base_path('database/Menukaart.csv'); // Adjust path as necessary
+        $csvPath = base_path('database/Menukaart.csv');
 
-        // Open the CSV file using SplFileObject
         $csv = new \SplFileObject($csvPath);
         $csv->setFlags(\SplFileObject::READ_CSV);
-        $csv->setCsvControl(';', '"', "\\"); // Define CSV control characters
+        $csv->setCsvControl(';', '"', "\\");
 
-        // Read the header row
         $headers = $csv->fgetcsv();
 
-        // Skip the first row (headers) and process the data rows
         while (!$csv->eof()) {
             $row = $csv->fgetcsv();
 
-            // Skip empty rows or rows with different columns than the header
             if ($row === [null] || count($row) !== count($headers)) {
                 continue;
             }
 
-            // Map the row data to the headers
             $rowData = array_combine($headers, $row);
 
 //            dd($rowData["\u{FEFF}Categorie"]);
