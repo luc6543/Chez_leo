@@ -19,7 +19,6 @@
     @vite(['resources/js/app.js'])
 </head>
 <body class="bg-slate-100">
-    <livewire:Navbar />
     {{ $slot }}
     @livewireScripts
 </body>
