@@ -27,26 +27,28 @@
                 </thead>
                 <tbody class="divide-y divide-gray-800">
                     @foreach ($reservations as $reservation)
-                        <tr>
-                            <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
-                            <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
-                            </td>
-                            <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
-                            <td class="px-3 py-4 text-sm text-gray-300">
-                                {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
-                            </td>
-                            <td class="px-3 py-4 text-sm text-gray-300">
-                                {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
-                            </td>
-                            <td class="text-right">
-                                <button wire:click="edit({{ $reservation->id }})"
-                                    class="bg-blue-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-400">Verander</button>
-                            </td>
-                            <td class="text-right">
-                                <button wire:click="delete({{ $reservation->id }})"
-                                    class="bg-red-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-400">Verwijder</button>
-                            </td>
-                        </tr>
+                        @if ($reservation->user != null && $reservation->table != null)
+                            <tr>
+                                <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
+                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
+                                </td>
+                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
+                                <td class="px-3 py-4 text-sm text-gray-300">
+                                    {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
+                                </td>
+                                <td class="px-3 py-4 text-sm text-gray-300">
+                                    {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
+                                </td>
+                                <td class="text-right">
+                                    <button wire:click="edit({{ $reservation->id }})"
+                                        class="bg-blue-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-400">Verander</button>
+                                </td>
+                                <td class="text-right">
+                                    <button wire:click="delete({{ $reservation->id }})"
+                                        class="bg-red-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-400">Verwijder</button>
+                                </td>
+                            </tr>
+                        @endif
                     @endforeach
                 </tbody>
             </table>
