@@ -1,4 +1,4 @@
-<nav class="md:items-start !fixed z-10 w-screen navbar-expand-lg bg-black/75 lg:bg-black/25 px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row" x-data="{navBarShown : false}">
+<nav class="md:items-start !fixed z-10 top-0 left-0 w-screen navbar-expand-lg bg-black/75 lg:bg-black/25 px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row" x-data="{navBarShown : false}">
     <div class="flex gap-5 w-full items-center justify-around lg:justify-start">
         <a href="" class="navbar-brand p-0">
             <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Chez Leo</h1>
@@ -41,7 +41,7 @@
                     <a href="testimonial.html" class="dropdown-item">Recenties</a>
                 </div>
             </div>
-            <a href="contact.html" class="nav-item nav-link">Contact</a>
+            <a href="/contact" class="nav-item nav-link">Contact</a>
             <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
         </div>
     </div>
