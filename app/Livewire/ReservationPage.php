@@ -90,7 +90,12 @@ class ReservationPage extends Component
         $this->user_id = $reservation->user_id;
         $this->table_id = $reservation->table_id;
         $this->start_time = $reservation->start_time;
-        $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:00:00';
+        $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
+
+        $tableReservation = TableReservation::where('reservation_id', $reservation->id)->first();
+        if ($tableReservation) {
+            $this->table_id = $tableReservation->table_id;
+        }
 
         $this->isModalOpen = true;
     }
