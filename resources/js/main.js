@@ -1,16 +1,16 @@
 $(document).ready(function () {
     "use strict";
 
-    console.log("Hello, World!");
-    // Spinner (set to hide after 5 seconds for testing)
-    var spinner = function () {
-        setTimeout(function () {
-            if ($("#spinner").length > 0) {
-                $("#spinner").removeClass("show");
-            }
-        }, 2500); // Hide spinner after 5 seconds
-    };
-    spinner();
+    // console.log("Hello, World!");
+    // // Spinner (set to hide after 5 seconds for testing)
+    // var spinner = function () {
+    //     setTimeout(function () {
+    //         if ($("#spinner").length > 0) {
+    //             $("#spinner").removeClass("show");
+    //         }
+    //     }, 2500); // Hide spinner after 5 seconds
+    // };
+    // spinner();
 
     // Initiate the wowjs
     new WOW().init();
@@ -71,24 +71,25 @@ $(document).ready(function () {
     });
 
     // Modal Video
-    $(document).ready(function () {
-        var $videoSrc;
-        $(".btn-play").click(function () {
-            $videoSrc = $(this).data("src");
-        });
-        console.log($videoSrc);
-
-        $("#videoModal").on("shown.bs.modal", function (e) {
-            $("#video").attr(
-                "src",
-                $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0"
-            );
-        });
-
-        $("#videoModal").on("hide.bs.modal", function (e) {
-            $("#video").attr("src", $videoSrc);
-        });
-    });
+    // $(document).ready(function () {
+    //     console.log("test")
+    //     var $videoSrc;
+    //     $(".btn-play").click(function () {
+    //         $videoSrc = $(this).data("src");
+    //     });
+    //     console.log($videoSrc);
+    //
+    //     $("#videoModal").on("shown.bs.modal", function (e) {
+    //         $("#video").attr(
+    //             "src",
+    //             $videoSrc + "?autoplay=1&amp;modestbranding=1&amp;showinfo=0"
+    //         );
+    //     });
+    //
+    //     $("#videoModal").on("hide.bs.modal", function (e) {
+    //         $("#video").attr("src", $videoSrc);
+    //     });
+    // });
 
     // Testimonials carousel
     $(".testimonial-carousel").owlCarousel({

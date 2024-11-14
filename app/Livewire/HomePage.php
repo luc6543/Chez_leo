@@ -20,6 +20,6 @@ class HomePage extends Component
     public function filter($category){
         $this->category = $category;
        $this->products = Product::Where("category", $category)->get();
-        sleep(2);
+       sleep(0.5);
     }
 }
