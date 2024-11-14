@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function ($) {
     "use strict";
 
     // Spinner
@@ -89,25 +89,31 @@
         });
     });
 
-    // Testimonials carousel
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        center: true,
-        margin: 24,
-        dots: true,
-        loop: true,
-        nav: false,
-        responsive: {
-            0: {
-                items: 1,
+    initializeCarousel();
+
+    // Function to initialize Owl Carousel
+    function initializeCarousel() {
+        $(".testimonial-carousel").owlCarousel({
+            autoplay: true,
+            smartSpeed: 1000,
+            center: true,
+            margin: 24,
+            dots: true,
+            loop: true,
+            nav: false,
+            responsive: {
+                0: { items: 1 },
+                768: { items: 2 },
+                992: { items: 3 },
             },
-            768: {
-                items: 2,
-            },
-            992: {
-                items: 3,
-            },
-        },
+        });
+    }
+
+    // Reinitialize carousel after Livewire updates
+    document.addEventListener('livewire:load', function () {
+        Livewire.hook('message.processed', (message, component) => {
+            initializeCarousel();
+        });
     });
+
 })(jQuery);
