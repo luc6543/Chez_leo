@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
+use App\Models\TableReservation;
 
 class ReservationPage extends Component
 {
@@ -58,7 +59,7 @@ class ReservationPage extends Component
     {
         $this->validate();
 
-        Reservation::updateOrCreate(
+        $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
             [
                 'user_id' => $this->user_id,
@@ -66,6 +67,11 @@ class ReservationPage extends Component
                 'start_time' => $this->start_time,
                 'end_time' => $this->end_time,
             ]
+        );
+
+        TableReservation::updateOrCreate(
+            ['reservation_id' => $reservation->id],
+            ['table_id' => $this->table_id]
         );
 
         session()->flash('message', $this->reservationId ? 'Reservation Updated Successfully.' : 'Reservation Created Successfully.');
@@ -89,7 +95,16 @@ class ReservationPage extends Component
 
     public function delete($id)
     {
-        Reservation::find($id)->delete();
+        // Find the reservation
+        $reservation = Reservation::findOrFail($id);
+
+        // Delete the related table_reservation entry
+        TableReservation::where('reservation_id', $reservation->id)->delete();
+
+        // Delete the reservation
+        $reservation->delete();
+
+        // Flash a success message
         session()->flash('message', 'Reservation Deleted Successfully.');
     }
 }
