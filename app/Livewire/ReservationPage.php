@@ -24,7 +24,6 @@ class ReservationPage extends Component
         'user_id' => 'required',
         'table_id' => 'required',
         'start_time' => 'required|date',
-        'end_time' => 'required|date|after:start_time',
     ];
 
     public function render()
@@ -59,6 +58,9 @@ class ReservationPage extends Component
     {
         $this->validate();
 
+        // Ensure end_time has the same date as start_time but with time set to 23:00
+        $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
+
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
             [
@@ -88,7 +90,7 @@ class ReservationPage extends Component
         $this->user_id = $reservation->user_id;
         $this->table_id = $reservation->table_id;
         $this->start_time = $reservation->start_time;
-        $this->end_time = $reservation->end_time;
+        $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:00:00';
 
         $this->isModalOpen = true;
     }
