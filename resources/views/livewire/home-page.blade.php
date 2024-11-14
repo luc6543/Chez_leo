@@ -1,5 +1,12 @@
-<div lang="en">
-        <meta charset="utf-8">
+<div lang="en" x-data="{videoModal: false}">
+    <div class="fixed flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30"
+         x-show="videoModal" >
+        <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <meta charset="utf-8">
         <title>Restaurant - Chez Leo Template</title>
         <meta content="width=device-width, initial-scale=1.0" name="viewport">
         <meta content="" name="keywords">
@@ -236,11 +243,11 @@
 
 
         <!-- Reservation Start -->
-        <div class="  py-5 px-0 wow fadeInUp" data-wow-delay="0.1s">
+        <div class="py-5 px-0 wow fadeInUp" data-wow-delay="0.1s">
             <div class="row g-0">
                 <div class="col-md-6">
                     <div class="video">
-                        <button type="button" class="btn-play" data-bs-toggle="modal"
+                        <button type="button" class="btn-play" @click="videoModal = true"
                                 data-src="https://www.youtube.com/embed/DWRcNpR6Kdc" data-bs-target="#videoModal">
                             <span></span>
                         </button>
@@ -298,24 +305,6 @@
                 </div>
             </div>
         </div>
-
-    <div class="modal fade" id="videoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content rounded-0">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Youtube Video</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <!-- 16:9 aspect ratio -->
-                    <div class="ratio ratio-16x9">
-                        <iframe class="embed-responsive-item" src="" id="video" allowfullscreen
-                                allowscriptaccess="always" allow="autoplay"></iframe>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
     <!-- Reservation Start -->
 
 
@@ -385,7 +374,7 @@
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- Team End -->
 
 
@@ -524,7 +513,7 @@
 <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <!-- Your custom main.js -->
-{{--<script src="/js/main.js"></script>--}}
+<script src="/js/main.js"></script>
 @endassets
 </body>
 
