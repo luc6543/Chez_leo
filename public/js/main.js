@@ -109,11 +109,4 @@ $(document).ready(function ($) {
         });
     }
 
-    // Reinitialize carousel after Livewire updates
-    document.addEventListener('livewire:load', function () {
-        Livewire.hook('message.processed', (message, component) => {
-            initializeCarousel();
-        });
-    });
-
 })(jQuery);
