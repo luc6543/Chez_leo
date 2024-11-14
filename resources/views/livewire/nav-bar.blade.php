@@ -14,6 +14,12 @@
             <a href="/over-ons">Over ons</a>
             <a href="#">Menu</a>
             <a href="#">Recenties</a>
+            @auth
+            <form method="post" action="/logout">
+                @csrf
+                <button type="submit" class="p-2 px-4 bg-gray-800 rounded hover:bg-red-500 text-white">Logout</button>
+            </form>
+            @endauth
             <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
         </div>
     </div>
@@ -26,7 +32,12 @@
                 <li class="w-16"><a href="/over-ons" >Over ons</a></li>
                 <li class=""><a href="#" class="">Menu</a></li>
                 <li class=""><a href="#" class="">Recenties</a></li>
-                
+                @auth
+                <form method="post" action="/logout">
+                    @csrf
+                    <button type="submit" class="p-2 px-4 bg-gray-800 rounded hover:bg-red-500 text-white">Log uit</button>
+                </form>
+                @endauth
             </ul>
             <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
         </div>
