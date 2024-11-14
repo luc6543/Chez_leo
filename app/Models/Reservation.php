@@ -14,6 +14,11 @@ class Reservation extends Model
         'table_id',
         'start_time',
         'end_time',
+        'active',
+    ];
+
+    protected $casts = [
+        'active' => 'boolean',
     ];
 
     public function user()

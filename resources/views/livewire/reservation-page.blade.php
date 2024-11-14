@@ -86,6 +86,10 @@
                         <input type="datetime-local" wire:model.defer="start_time"
                             class="mt-1 block w-full rounded-md border-gray-300">
                     </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Actief</label>
+                        <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
+                    </div>
                     <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
                     <button type="button" wire:click="closeModal"
                         class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
