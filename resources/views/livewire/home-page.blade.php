@@ -29,18 +29,18 @@
         <!-- Template Stylesheet -->
         <link href="{{ asset('css/style.css') }}" rel="stylesheet">
 
-    
 
-        
+
+
 <body>
 <div class=" bg-white p-0">
    {{-- <!-- Spinner Start -->--}}
-   <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
-       <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
-           <span class="sr-only">Laden...</span>
-       </div>
-   </div>
-  <!-- Spinner End --> 
+    <div wire:loading.flex class="bg-black/75 inset-0 fixed flex items-center justify-center transition-opacity duration-500 ease-out delay-500 z-[99999]">
+        <div class="border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 animate-spin" role="status">
+            <span class="sr-only">Laden...</span>
+        </div>
+    </div>
+  <!-- Spinner End -->
 
 
     <!-- Navbar & Hero Start -->
@@ -55,7 +55,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarCollapse">
                 <div class="navbar-nav ms-auto py-0 pe-4">
-                    <!--<a href="index.html" class="nav-item nav-link active">Home</a>
+                    <a href="index.html" class="nav-item nav-link active">Home</a>
                      <a href="about.html" class="nav-item nav-link">Over ons</a>
                     <a href="service.html" class="nav-item nav-link">Service</a>
                     <a href="menu.html" class="nav-item nav-link">Menu</a>
@@ -67,9 +67,9 @@
                             <a href="testimonial.html" class="dropdown-item">Recenties</a>
                         </div>
                     </div>
-                    <a href="contact.html" class="nav-item nav-link">Contact</a> -->
+                    <a href="contact.html" class="nav-item nav-link">Contact</a>
                 </div>
-                <a href="" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
+                <button wire:click="loadingTest" class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
             </div>
         </nav>
 
@@ -81,8 +81,7 @@
                         <p class="text-white animated slideInLeft mb-4 pb-2">Tempor erat elitr rebum at clita. Diam
                             dolor diam ipsum sit. Aliqu diam amet diam et eos. Clita erat ipsum et lorem et sit, sed
                             stet lorem sit clita duo justo magna dolore erat amet</p>
-                        <a href="" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een
-                            tafel</a>
+                        <button wire:click="loadingTest" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</button>
                     </div>
                     <div class="col-lg-6 text-center text-lg-end overflow-hidden">
                         <img class="img-fluid" src="img/hero.png" alt="">
@@ -887,7 +886,7 @@
 <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
 
 <!-- Your custom main.js -->
-<script src="/js/main.js"></script>
+{{--<script src="/js/main.js"></script>--}}
 @endassets
 </body>
 
