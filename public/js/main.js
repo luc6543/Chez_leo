@@ -1,4 +1,4 @@
-(function ($) {
+$(document).ready(function ($) {
     "use strict";
 
     // Spinner
@@ -89,7 +89,6 @@
     //     });
     // });
 
-    // Testimonials carousel
     $(".testimonial-carousel").owlCarousel({
         autoplay: true,
         smartSpeed: 1000,
@@ -110,4 +109,5 @@
             },
         },
     });
+
 })(jQuery);
