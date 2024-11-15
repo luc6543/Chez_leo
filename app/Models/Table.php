@@ -6,10 +6,18 @@ use Illuminate\Database\Eloquent\Model;
 
 class Table extends Model
 {
-    public function bills(){
+
+    protected $fillable = [
+        'chairs',
+        'table_number',
+    ];
+
+    public function bills()
+    {
         return $this->hasMany(Bill::class);
     }
-    public function reservations(){
+    public function reservations()
+    {
         return $this->hasMany(Reservation::class);
     }
 }
