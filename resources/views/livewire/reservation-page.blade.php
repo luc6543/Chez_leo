@@ -18,6 +18,7 @@
                     <tr>
                         <th class="py-3.5 text-left text-sm font-semibold text-white">ID</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Klant</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Personen</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Tafelnummer</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Start datum en tijd</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Eind datum en tijd</th>
@@ -32,6 +33,7 @@
                                 <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
                                 <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
                                 </td>
+                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->people }}</td>
                                 <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
                                 <td class="px-3 py-4 text-sm text-gray-300">
                                     {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
@@ -71,6 +73,11 @@
                                 <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Personen</label>
+                        <input wire:model.defer="people" type="number" min="1" max="6"
+                            class="mt-1 block w-full rounded-md border-gray-300">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Tafel</label>

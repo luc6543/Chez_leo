@@ -17,6 +17,7 @@ class ReservationPage extends Component
     public $start_time;
     public $end_time;
     public $active = false;
+    public $people;
     public $isModalOpen = false;
     public $users;
     public $tables;
@@ -26,6 +27,7 @@ class ReservationPage extends Component
         'table_id' => 'required',
         'start_time' => 'required|date',
         'active' => 'boolean',
+        'people' => 'required',
     ];
 
     public function render()
@@ -55,6 +57,7 @@ class ReservationPage extends Component
         $this->start_time = '';
         $this->end_time = '';
         $this->active = false;
+        $this->people = '';
     }
 
     public function store()
@@ -72,6 +75,7 @@ class ReservationPage extends Component
                 'start_time' => $this->start_time,
                 'end_time' => $this->end_time,
                 'active' => $this->active,
+                'people' => $this->people,
             ]
         );
 
@@ -96,6 +100,7 @@ class ReservationPage extends Component
         $this->start_time = $reservation->start_time;
         $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
         $this->active = $reservation->active;
+        $this->people = $reservation->people;
 
         $tableReservation = TableReservation::where('reservation_id', $reservation->id)->first();
         if ($tableReservation) {
