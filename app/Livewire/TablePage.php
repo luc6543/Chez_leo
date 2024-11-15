@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use Livewire\Component;
 use App\Models\Table;
+use Illuminate\Validation\ValidationException;
 
 class TablePage extends Component
 {
@@ -15,7 +16,7 @@ class TablePage extends Component
 
     protected $rules = [
         'chairs' => 'required',
-        'table_number' => 'required',
+        'table_number' => 'required|unique:tables,table_number',
     ];
 
     public function render()
@@ -44,7 +45,15 @@ class TablePage extends Component
 
     public function store()
     {
-        $this->validate();
+        try {
+            $this->validate([
+                'chairs' => 'required',
+                'table_number' => 'required|unique:tables,table_number,' . $this->tableId,
+            ]);
+        } catch (ValidationException $e) {
+            session()->flash('error', 'Vul alle velden in en zorg ervoor dat het tafelnummer uniek is.');
+            return;
+        }
 
         $table = Table::updateOrCreate(
             ['id' => $this->tableId],

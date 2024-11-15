@@ -44,11 +44,17 @@
     @if($isModalOpen)
         <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg p-6 w-1/3">
-                <h2 class="text-lg font-semibold mb-4">
+                <h2 class="text-lg font-semibold mb-2">
                     {{ $tableId ? 'Verander deze tafel' : 'Maak een tafel aan' }}
                 </h2>
 
-                <form wire:submit.prevent="store">
+                @if (session()->has('error'))
+                    <div class="alert alert-danger text-red-500">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                <form wire:submit.prevent="store" class="mt-2">
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Tafelnummer</label>
                         <input wire:model.defer="table_number" type="number" min="1"
