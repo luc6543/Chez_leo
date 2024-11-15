@@ -12,7 +12,6 @@
             <table class="min-w-full divide-y divide-gray-700 mt-8">
                 <thead>
                     <tr>
-                        <th class="py-3.5 text-left text-sm font-semibold text-white">ID</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Tafelnummer</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Stoelen</th>
                         <th class="py-3.5"></th>
@@ -22,7 +21,6 @@
                 <tbody class="divide-y divide-gray-800">
                     @foreach ($tables as $table)
                         <tr>
-                            <td class="py-4 text-sm text-white">{{ $table->id }}</td>
                             <td class="px-3 py-4 text-sm text-gray-300">{{ $table->table_number }}
                             </td>
                             <td class="px-3 py-4 text-sm text-gray-300">{{ $table->chairs }}</td>
