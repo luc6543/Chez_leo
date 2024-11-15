@@ -8,5 +8,5 @@ Route::get('/menu', \App\Livewire\MenuPage::class);
 
 Route::get('/over-ons', \App\Livewire\OverOnsPage::class);
 Route::group(['middleware' => ['auth']], function () {
-
+    Route::get('/profile', \App\Livewire\ProfilePage::class);
 });
