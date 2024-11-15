@@ -5,6 +5,7 @@ namespace App\Livewire;
 use Livewire\Component;
 use App\Models\Table;
 use Illuminate\Validation\ValidationException;
+use App\Models\TableReservation;
 
 class TablePage extends Component
 {
@@ -83,6 +84,8 @@ class TablePage extends Component
     public function delete($id)
     {
         $table = Table::findOrFail($id);
+
+        TableReservation::where('table_id', $table->id)->delete();
 
         $table->delete();
 
