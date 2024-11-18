@@ -192,6 +192,17 @@
                             </div>
                         </a>
                     </li>
+                    <li wire:click="filter('Drank')" class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
+                         @endif" data-bs-toggle="pill"
+                           href="#tab-3">
+                            <i class="fa fa-2x text-primary fa-wine-glass"></i>
+                            <div class="ps-3">
+                                <small class="text-body">Smakelijke</small>
+                                <h6 class="mt-n1 mb-0">Drankjes</h6>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane fade show p-0 active">
@@ -237,19 +248,20 @@
                             <div class="row g-3">
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" id="name" placeholder="Uw Naam">
+                                        <input type="text" wire:model="name" class="form-control" id="name" placeholder="Uw Naam">
                                         <label for="name">Uw Naam</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <input type="email" class="form-control" id="email" placeholder="Uw Email">
+                                        <input type="email" wire:model="email" class="form-control" id="email" placeholder="Uw Email">
                                         <label for="email">Uw Email</label>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <input type="text" class="form-control datetimepicker-input" id="datetime"
+                                        <input wire:model="start_time" type="datetime-local" class="form-control
+                                        datetimepicker-input" id="datetime"
                                                placeholder="Datum & Tijd" data-target="#date3"
                                                data-toggle="datetimepicker" />
                                         <label for="datetime">Datum & Tijd</label>
@@ -257,23 +269,27 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select class="form-select" id="select1">
+                                        <select wire:model="person_amount" class="form-select" id="select1">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
+                                            <option value="3">4</option>
+                                            <option value="3">5</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea class="form-control" placeholder="Speciale Verzoeken" id="message"
+                                            <textarea wire:model="message" class="form-control" placeholder="Speciale
+                                            Verzoeken"
+                                                       id="message"
                                                       style="height: 100px"></textarea>
                                         <label for="message">Speciale Verzoeken</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100 py-3" type="submit">Reserveer Nu</button>
+                                    <button wire:click="createReservation" class="btn btn-primary w-100 py-3" type="submit">Reserveer Nu</button>
                                 </div>
                             </div>
                         </form>
