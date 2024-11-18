@@ -3,7 +3,7 @@
 @endphp
 
 <div>
-    <div class="bg-gray-900 py-10">
+    <div class="bg-[#0f172b] py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <h1 class="text-base font-semibold text-white">Reservations</h1>
