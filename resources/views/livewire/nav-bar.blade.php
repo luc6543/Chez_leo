@@ -41,7 +41,7 @@
                         </div>
                     </li>
                 @endrole
-            <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
+            <a href="#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
         </div>
     </div>
 
@@ -81,7 +81,7 @@
                     </li>
                 @endrole
             </ul>
-            <button class="btn btn-primary py-2 px-4">Reserveer</button>
+            <a href="#Reserveer" class="btn btn-primary py-sm-3 px-3 me-3 animated slideInLeft">Reserveer</a>
         </div>
     </div>
 </nav>
