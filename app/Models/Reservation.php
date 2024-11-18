@@ -30,4 +30,7 @@ class Reservation extends Model
     {
         return $this->belongsTo(Table::class);
     }
+    public function bill() {
+        return $this->hasOne(Bill::class);
+    }
 }

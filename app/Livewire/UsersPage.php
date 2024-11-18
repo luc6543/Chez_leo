@@ -71,6 +71,7 @@ public function createUser()
         $this->reset('newUser');
         $this->dispatch('user-created');
         session()->flash('userMessage', 'User created successfully.');
+        $this->search();
     }
 }
 }
