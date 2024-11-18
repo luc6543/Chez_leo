@@ -44,7 +44,7 @@
     </div>
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
-            <div class="sm:flex-auto">
+            <div class="sm:flex-auto ml-[2rem]">
                 <h1 class="text-base font-semibold text-gray-900">Gebruikers</h1>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -52,7 +52,7 @@
             </div>
         </div>
         <div class="mt-8 flow-root">
-            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="-my-2 overflow-x-auto">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <input class="border-none bg-white p-2 px-4 rounded shadow" wire:model.live="searchTerm" placeholder="Zoeken..">
                     <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg mt-2">
