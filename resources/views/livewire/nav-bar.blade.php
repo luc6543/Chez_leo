@@ -8,7 +8,7 @@
         </button>
     </div>
     {{-- hamburger menu --}}
-    <div x-show="navBarShown" x-collapse id="navbarCollapse">
+    <div style="display:none" x-show="navBarShown" x-collapse id="navbarCollapse">
         <div class="lg:hidden flex-col pl-0 mb-0 list-none flex ms-auto w-fit py-0 pe-4">
             <a href="/">Home</a>
             <a href="/over-ons">Over ons</a>
@@ -17,8 +17,8 @@
             @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">Account <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
-                            <div x-show="open"x-collapse @click.away="open = false" class="mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                            <button @click="open = !open" class="text-[#FEA116] ">Account <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div style="display:none" x-show="open"x-collapse @click.away="open = false" class="mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                 <a href="/profile" class="block px-4 py-2 text-[#FEA116]">Profiel</a>
                                 <form method="post" action="/logout" class="block">
                                     @csrf
@@ -31,8 +31,8 @@
                     @role("medewerker")
                     <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
-                            <div x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div style="display:none" x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
@@ -56,8 +56,8 @@
                 @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">Account <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
-                            <div x-show="open"x-collapse @click.away="open = false" class="absolute left-1 right-0 mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                            <button @click="open = !open" class="text-[#FEA116] ">Account <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div style="display:none" x-show="open"x-collapse @click.away="open = false" class="absolute left-1 right-0 mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                 <a href="/profile" class="block px-4 py-2 text-[#FEA116]">Profiel</a>
                                 <form method="post" action="/logout" class="block">
                                     @csrf
@@ -70,8 +70,8 @@
                     @role("medewerker")
                     <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
-                            <div x-show="open"x-collapse @click.away="open = false" class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div style="display:none" x-show="open"x-collapse @click.away="open = false" class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
