@@ -12,7 +12,7 @@
         <div class="lg:hidden flex-col pl-0 mb-0 list-none flex ms-auto w-fit py-0 pe-4">
             <a href="/">Home</a>
             <a href="/over-ons">Over ons</a>
-            <a href="#">Menu</a>
+            <a href="/menu">Menu</a>
             <a href="#">Recenties</a>
             @auth
                 <li class="w-20">
@@ -41,7 +41,7 @@
                         </div>
                     </li>
                 @endrole
-            <a href="#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
+            <a href="/#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
         </div>
     </div>
 
@@ -51,7 +51,7 @@
             <ul class="flex gap-3 pt-3">
                 <li class=""><a href="/">Home</a></li>
                 <li class="w-16"><a href="/over-ons" >Over ons</a></li>
-                <li class=""><a href="#" class="">Menu</a></li>
+                <li class=""><a href="/menu" class="">Menu</a></li>
                 <li class=""><a href="#" class="">Recenties</a></li>
                 @auth
                 <li class="w-20">
@@ -81,7 +81,7 @@
                     </li>
                 @endrole
             </ul>
-            <a href="#Reserveer" class="btn btn-primary py-sm-3 px-3 me-3 animated slideInLeft">Reserveer</a>
+            <a href="/#Reserveer" class="btn btn-primary py-sm-3 px-3 me-3 animated slideInLeft">Reserveer</a>
         </div>
     </div>
 </nav>

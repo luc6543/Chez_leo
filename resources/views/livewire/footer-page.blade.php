@@ -1,12 +1,12 @@
 <div>
     <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
+    <div class="container-fluid bg-dark text-light footer pt-5 wow fadeIn" data-wow-delay="0.1s">
         <div class="container py-5">
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Bedrijf</h4>
                     <a class="btn btn-link" href="/over-ons">Over Ons</a>
-                    <a class="btn btn-link" href="">Reserveren</a>
+                    <a class="btn btn-link" href="/#Reserveer">Reserveren</a>
                     {{-- <a class="btn btn-link" href="">Privacybeleid</a>
                     <a class="btn btn-link" href="">Algemene voorwaarden</a> --}}
                 </div>

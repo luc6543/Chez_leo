@@ -29,7 +29,7 @@
                         <div class="col-lg-6 text-center text-lg-start">
                             <h1 class="display-3 text-white animated slideInLeft">Geniet van onze<br>Heerlijke maaltijd</h1>
                             <p class="text-white animated slideInLeft mb-4 pb-2">Ontdek de smaakvolle gerechten die met zorg en passie zijn bereid. Laat je verrassen door de rijke en authentieke smaken, waarbij ieder hapje een klein moment van geluk biedt. Proef de unieke combinaties en geniet van de warme sfeer die wij voor je hebben gecreëerd. Wij nodigen je uit om samen met ons te genieten van een onvergetelijke culinaire ervaring, waar elke maaltijd een feest is.</p>
-                            <button class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</button>
+                            <a href="#Reserveer" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</a>
                         </div>
                         <div class="col-lg-6 text-center text-lg-end overflow-hidden">
                             <img class="img-fluid" src="img/hero.png" alt="">
@@ -229,7 +229,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-md-6 bg-dark d-flex align-items-center">
+                <div id="Reserveer" class="col-md-6 bg-dark d-flex align-items-center">
                     <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reserveren</h5>
                         <h1 class="text-white mb-4">Reserveer Een Tafel Online</h1>

@@ -1,4 +1,4 @@
-<div class="bg-stone-800 text-white w-screen h-fit">
+<div class="bg-stone-800 text-white w-full h-fit">
     @push('styles')
         <meta charset="utf-8">
         <title>Chez Leo | Menu</title>
