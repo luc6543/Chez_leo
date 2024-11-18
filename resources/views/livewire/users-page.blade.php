@@ -10,7 +10,7 @@
 
         @endif
     </div>
-    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="newUserModal">
+    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="newUserModal" style="display:none;">
         <div class="p-6 shadow bg-white flex flex-col gap-5 rounded" @click.away="newUserModal = false">
             <form wire:submit.prevent="createUser" class="flex flex-col gap-2">
                 <div>
@@ -85,7 +85,7 @@
                                         <button @click="confirmationModal = true" class="text-white font-bold bg-red-500 p-2 px-4 rounded shadow">Verwijderen</button>
 
                                         {{--Confirmation modal--}}
-                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="confirmationModal">
+                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" style="display:none;" x-show="confirmationModal">
                                             <div class="p-6 shadow bg-white flex flex-col gap-5" @click.away="confirmationModal = false">
                                                 <h1>Weet je het zeker?</h1>
                                                 <div class="w-full flex justify-around items-center">
