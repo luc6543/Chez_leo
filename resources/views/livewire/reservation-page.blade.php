@@ -58,7 +58,7 @@
     </div>
 
     @if($isModalOpen)
-        <div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+        <div class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg p-6 w-1/3">
                 <h2 class="text-lg font-semibold mb-4">
                     {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
