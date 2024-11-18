@@ -20,6 +20,7 @@
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Klant</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Personen</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Tafelnummer</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Actief</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Start datum en tijd</th>
                         <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Eind datum en tijd</th>
                         <th class="py-3.5"></th>
@@ -35,6 +36,9 @@
                                 </td>
                                 <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->people }}</td>
                                 <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
+                                <td class="px-3 py-4 text-sm text-gray-300">
+                                    {{ $reservation->active ? 'Ja' : 'Niet' }}
+                                </td>
                                 <td class="px-3 py-4 text-sm text-gray-300">
                                     {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
                                 </td>
