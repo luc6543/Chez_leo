@@ -64,12 +64,18 @@
     @if($isModalOpen)
         <div class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
             <div class="bg-white rounded-lg p-6 w-1/3">
-                <h2 class="text-lg font-semibold mb-4">
+                <h2 class="text-lg font-semibold mb-2">
                     {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
                 </h2>
 
+                @if (session()->has('error'))
+                    <div class="alert alert-danger text-red-500">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <form wire:submit.prevent="store">
-                    <div class="mb-4">
+                    <div class="mb-4 mt-2">
                         <label class="block text-sm font-medium">Klant</label>
                         <select wire:model.defer="user_id" class="mt-1 block w-full rounded-md border-gray-300">
                             <option value="">Selecteer een klant</option>

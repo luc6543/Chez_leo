@@ -7,6 +7,7 @@ use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
 use App\Models\TableReservation;
+use Illuminate\Validation\ValidationException;
 
 class ReservationPage extends Component
 {
@@ -62,7 +63,12 @@ class ReservationPage extends Component
 
     public function store()
     {
-        $this->validate();
+        try {
+            $this->validate();
+        } catch (ValidationException $e) {
+            session()->flash('error', 'Vul alle velden in.');
+            return;
+        }
 
         // Ensure end_time has the same date as start_time but with time set to 23:00
         $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
