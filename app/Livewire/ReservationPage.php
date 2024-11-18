@@ -86,6 +86,33 @@ class ReservationPage extends Component
         $this->people = '';
     }
 
+    public function updated($propertyName, $value)
+    {
+        $this->$propertyName = $value;
+
+        $this->updateTableList();
+    }
+
+    public function updateTableList()
+    {
+        if (!$this->people) {
+            $this->tables = Table::all();
+            return;
+        }
+
+        // Fetch tables with the same or more chairs
+        $this->tables = Table::where('chairs', '>=', $this->people)
+            ->orderBy('chairs', 'asc')
+            ->get();
+
+        // Auto-select the closest matching table if available
+        if ($this->tables->count() > 0) {
+            $this->table_id = $this->tables->first()->id;
+        } else {
+            $this->table_id = null;
+        }
+    }
+
     public function store()
     {
         try {
