@@ -39,34 +39,40 @@
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-gray-800">
-                    @foreach ($reservations as $reservation)
-                        @if ($reservation->user != null && $reservation->table != null)
-                            <tr>
-                                <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
-                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
-                                </td>
-                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->people }}</td>
-                                <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
-                                <td class="px-3 py-4 text-sm text-gray-300">
-                                    {{ $reservation->active ? 'Ja' : 'Niet' }}
-                                </td>
-                                <td class="px-3 py-4 text-sm text-gray-300">
-                                    {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
-                                </td>
-                                <td class="px-3 py-4 text-sm text-gray-300">
-                                    {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
-                                </td>
-                                <td class="text-right">
-                                    <button wire:click="edit({{ $reservation->id }})"
-                                        class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander</button>
-                                </td>
-                                <td class="text-right">
-                                    <button wire:click="delete({{ $reservation->id }})"
-                                        class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder</button>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
+                    @if ($reservations->isEmpty())
+                        <tr>
+                            <td class="py-4 text-sm text-white" colspan="9">Geen reserveringen gevonden</td>
+                        </tr>
+                    @else
+                        @foreach ($reservations as $reservation)
+                            @if ($reservation != null && $reservation->user != null && $reservation->table != null)
+                                <tr>
+                                    <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->people }}</td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                        {{ $reservation->active ? 'Ja' : 'Niet' }}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                        {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
+                                    </td>
+                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                        {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
+                                    </td>
+                                    <td class="text-right">
+                                        <button wire:click="edit({{ $reservation->id }})"
+                                            class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander</button>
+                                    </td>
+                                    <td class="text-right">
+                                        <button wire:click="delete({{ $reservation->id }})"
+                                            class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder</button>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    @endif
                 </tbody>
             </table>
         </div>
