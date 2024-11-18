@@ -105,7 +105,9 @@
                         <select wire:model.defer="table_id" class="mt-1 block w-full rounded-md border-gray-300">
                             <option value="">Selecteer een tafel</option>
                             @foreach($tables as $table)
-                                <option value="{{ $table->id }}">Tafelnummer: {{ $table->table_number }}</option>
+                                <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
+                                    {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
