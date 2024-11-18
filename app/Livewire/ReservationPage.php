@@ -23,6 +23,7 @@ class ReservationPage extends Component
     public $isModalOpen = false;
     public $users;
     public $tables;
+    public $showPastReservations = false;
 
     protected $rules = [
         'user_id' => 'required',
@@ -36,12 +37,21 @@ class ReservationPage extends Component
     {
 
         $currentDateTime = Carbon::now();
-        $this->reservations = Reservation::where('end_time', '>=', $currentDateTime)
-            ->orderBy('start_time', 'asc')
-            ->get();
+        $query = Reservation::orderBy('start_time', 'asc');
+
+        if (!$this->showPastReservations) {
+            $query->where('end_time', '>=', $currentDateTime);
+        }
+
+        $this->reservations = $query->get();
         $this->users = User::all();
         $this->tables = Table::all();
         return view('livewire.reservation-page');
+    }
+
+    public function toggleShowPastReservations()
+    {
+        $this->showPastReservations = !$this->showPastReservations;
     }
 
     public function openModal()

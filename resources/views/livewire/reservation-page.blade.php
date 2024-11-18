@@ -7,6 +7,10 @@
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <h1 class="text-base font-semibold text-white">Reservations</h1>
+                <button wire:click="toggleShowPastReservations"
+                    class="bg-sky-900 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-sky-800">
+                    {{ $showPastReservations ? 'Hide Past Reservations' : 'Show Past Reservations' }}
+                </button>
                 <button wire:click="openModal"
                     class="bg-yellow-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-yellow-400">
                     Voeg reservation toe
