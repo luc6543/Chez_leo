@@ -15,11 +15,32 @@
             <a href="#">Menu</a>
             <a href="#">Recenties</a>
             @auth
-            <form method="post" action="/logout">
-                @csrf
-                <button type="submit" class="p-2 px-4 bg-gray-800 rounded hover:bg-red-500 text-white">Logout</button>
-            </form>
-            @endauth
+                <li class="w-20">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="text-[#FEA116] ">Account <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div x-show="open"x-collapse @click.away="open = false" class="mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                                <a href="/profile" class="block px-4 py-2 text-[#FEA116]">Profiel</a>
+                                <form method="post" action="/logout" class="block">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 pt-2 text-[#FEA116] hover:text-red-500">Log uit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    @endauth
+                    @role("medewerker")
+                    <li class="w-20">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                                @role("admin")
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                @endrole
+                            </div>
+                        </div>
+                    </li>
+                @endrole
             <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
         </div>
     </div>
@@ -33,13 +54,37 @@
                 <li class=""><a href="#" class="">Menu</a></li>
                 <li class=""><a href="#" class="">Recenties</a></li>
                 @auth
-                <form method="post" action="/logout">
-                    @csrf
-                    <button type="submit" class="p-2 px-4 bg-gray-800 rounded hover:bg-red-500 text-white">Log uit</button>
-                </form>
-                @endauth
+                <li class="w-20">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="text-[#FEA116] ">Account <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div x-show="open"x-collapse @click.away="open = false" class="absolute left-1 right-0 mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                                <a href="/profile" class="block px-4 py-2 text-[#FEA116]">Profiel</a>
+                                <form method="post" action="/logout" class="block">
+                                    @csrf
+                                    <button type="submit" class="w-full text-left px-4 pt-2 text-[#FEA116] hover:text-red-500">Log uit</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    @endauth
+                    @role("medewerker")
+                    <li class="w-20">
+                        <div x-data="{ open: false }" class="relative">
+                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i x-show="!open" class="bi bi-chevron-down"></i> <i x-show="open" class="bi bi-chevron-up"></i></button>
+                            <div x-show="open"x-collapse @click.away="open = false" class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                                @role("admin")
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                @endrole
+                            </div>
+                        </div>
+                    </li>
+                @endrole
             </ul>
-            <button class="btn btn-primary py-2 px-4">Reserveer een tafel</button>
+            <button class="btn btn-primary py-2 px-4">Reserveer</button>
         </div>
     </div>
 </nav>
+
+
+{{--   --}}
