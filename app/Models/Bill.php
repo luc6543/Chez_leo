@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
 
+    protected $fillable = [
+        'reservation_id',
+        'user_id',
+        'table_id'
+    ];
+
     protected $casts = [
         'paid' => 'boolean'
     ];
