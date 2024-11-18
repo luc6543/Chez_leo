@@ -13,8 +13,7 @@ class ReservationsObserver
     {
         $reservation->bill()->create([
             'reservation_id' => $reservation->id,
-            'user_id' => $reservation->user->id,
-            'table_id' => $reservation->table->id
+            'user_id' => $reservation->user->id
             ]);
     }
 
