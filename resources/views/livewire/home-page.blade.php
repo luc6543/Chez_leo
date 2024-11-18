@@ -2,7 +2,7 @@
     <div class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/DWRcNpR6Kdc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -29,7 +29,7 @@
                         <div class="col-lg-6 text-center text-lg-start">
                             <h1 class="display-3 text-white animated slideInLeft">Geniet van onze<br>Heerlijke maaltijd</h1>
                             <p class="text-white animated slideInLeft mb-4 pb-2">Ontdek de smaakvolle gerechten die met zorg en passie zijn bereid. Laat je verrassen door de rijke en authentieke smaken, waarbij ieder hapje een klein moment van geluk biedt. Proef de unieke combinaties en geniet van de warme sfeer die wij voor je hebben gecreëerd. Wij nodigen je uit om samen met ons te genieten van een onvergetelijke culinaire ervaring, waar elke maaltijd een feest is.</p>
-                            <a href="#Reserveer" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</a>
+                            <button class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</button>
                         </div>
                         <div class="col-lg-6 text-center text-lg-end overflow-hidden">
                             <img class="img-fluid" src="img/hero.png" alt="">
@@ -229,7 +229,7 @@
                         </button>
                     </div>
                 </div>
-                <div id="Reserveer" class="col-md-6 bg-dark d-flex align-items-center">
+                <div class="col-md-6 bg-dark d-flex align-items-center">
                     <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reserveren</h5>
                         <h1 class="text-white mb-4">Reserveer Een Tafel Online</h1>
@@ -348,54 +348,6 @@
         </div>
     </div>
     <!-- Testimonial End -->
-
-
-    <!-- Footer Start -->
-    <div class="container-fluid bg-dark text-light footer pt-5 mt-5 wow fadeIn" data-wow-delay="0.1s">
-        <div class="container py-5">
-            <div class="row g-5">
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Bedrijf</h4>
-                    <a class="btn btn-link" href="">Over Ons</a>
-                    <a class="btn btn-link" href="">Neem Contact Op</a>
-                    <a class="btn btn-link" href="#Reserveer">Reserveren</a>
-                    <a class="btn btn-link" href="">Privacybeleid</a>
-                    <a class="btn btn-link" href="">Algemene voorwaarden</a>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contact</h4>
-                    <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>EenStraat 109, 3651 EenPlek, Nederland</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+31 06 345 67890</p>
-                    <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@emailadres.com</p>
-                    <div class="d-flex pt-2">
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-facebook-f"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-youtube"></i></a>
-                        <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Openingstijden</h4>
-                    <h5 class="text-light fw-normal">Maandag - Zaterdag</h5>
-                    <p>09AM - 09PM</p>
-                    <h5 class="text-light fw-normal">Zondag</h5>
-                    <p>10AM - 08PM</p>
-                </div>
-                <div class="col-lg-3 col-md-6">
-                    <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Nieuwsbrief</h4>
-                    <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
-                    <div class="position-relative mx-auto" style="max-width: 400px;">
-                        <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text"
-                               placeholder="Uw email">
-                        <button type="button"
-                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Inschrijven</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <!-- Footer End -->
 
 
     <!-- Back to Top -->

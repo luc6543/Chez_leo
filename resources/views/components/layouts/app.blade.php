@@ -860,6 +860,8 @@
 <body class="bg-slate-100">
     <livewire:navBar />
     {{ $slot }}
+    <livewire:footer-page />
+    
     @livewireScripts
     @stack('scripts')
     <!-- jQuery -->
