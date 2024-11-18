@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Table;
 use App\Models\TableReservation;
 use Illuminate\Validation\ValidationException;
+use Carbon\Carbon;
 
 class ReservationPage extends Component
 {
@@ -33,7 +34,11 @@ class ReservationPage extends Component
 
     public function render()
     {
-        $this->reservations = Reservation::all();
+
+        $currentDateTime = Carbon::now();
+        $this->reservations = Reservation::where('end_time', '>=', $currentDateTime)
+            ->orderBy('start_time', 'asc')
+            ->get();
         $this->users = User::all();
         $this->tables = Table::all();
         return view('livewire.reservation-page');
