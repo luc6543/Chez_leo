@@ -64,4 +64,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function getInitials() {
+        if (str_contains($this->name, ' ') !== false) {
+            $parts = explode(' ', $this->name);
+            return strtoupper(substr($parts[0], 0, 1) . substr($parts[1], 0, 1));
+        }
+        return strtoupper(substr($this->name, 0, 2));
+    }
+
+    public function reservations() {
+        return $this->hasMany(Reservation::class);
+    }
 }

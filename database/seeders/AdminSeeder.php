@@ -23,6 +23,6 @@ class AdminSeeder extends Seeder
                 'password' => Hash::make(env('ADMIN_PASSWORD'))
             ]);
         $user->assignRole('admin');
-        $user->removeRole('klant');
+        $user->assignRole('medewerker');
     }
 }
