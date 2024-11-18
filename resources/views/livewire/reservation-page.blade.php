@@ -6,13 +6,20 @@
     <div class="bg-[#0f172b] py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
-                <h1 class="text-base font-semibold text-white">Reservations</h1>
+                <h1 class="text-base font-bold text-white">Reservations</h1>
+
                 <button wire:click="toggleShowPastReservations"
-                    class="bg-sky-900 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-sky-800">
-                    {{ $showPastReservations ? 'Hide Past Reservations' : 'Show Past Reservations' }}
+                    class="{{ $showPastReservations ? "bg-red-700" : "bg-green-700" }} px-3 py-2 text-sm text-white rounded-md {{ $showPastReservations ? "hover:bg-red-600" : "hover:bg-green-600" }}">
+                    {{ $showPastReservations ? 'Verberg verleden reserveringen' : 'Toon verleden reserveringen' }}
                 </button>
+
+                <button wire:click="toggleShowNonActiveReservations"
+                    class="{{ $showNonActiveReservations ? "bg-red-700" : "bg-green-700" }} px-3 py-2 text-sm text-white rounded-md {{ $showNonActiveReservations ? "hover:bg-red-600" : "hover:bg-green-600" }}">
+                    {{ $showNonActiveReservations ? 'Verberg inactieve reserveringen' : 'Toon inactieve reserveringen' }}
+                </button>
+
                 <button wire:click="openModal"
-                    class="bg-yellow-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-yellow-400">
+                    class="bg-blue-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-600">
                     Voeg reservation toe
                 </button>
             </div>
@@ -51,11 +58,11 @@
                                 </td>
                                 <td class="text-right">
                                     <button wire:click="edit({{ $reservation->id }})"
-                                        class="bg-blue-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-400">Verander</button>
+                                        class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander</button>
                                 </td>
                                 <td class="text-right">
                                     <button wire:click="delete({{ $reservation->id }})"
-                                        class="bg-red-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-400">Verwijder</button>
+                                        class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder</button>
                                 </td>
                             </tr>
                         @endif

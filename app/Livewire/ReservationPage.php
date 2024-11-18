@@ -24,6 +24,7 @@ class ReservationPage extends Component
     public $users;
     public $tables;
     public $showPastReservations = false;
+    public $showNonActiveReservations = false;
 
     protected $rules = [
         'user_id' => 'required',
@@ -43,6 +44,10 @@ class ReservationPage extends Component
             $query->where('end_time', '>=', $currentDateTime);
         }
 
+        if (!$this->showNonActiveReservations) {
+            $query->where('active', true);
+        }
+
         $this->reservations = $query->get();
         $this->users = User::all();
         $this->tables = Table::all();
@@ -52,6 +57,11 @@ class ReservationPage extends Component
     public function toggleShowPastReservations()
     {
         $this->showPastReservations = !$this->showPastReservations;
+    }
+
+    public function toggleShowNonActiveReservations()
+    {
+        $this->showNonActiveReservations = !$this->showNonActiveReservations;
     }
 
     public function openModal()
