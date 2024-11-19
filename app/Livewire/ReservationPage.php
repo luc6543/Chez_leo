@@ -13,6 +13,7 @@ use Carbon\Carbon;
 
 class ReservationPage extends Component
 {
+    // Declareren van publieke eigenschappen
     public $reservations;
     public $reservationId;
     public $user_id;
@@ -27,6 +28,7 @@ class ReservationPage extends Component
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
 
+    // Validatieregels voor invoervelden
     protected $rules = [
         'user_id' => 'required',
         'table_id' => 'required',
@@ -35,22 +37,27 @@ class ReservationPage extends Component
         'people' => 'required',
     ];
 
+    // Renderen van de component
     public function render()
     {
-
+        // Huidige datum en tijd ophalen
         $currentDateTime = Carbon::now();
         $query = Reservation::orderBy('start_time', 'asc');
 
+        // Filteren op toekomstige reserveringen
         if (!$this->showPastReservations) {
             $query->where('end_time', '>=', $currentDateTime);
         }
 
+        // Filteren op actieve reserveringen
         if (!$this->showNonActiveReservations) {
             $query->where('active', true);
         }
 
+        // Ophalen van reserveringen
         $this->reservations = $query->get();
 
+        // Beschikbare tafels ophalen
         if ($this->start_time) {
             $date = Carbon::parse($this->start_time)->format('Y-m-d');
             $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
@@ -63,31 +70,37 @@ class ReservationPage extends Component
             $this->tables = Table::all();
         }
 
+        // Alle gebruikers ophalen
         $this->users = User::all();
         return view('livewire.reservation-page');
     }
 
+    // Toggle knop voor tonen van oude reserveringen
     public function toggleShowPastReservations()
     {
         $this->showPastReservations = !$this->showPastReservations;
     }
 
+    // Toggle knop voor tonen van niet-actieve reserveringen
     public function toggleShowNonActiveReservations()
     {
         $this->showNonActiveReservations = !$this->showNonActiveReservations;
     }
 
+    // Modal venster openen
     public function openModal()
     {
         $this->resetInputFields();
         $this->isModalOpen = true;
     }
 
+    // Modal venster sluiten
     public function closeModal()
     {
         $this->isModalOpen = false;
     }
 
+    // Invoervelden resetten
     public function resetInputFields()
     {
         $this->reservationId = null;
@@ -99,6 +112,7 @@ class ReservationPage extends Component
         $this->people = '';
     }
 
+    // Bijwerken van specifieke eigenschappen
     public function updated($propertyName, $value)
     {
         $this->$propertyName = $value;
@@ -106,6 +120,7 @@ class ReservationPage extends Component
         $this->updateTableList();
     }
 
+    // Bijwerken van de lijst met beschikbare tafels
     public function updateTableList()
     {
         if (!$this->people) {
@@ -134,7 +149,9 @@ class ReservationPage extends Component
         $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
     }
 
-    public function create() {
+    // Nieuwe reservering aanmaken
+    public function create()
+    {
         $reservation = new Reservation();
         $reservation->start_time = date('Y-m-d', strtotime(now())) . ' 23:59:00';
         $reservation->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
@@ -143,7 +160,7 @@ class ReservationPage extends Component
         $reservation->save();
     }
 
-
+    // Reservering opslaan of bijwerken
     public function store()
     {
         try {
@@ -167,12 +184,13 @@ class ReservationPage extends Component
             ]
         );
 
-        session()->flash('message', $this->reservationId ? 'Reservation Updated Successfully.' : 'Reservation Created Successfully.');
+        session()->flash('message', $this->reservationId ? 'Reservering bijgewerkt.' : 'Reservering aangemaakt.');
 
         $this->closeModal();
         $this->resetInputFields();
     }
 
+    // Reservering bewerken
     public function edit($id)
     {
         $reservation = Reservation::findOrFail($id);
@@ -190,14 +208,10 @@ class ReservationPage extends Component
             $this->table_id = $tableReservation->table_id;
         }
 
-        $tableReservation = TableReservation::where('reservation_id', $reservation->id)->first();
-        if ($tableReservation) {
-            $this->table_id = $tableReservation->table_id;
-        }
-
         $this->isModalOpen = true;
     }
 
+    // Reservering verwijderen
     public function delete($id)
     {
         $reservation = Reservation::findOrFail($id);
@@ -206,6 +220,6 @@ class ReservationPage extends Component
 
         $reservation->delete();
 
-        session()->flash('message', 'Reservation Deleted Successfully.');
+        session()->flash('message', 'Reservering succesvol verwijderd.');
     }
 }
