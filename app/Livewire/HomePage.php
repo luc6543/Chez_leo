@@ -12,6 +12,8 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
+use Exception;
+use Carbon\Carbon;
 
 class HomePage extends Component
 {
@@ -76,18 +78,40 @@ class HomePage extends Component
         $this->start_time = date('Y-m-d', strtotime($this->start_time));
         $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
 
-        // Create the reservation
-        Reservation::create([
-            'id' => $this->reservationId,
-            'user_id' => $user->id,
-            'table_id' => $this->table_id = 1,
-            'people' => (int) $this->people,
-            'special_request' => $this->special_request,
-            'paid' => false,
-            'present' => false,
-            'start_time' => $this->start_time,
-            'end_time' => $this->end_time,
-        ]);
+        // Find an available table with the required number of chairs
+        $date = Carbon::parse($this->start_time)->format('Y-m-d');
+
+        $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
+            ->whereDate('end_time', '>=', $date)
+            ->pluck('table_id')
+            ->toArray();
+
+        $availableTables = Table::where('chairs', '>=', $this->people)
+            ->whereNotIn('id', $usedTableIds)
+            ->orderBy('chairs', 'asc')
+            ->get();
+
+        $this->table_id = $availableTables->count() > 0 ? $availableTables->first()->id : null;
+
+        if ($this->table_id) {
+            // Create the reservation
+            Reservation::create([
+                'id' => $this->reservationId,
+                'user_id' => $user->id,
+                'table_id' => $this->table_id,
+                'people' => (int) $this->people,
+                'special_request' => $this->special_request,
+                'paid' => false,
+                'present' => false,
+                'start_time' => $this->start_time,
+                'end_time' => $this->end_time,
+            ]);
+        } else {
+            // Handle the case where no table is available
+            // You can throw an exception or return an error message
+            throw new Exception('No available table for the selected date and number of people.');
+        }
+
         // if(Auth::check() ){
         //     Mail::to($user->email)->send(new NewTemporaryPasswordMail($user, $this->start_time, $this->end_time));
         // }
