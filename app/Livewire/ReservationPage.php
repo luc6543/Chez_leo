@@ -216,8 +216,6 @@ class ReservationPage extends Component
     {
         $reservation = Reservation::findOrFail($id);
 
-        TableReservation::where('reservation_id', $reservation->id)->delete();
-
         $reservation->delete();
 
         session()->flash('message', 'Reservering succesvol verwijderd.');
