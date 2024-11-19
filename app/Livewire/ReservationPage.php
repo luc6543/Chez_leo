@@ -203,11 +203,6 @@ class ReservationPage extends Component
         $this->active = $reservation->active;
         $this->people = $reservation->people;
 
-        $tableReservation = TableReservation::where('reservation_id', $reservation->id)->first();
-        if ($tableReservation) {
-            $this->table_id = $tableReservation->table_id;
-        }
-
         $this->isModalOpen = true;
     }
 
