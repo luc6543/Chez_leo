@@ -1,14 +1,28 @@
-<div class="flex flex-col mt-[200px] gap-5 justify-center items-center mb-5">
+<div class="flex flex-col mt-[200px] gap-5 justify-center items-center">
     <div class="lg:w-3/4 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex justify-around items-center">
             <span
                 class="inline-flex h-20 w-20  items-center justify-center rounded-full bg-gray-500">
                 <span class="font-medium leading-none text-white">{{ Auth::user()->getInitials() }}</span>
             </span>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-5" x-data="{passReset : false}" @password-changed="passReset=false">
                 <span>{{ Auth::user()->name }}</span>
                 <span class="text-gray-500">{{ Auth::user()->email }}</span>
-               {{-- <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button> --}}
+                <button @click="passReset = !passReset">Wachtwoord veranderen</button>
+{{--                <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
+                <div x-show="passReset" x-collapse style="display:none;">
+                    <form class="flex flex-col gap-2" wire:submit="passReset">
+                        <input wire:model="newPass" type='password' placeholder="nieuw wachtwoord">
+                        @error('newPass')
+                            <span>{{ $message }}</span>
+                        @enderror
+                        <input wire:model="newPassConfirm" type='password' placeholder="nieuw wachtwoord herhalen">
+                        @error('newPass')
+                            <span>{{ $message }}</span>
+                        @enderror
+                        <button class="p-2 px-4 rounded shadow bg-white text-black" type="submit">Wachtwoord aanpassen</button>
+                    </form>
+                </div>
             </div>
     </div>
         <div class="w-full">
