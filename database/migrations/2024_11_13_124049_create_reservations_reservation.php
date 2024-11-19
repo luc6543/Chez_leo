@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id');
             $table->foreignId('table_id');
+            $table->string('special_request')->nullable();
             $table->dateTime('start_time');
             $table->dateTime('end_time');
             $table->boolean('paid')->default(false);

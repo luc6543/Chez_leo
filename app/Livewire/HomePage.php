@@ -26,6 +26,8 @@ class HomePage extends Component
     public $users;
     public $tables;
     public $reservationId;
+    public $people;
+    public $special_request;
 
     public function mount(){
         $this->products = Product::Where("category", "Lunch")->get();
@@ -43,7 +45,7 @@ class HomePage extends Component
     }
 
     public function createReservation()
-{
+    {
     // Check if the user is logged in
     if (Auth::check()) {
         // Use the authenticated user's information
@@ -77,6 +79,8 @@ class HomePage extends Component
         'id' => $this->reservationId,
         'user_id' => $user->id,
         'table_id' => $this->table_id = 1,
+        'people' => (int)$this->people,
+        'special_request' => $this->special_request,
         'paid' => false,
         'present' => false,
         'start_time' => $this->start_time,

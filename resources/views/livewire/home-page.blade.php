@@ -27,7 +27,7 @@
                 <div class="container my-5 py-5">
                     <div class="row align-items-center g-5">
                         <div class="col-lg-6 text-center text-lg-start">
-                            <h1 class="display-3 text-white animated slideInLeft">Geniet van onze<br>Heerlijke maaltijd</h1>
+                            <h1 class="display-3 text-white animated slideInLeft">Geniet van onze<br>Heerlijke maaltijden</h1>
                             <p class="text-white animated slideInLeft mb-4 pb-2">Ontdek de smaakvolle gerechten die met zorg en passie zijn bereid. Laat je verrassen door de rijke en authentieke smaken, waarbij ieder hapje een klein moment van geluk biedt. Proef de unieke combinaties en geniet van de warme sfeer die wij voor je hebben gecreëerd. Wij nodigen je uit om samen met ons te genieten van een onvergetelijke culinaire ervaring, waar elke maaltijd een feest is.</p>
                             <a href="#Reserveer" class="btn btn-primary py-sm-3 px-sm-5 me-3 animated slideInLeft">Reserveer een tafel</a>
                         </div>
@@ -269,19 +269,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select wire:model="person_amount" class="form-select" id="select1">
+                                        <select wire:model="people" class="form-select" id="select1">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
-                                            <option value="3">4</option>
-                                            <option value="3">5</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea wire:model="message" class="form-control" placeholder="Speciale
+                                            <textarea wire:model="special_request" class="form-control" placeholder="Speciale
                                             Verzoeken"
                                                        id="message"
                                                       style="height: 100px"></textarea>
