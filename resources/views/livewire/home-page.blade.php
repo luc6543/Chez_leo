@@ -244,6 +244,14 @@
                     <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reserveren</h5>
                         <h1 class="text-white mb-4">Reserveer Een Tafel Online</h1>
+
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger text-red-500">
+                            {{ session('error') }}
+                            </div>
+                        @endif
+
+
                             <div class="row g-3">
                                 @if (!Auth::check())
                                 <div class="col-md-6">

@@ -28,7 +28,7 @@ class HomePage extends Component
     public $users;
     public $tables;
     public $reservationId;
-    public $people;
+    public $people = 1;
     public $special_request;
 
     public function mount()
@@ -50,64 +50,79 @@ class HomePage extends Component
 
     public function createReservation()
     {
-        // Check if the user is logged in
-        if (Auth::check()) {
-            // Use the authenticated user's information
-            $user = Auth::user();
-        } else {
-            // Search for a user by email or create a new one
-            $user = User::where('email', $this->email)->first();
+        try {
+            if (!Auth::check() && $this->name == null) {
+                session()->flash('error', 'Vul je naam in.');
+            } elseif (!Auth::check() && $this->email == null) {
+                session()->flash('error', 'Vul je e-mailadres in.');
+            } elseif ($this->start_time == null) {
+                session()->flash('error', 'Vul een datum in.');
+            } elseif ($this->people == null) {
+                session()->flash('error', 'Vul het aantal personen in.');
+            } else {
 
-            if (!$user) {
-                // Create a new user with a temporary password
-                $temporaryPassword = Str::random(8);
-                $user = User::create([
-                    'name' => $this->name,
-                    'email' => $this->email,
-                    'password' => Hash::make($temporaryPassword),
-                ]);
+                // Check if the user is logged in
+                if (Auth::check()) {
+                    // Use the authenticated user's information
+                    $user = Auth::user();
+                } else {
+                    // Search for a user by email or create a new one
+                    $user = User::where('email', $this->email)->first();
 
-                // Send an email with the temporary password
-                Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+                    if (!$user) {
+                        // Create a new user with a temporary password
+                        $temporaryPassword = Str::random(8);
+                        $user = User::create([
+                            'name' => $this->name,
+                            'email' => $this->email,
+                            'password' => Hash::make($temporaryPassword),
+                        ]);
+
+                        // Send an email with the temporary password
+                        Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+                    }
+                }
+
+                // Convert start_time and end_time to the proper format
+                $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
+
+                // Find an available table with the required number of chairs
+                $date = Carbon::parse($this->start_time)->format('Y-m-d');
+
+                $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
+                    ->whereDate('end_time', '>=', $date)
+                    ->pluck('table_id')
+                    ->toArray();
+
+                $availableTables = Table::where('chairs', '>=', $this->people)
+                    ->whereNotIn('id', $usedTableIds)
+                    ->orderBy('chairs', 'asc')
+                    ->get();
+
+                $this->table_id = $availableTables->count() > 0 ? $availableTables->first()->id : null;
+
+                if ($this->table_id) {
+                    // Create the reservation
+                    Reservation::create([
+                        'id' => $this->reservationId,
+                        'user_id' => $user->id,
+                        'table_id' => $this->table_id,
+                        'people' => (int) $this->people,
+                        'special_request' => $this->special_request,
+                        'paid' => false,
+                        'present' => false,
+                        'start_time' => $this->start_time,
+                        'end_time' => $this->end_time,
+                    ]);
+                } else {
+                    // Handle the case where no table is available
+                    session()->flash('error', 'Er is geen tafel beschikbaar voor de geselecteerde datum en het aantal personen.');
+                }
+
             }
+        } catch (Exception $e) {
+            session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
 
-        // Convert start_time and end_time to the proper format
-        $this->start_time = date('Y-m-d', strtotime($this->start_time));
-        $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
-
-        // Find an available table with the required number of chairs
-        $date = Carbon::parse($this->start_time)->format('Y-m-d');
-
-        $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-            ->whereDate('end_time', '>=', $date)
-            ->pluck('table_id')
-            ->toArray();
-
-        $availableTables = Table::where('chairs', '>=', $this->people)
-            ->whereNotIn('id', $usedTableIds)
-            ->orderBy('chairs', 'asc')
-            ->get();
-
-        $this->table_id = $availableTables->count() > 0 ? $availableTables->first()->id : null;
-
-        if ($this->table_id) {
-            // Create the reservation
-            Reservation::create([
-                'id' => $this->reservationId,
-                'user_id' => $user->id,
-                'table_id' => $this->table_id,
-                'people' => (int) $this->people,
-                'special_request' => $this->special_request,
-                'paid' => false,
-                'present' => false,
-                'start_time' => $this->start_time,
-                'end_time' => $this->end_time,
-            ]);
-        } else {
-            // Handle the case where no table is available
-            throw new Exception('No available table for the selected date and number of people.');
-        }
     }
-
 }
