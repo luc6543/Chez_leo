@@ -55,7 +55,7 @@ class HomePage extends Component
                 session()->flash('error', 'Vul je naam in.');
             } elseif (!Auth::check() && $this->email == null) {
                 session()->flash('error', 'Vul je e-mailadres in.');
-            } elseif (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            } elseif (!Auth::check() && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
                 session()->flash('error', 'Vul een correct e-mailadres in.');
             } elseif ($this->start_time == null) {
                 session()->flash('error', 'Vul een datum in.');
