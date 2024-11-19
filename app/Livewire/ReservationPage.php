@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Reservation;
 use App\Models\User;
@@ -113,6 +114,15 @@ class ReservationPage extends Component
         }
     }
 
+    public function create() {
+        $reservation = new Reservation();
+        $reservation->start_time = date('Y-m-d', strtotime(now())) . ' 23:59:00';
+        $reservation->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
+        $reservation->user_id = Auth::user()->id;
+        $reservation->table_id = 2;
+        $reservation->save();
+    }
+
     public function store()
     {
         try {
@@ -135,11 +145,6 @@ class ReservationPage extends Component
                 'active' => $this->active,
                 'people' => $this->people,
             ]
-        );
-
-        TableReservation::updateOrCreate(
-            ['reservation_id' => $reservation->id],
-            ['table_id' => $this->table_id]
         );
 
         session()->flash('message', $this->reservationId ? 'Reservation Updated Successfully.' : 'Reservation Created Successfully.');
