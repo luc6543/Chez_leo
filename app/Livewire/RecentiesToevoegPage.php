@@ -16,11 +16,6 @@ class RecentiesToevoegPage extends Component
         'rating' => 'required|integer|min:1|max:5', //Rating tussen 1 en 5
     ];
 
-    public function getRemainingCharactersProperty()
-    {
-        return 255 - strlen($this->review);
-    }
-
     //Voegt review toe
     public function addReview()
     {

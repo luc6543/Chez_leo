@@ -2,6 +2,13 @@
     <div class="w-full max-w-lg">
         <!-- Controleer of de gebruiker ingelogd is -->
         @auth
+        <!-- Succesbericht -->
+        @if (session()->has('message'))
+        <div class="bg-green-500 text-white px-4 py-2 rounded mb-4">
+            {{ session('message') }}
+        </div>
+        @endif
+
             <!-- Formulier voor ingelogde gebruikers -->
             <form wire:submit.prevent="addReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
                 <div class="mb-4">
@@ -13,10 +20,6 @@
                     class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none"
                     rows="4"
                     ></textarea>
-
-                    <div class="text-sm text-gray-600">
-                        {{ $this->remainingCharacters }} karakters over
-                    </div>
 
                     @error('review') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
