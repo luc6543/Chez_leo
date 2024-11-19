@@ -102,6 +102,11 @@
                         </select>
                     </div>
                     <div class="mb-4">
+                        <label class="block text-sm font-medium">Start tijd</label>
+                        <input type="datetime-local" wire:model.live.debounce.20ms="start_time"
+                            class="mt-1 block w-full rounded-md border-gray-300">
+                    </div>
+                    <div class="mb-4">
                         <label class="block text-sm font-medium">Personen</label>
                         <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
                             max="6" class="mt-1 block w-full rounded-md border-gray-300">
@@ -116,11 +121,6 @@
                                 </option>
                             @endforeach
                         </select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Start tijd</label>
-                        <input type="datetime-local" wire:model.defer="start_time"
-                            class="mt-1 block w-full rounded-md border-gray-300">
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Actief</label>
