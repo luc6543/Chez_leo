@@ -33,6 +33,7 @@
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->start_time }}</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a href="/bill/{{$reservation->bill->id}}">Bekijken</a></td>
                             </tr>
                             @endforeach
 
