@@ -1,4 +1,4 @@
-<div class="mt-[190px]" x-data="{newUserModal : false , modifyUserModal : false}" @user-created.window="newUserModal = false" @user-modified.window="modifyUserModal = false">
+<div class="mt-[190px] mb-5" x-data="{newUserModal : false , modifyUserModal : false}" @user-created.window="newUserModal = false" @user-modified.window="modifyUserModal = false">
     @if (session()->has('userMessage'))
         <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">

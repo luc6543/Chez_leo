@@ -1,4 +1,4 @@
-<div class="flex flex-col mt-[200px] gap-5 justify-center items-center">
+<div class="flex flex-col mt-[200px] gap-5 justify-center items-center mb-5">
     <div class="lg:w-3/4 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex justify-around items-center">
             <span
@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-2">
                 <span>{{ Auth::user()->name }}</span>
                 <span class="text-gray-500">{{ Auth::user()->email }}</span>
-{{--                <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
+               {{-- <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button> --}}
             </div>
     </div>
         <div class="w-full">

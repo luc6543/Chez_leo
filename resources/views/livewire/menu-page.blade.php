@@ -109,7 +109,7 @@
                     <h5 class="section-title text-white text-center fw-normal">Ons</h5>
                     <h1 class="mb-5 text-white">Menu</h1>
                 </div>
-                    <div class="flex flex-row gap-5 w-full justify-around items-center">
+                    <div class="flex flex-row gap-2 w-full justify-around">
                         <div class="tab-content flex flex-col flex-grow">
                             <div class="d-flex align-items-center text-start mx-3 pb-3">
                                 <i class="fa fa-bread-slice fa-2x "></i>
@@ -178,7 +178,7 @@
                         </div>
                         <div class="tab-content">
                             <div class="flex items-center text-start mx-3 me-0 pb-3" href="#">
-                                <i class="fa fa-2x text-primary fa-wine-glass"></i>
+                                <i class="fa fa-2x text-white fa-wine-glass"></i>
                                 <div class="ps-3">
                                     <small class="text-body">Goede</small>
                                     <h6 class="mt-n1 mb-0 text-white">Drankjes</h6>

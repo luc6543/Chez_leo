@@ -1,6 +1,6 @@
 <nav class="md:items-start !fixed z-10 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row" x-data="{navBarShown : false}">
     <div class="flex gap-5 w-full items-center justify-around lg:justify-start">
-        <a href="" class="navbar-brand p-0">
+        <a href="/" class="navbar-brand p-0">
             <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Chez Leo</h1>
         </a>
         <button class="navbar-toggler" type="button" @click="navBarShown = !navBarShown">
@@ -14,7 +14,10 @@
             <a href="/over-ons">Over ons</a>
             <a href="/menu">Menu</a>
             <a href="#">Recenties</a>
-            <a href="/login">Login</a>
+            @guest
+                <a href="/login">Login</a> 
+            @endguest
+            
             @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
@@ -35,6 +38,7 @@
                             <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
                             <div style="display:none" x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
                                 @endrole
@@ -77,6 +81,7 @@
                             <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
                             <div style="display:none" x-show="open"x-collapse @click.away="open = false" class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
                                 @endrole
