@@ -13,7 +13,7 @@
             <a href="/">Home</a>
             <a href="/over-ons">Over ons</a>
             <a href="/menu">Menu</a>
-            <a href="#">Recenties</a>
+            <a href="/recenties">Recenties</a>
             @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
@@ -52,7 +52,7 @@
                 <li class=""><a href="/">Home</a></li>
                 <li class="w-16"><a href="/over-ons" >Over ons</a></li>
                 <li class=""><a href="/menu" class="">Menu</a></li>
-                <li class=""><a href="#" class="">Recenties</a></li>
+                <li class=""><a href="/recenties" class="">Recenties</a></li>
                 @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
