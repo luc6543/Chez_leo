@@ -119,6 +119,9 @@ class HomePage extends Component
                     session()->flash('error', 'Er is geen tafel beschikbaar voor de geselecteerde datum en het aantal personen.');
                 }
 
+                // Reset the form fields
+                $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
+                session()->flash('success', 'Je reservering is succesvol aangemaakt.');
             }
         } catch (Exception $e) {
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');

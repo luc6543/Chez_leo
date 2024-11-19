@@ -251,6 +251,11 @@
                             </div>
                         @endif
 
+                        @if (session()->has('success'))
+                            <div class="alert alert-success text-green-500">
+                            {{ session('success') }}
+                            </div>
+                        @endif
 
                             <div class="row g-3">
                                 @if (!Auth::check())
