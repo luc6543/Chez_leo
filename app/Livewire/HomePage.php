@@ -54,7 +54,6 @@ class HomePage extends Component
         if (Auth::check()) {
             // Use the authenticated user's information
             $user = Auth::user();
-
         } else {
             // Search for a user by email or create a new one
             $user = User::where('email', $this->email)->first();
@@ -72,7 +71,6 @@ class HomePage extends Component
                 Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
             }
         }
-
 
         // Convert start_time and end_time to the proper format
         $this->start_time = date('Y-m-d', strtotime($this->start_time));
@@ -108,13 +106,8 @@ class HomePage extends Component
             ]);
         } else {
             // Handle the case where no table is available
-            // You can throw an exception or return an error message
             throw new Exception('No available table for the selected date and number of people.');
         }
-
-        // if(Auth::check() ){
-        //     Mail::to($user->email)->send(new NewTemporaryPasswordMail($user, $this->start_time, $this->end_time));
-        // }
     }
 
 }

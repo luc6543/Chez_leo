@@ -245,6 +245,7 @@
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reserveren</h5>
                         <h1 class="text-white mb-4">Reserveer Een Tafel Online</h1>
                             <div class="row g-3">
+                                @if (!Auth::check())
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="text" wire:model="name" class="form-control" id="name" placeholder="Uw Naam">
@@ -257,6 +258,7 @@
                                         <label for="email">Uw Email</label>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="col-md-6">
                                     <div class="form-floating date" id="date3" data-target-input="nearest">
                                         <input wire:model="start_time" type="datetime-local" class="form-control
