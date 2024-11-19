@@ -1,6 +1,7 @@
 <nav class="md:items-start !fixed z-10 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row" x-data="{navBarShown : false}">
     <div class="flex gap-5 w-full items-center justify-around lg:justify-start">
-        <a href="/" class="navbar-brand p-0">
+{{--        <a href="/" class="navbar-brand p-0">--}}
+        <a href="/" wire:navigate class="navbar-brand p-0">
             <h1 class="text-primary m-0"><i class="fa fa-utensils me-3"></i>Chez Leo</h1>
         </a>
         <button class="navbar-toggler" type="button" @click="navBarShown = !navBarShown">
@@ -15,9 +16,9 @@
             <a href="/menu">Menu</a>
             <a href="#">Recenties</a>
             @guest
-                <a href="/login">Login</a> 
+                <a href="/login">Login</a>
             @endguest
-            
+
             @auth
                 <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
