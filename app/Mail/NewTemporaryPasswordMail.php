@@ -27,7 +27,7 @@ class NewTemporaryPasswordMail extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'New Temporary Password Mail',
+            subject: 'Password Reset',
         );
     }
 

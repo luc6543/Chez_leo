@@ -53,7 +53,7 @@
 	</div>
 	<!-- content -->
 	<div class="content">
-        <h1>bedankt voor de reservering</h1>
+        <h1>bedankt voor de reservering!</h1>
 		<p>
             {{-- hier komt de url naar de wachtwoord veranderen pagina --}}
         </p>
