@@ -244,8 +244,21 @@
                     <div class="p-5 wow fadeInUp" data-wow-delay="0.2s">
                         <h5 class="section-title ff-secondary text-start text-primary fw-normal">Reserveren</h5>
                         <h1 class="text-white mb-4">Reserveer Een Tafel Online</h1>
-                        <form>
+
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger text-red-500">
+                            {{ session('error') }}
+                            </div>
+                        @endif
+
+                        @if (session()->has('success'))
+                            <div class="alert alert-success text-green-500">
+                            {{ session('success') }}
+                            </div>
+                        @endif
+
                             <div class="row g-3">
+                                @if (!Auth::check())
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <input type="text" wire:model="name" class="form-control" id="name" placeholder="Uw Naam">
@@ -258,6 +271,7 @@
                                         <label for="email">Uw Email</label>
                                     </div>
                                 </div>
+                                @endif
                                 <div class="col-md-6">
                                     <div class="form-floating date" id="date3" data-target-input="nearest">
                                         <input wire:model="start_time" type="datetime-local" class="form-control
@@ -289,10 +303,9 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button wire:click="createReservation" class="btn btn-primary w-100 py-3" type="submit">Reserveer Nu</button>
+                                    <button wire:click="createReservation" class="btn btn-primary w-100 py-3">Reserveer Nu</button>
                                 </div>
-                            </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
