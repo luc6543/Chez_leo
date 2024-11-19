@@ -122,6 +122,8 @@ class HomePage extends Component
                         'start_time' => $this->start_time,
                         'end_time' => $this->end_time,
                     ]);
+                    // Show a success message
+                    session()->flash('success', 'Je reservering is succesvol aangemaakt.');
                 } else {
                     // Handle the case where no table is available
                     session()->flash('error', 'Er is geen tafel beschikbaar voor de geselecteerde datum en het aantal personen.');
@@ -129,7 +131,6 @@ class HomePage extends Component
 
                 // Reset the form fields
                 $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
-                session()->flash('success', 'Je reservering is succesvol aangemaakt.');
             }
         } catch (Exception $e) {
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
