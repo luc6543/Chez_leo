@@ -50,8 +50,20 @@ class ReservationPage extends Component
         }
 
         $this->reservations = $query->get();
+
+        if ($this->start_time) {
+            $date = Carbon::parse($this->start_time)->format('Y-m-d');
+            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
+                ->whereDate('end_time', '>=', $date)
+                ->pluck('table_id')
+                ->toArray();
+
+            $this->tables = Table::whereNotIn('id', $usedTableIds)->get();
+        } else {
+            $this->tables = Table::all();
+        }
+
         $this->users = User::all();
-        $this->tables = Table::all();
         return view('livewire.reservation-page');
     }
 
@@ -101,17 +113,25 @@ class ReservationPage extends Component
             return;
         }
 
-        // Fetch tables with the same or more chairs
-        $this->tables = Table::where('chairs', '>=', $this->people)
-            ->orderBy('chairs', 'asc')
-            ->get();
+        if ($this->start_time) {
+            $date = Carbon::parse($this->start_time)->format('Y-m-d');
 
-        // Auto-select the closest matching table if available
-        if ($this->tables->count() > 0) {
-            $this->table_id = $this->tables->first()->id;
+            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
+                ->whereDate('end_time', '>=', $date)
+                ->pluck('table_id')
+                ->toArray();
+
+            $this->tables = Table::where('chairs', '>=', $this->people)
+                ->whereNotIn('id', $usedTableIds)
+                ->orderBy('chairs', 'asc')
+                ->get();
         } else {
-            $this->table_id = null;
+            $this->tables = Table::where('chairs', '>=', $this->people)
+                ->orderBy('chairs', 'asc')
+                ->get();
         }
+
+        $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
     }
 
     public function create() {
@@ -123,6 +143,7 @@ class ReservationPage extends Component
         $reservation->save();
     }
 
+
     public function store()
     {
         try {
@@ -132,7 +153,6 @@ class ReservationPage extends Component
             return;
         }
 
-        // Ensure end_time has the same date as start_time but with time set to 23:00
         $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
 
         $reservation = Reservation::updateOrCreate(
@@ -180,16 +200,12 @@ class ReservationPage extends Component
 
     public function delete($id)
     {
-        // Find the reservation
         $reservation = Reservation::findOrFail($id);
 
-        // Delete the related table_reservation entry
         TableReservation::where('reservation_id', $reservation->id)->delete();
 
-        // Delete the reservation
         $reservation->delete();
 
-        // Flash a success message
         session()->flash('message', 'Reservation Deleted Successfully.');
     }
 }
