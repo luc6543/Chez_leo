@@ -269,19 +269,19 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
-                                        <select wire:model="person_amount" class="form-select" id="select1">
+                                        <select wire:model="people" class="form-select" id="select1">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>
-                                            <option value="3">4</option>
-                                            <option value="3">5</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea wire:model="message" class="form-control" placeholder="Speciale
+                                            <textarea wire:model="special_request" class="form-control" placeholder="Speciale
                                             Verzoeken"
                                                        id="message"
                                                       style="height: 100px"></textarea>
