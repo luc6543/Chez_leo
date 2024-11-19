@@ -46,8 +46,8 @@
                     Plaats Review
                 </button>
             </form>
-        @else
-            <!-- Bericht voor uitgelogde gebruikers -->
+        <!-- @else
+            Bericht voor uitgelogde gebruikers
             <div class="bg-white shadow-md rounded px-8 pt-6 pb-8">
                 <h2 class="text-xl font-bold text-gray-700 mb-4">Log in om een review te plaatsen</h2>
                 <p class="text-gray-600">
@@ -57,7 +57,7 @@
                     <a href="{{ route('register') }}" class="text-blue-500 hover:text-blue-700 font-semibold">registreer</a> 
                     om een account aan te maken.
                 </p>
-            </div>
+            </div> -->
         @endauth
     </div>
 </div>
