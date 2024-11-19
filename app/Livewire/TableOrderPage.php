@@ -42,18 +42,28 @@ class TableOrderPage extends Component
 
     public function orderProduct(int $productId)
     {
-        $quantity = $this->quantities[$productId];
+        if($this->reservation->bill->paid != true) {
+            $quantity = $this->quantities[$productId];
 
-        if ($quantity > 0) {
-            $this->reservation->bill->products()->attach($productId, ['quantity' => $quantity]);
+            if ($quantity > 0) {
+                $this->reservation->bill->products()->attach($productId, ['quantity' => $quantity]);
 
-            // Reset quantity for the product
-            $this->quantities[$productId] = 0;
+                // Reset quantity for the product
+                $this->quantities[$productId] = 0;
 
-            session()->flash('userMessage', 'Product toegevoegd aan de rekening!');
-        } else {
-            session()->flash('userMessage', 'Quantity must be greater than zero.');
+                session()->flash('userMessage', 'Product toegevoegd aan de rekening!');
+            } else {
+                session()->flash('userMessage', 'Hoeveelheid moet meer zijn dan 0');
+            }
         }
+    }
+
+
+    public function billPaid() {
+        $this->reservation->bill->paid = true;
+        $this->reservation->bill->save();
+        $this->redirect('/admin/order');
+        session()->flash('userMessage', 'Rekening betaald.');
     }
 
     public function render()

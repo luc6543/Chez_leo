@@ -17,12 +17,18 @@ class OrderPage extends Component
     public function refresh() {
         $this->reservations = Reservation::where('start_time', '>=', Carbon::today())
             ->where('start_time', '<', Carbon::tomorrow())
+            ->whereHas('bill', function ($query) {
+                $query->where('paid', '!=', '1'); // Filter related bill records
+            })
             ->get();
     }
 
     public function mount() {
         $this->reservations = Reservation::where('start_time', '>=', Carbon::today())
             ->where('start_time', '<', Carbon::tomorrow())
+            ->whereHas('bill', function ($query) {
+                $query->where('paid', '!=', '1'); // Filter related bill records
+            })
             ->get();
 
     }

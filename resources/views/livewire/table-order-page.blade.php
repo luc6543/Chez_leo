@@ -36,5 +36,6 @@
                 </div>
             </div>
         @endforeach
+        <button wire:click.prevent="billPaid" class="w-full p-2 bg-green-500 shadow px-4 text-white">Rekening betaald</button>
     </div>
 </div>
