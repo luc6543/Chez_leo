@@ -1,4 +1,4 @@
-<div class="flex flex-col mt-[200px] gap-5 justify-center items-center">
+<div class="flex flex-col mt-[200px] gap-5 justify-center items-center mb-5">
     <div class="lg:w-3/4 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex justify-around items-center">
             <span
@@ -8,7 +8,7 @@
             <div class="flex flex-col gap-2">
                 <span>{{ Auth::user()->name }}</span>
                 <span class="text-gray-500">{{ Auth::user()->email }}</span>
-{{--                <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
+               {{-- <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button> --}}
             </div>
     </div>
         <div class="w-full">
@@ -31,7 +31,7 @@
                                 <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $reservation->id }}</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->table->table_number }}</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->start_time }}</td>
-                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->getSum() }}</td>
+                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
                                 <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>
                             </tr>
                             @endforeach

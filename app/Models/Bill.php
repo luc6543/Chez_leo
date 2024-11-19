@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 class Bill extends Model
 {
 
+    protected $fillable = [
+        'reservation_id',
+        'user_id',
+        'table_id'
+    ];
+
     protected $casts = [
         'paid' => 'boolean'
     ];
@@ -19,7 +25,7 @@ class Bill extends Model
         foreach($this->products as $product) {
             $sum += $product->price * $product->pivot->quantity;
         }
-        return $sum;
+        return number_format($sum, 2);
     }
     public function products() {
         return $this->belongsToMany(Product::class, 'bill_products', 'bill_id', 'product_id')->withPivot('quantity');
