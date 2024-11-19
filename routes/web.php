@@ -9,10 +9,10 @@ Route::get('/menu', \App\Livewire\MenuPage::class);
 
 Route::get('/over-ons', \App\Livewire\OverOnsPage::class);
 Route::get('/recenties', \App\Livewire\RecentiesPage::class);
-Route::get('/recentieToevoegen', \App\Livewire\RecentiesToevoegPage::class);
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/reservations', \App\Livewire\ReservationPage::class)->middleware('role:medewerker');
     Route::get('/admin/users', \App\Livewire\UsersPage::class)->middleware('role:admin');
     Route::get('/profile', \App\Livewire\ProfilePage::class);
+    Route::get('/recenties/toevoegen', \App\Livewire\RecentiesToevoegPage::class);
 });
