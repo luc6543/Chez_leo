@@ -55,10 +55,16 @@ class HomePage extends Component
                 session()->flash('error', 'Vul je naam in.');
             } elseif (!Auth::check() && $this->email == null) {
                 session()->flash('error', 'Vul je e-mailadres in.');
-            } elseif (!filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
+            } elseif (!Auth::check() && !filter_var($this->email, FILTER_VALIDATE_EMAIL)) {
                 session()->flash('error', 'Vul een correct e-mailadres in.');
+            } elseif (!Auth::check() && User::where('email', $this->email)->exists()) {
+                session()->flash('error', 'Dit e-mailadres is al in gebruik.');
             } elseif ($this->start_time == null) {
                 session()->flash('error', 'Vul een datum in.');
+            } elseif (Carbon::parse($this->start_time)->isPast()) {
+                session()->flash('error', 'De datum mag niet in het verleden liggen.');
+            } elseif (Carbon::parse($this->start_time)->lt(Carbon::now()->addHours(2))) {
+                session()->flash('error', 'Reserveringen moeten minstens 2 uur van tevoren worden gemaakt.');
             } elseif ($this->people == null) {
                 session()->flash('error', 'Vul het aantal personen in.');
             } else {
