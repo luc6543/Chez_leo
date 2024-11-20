@@ -1,14 +1,30 @@
 <div class="flex flex-col mt-[200px] gap-5 justify-center items-center mb-5">
+    @if (session()->has('message'))
+        <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+            <div class="alert alert-success p-4 mt-10">
+                {{ session('message') }}
+            </div>
+        </div>
+    @endif
     <div class="lg:w-3/4 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
-        <div class="gap-5 p-4 flex justify-around items-center">
+        <div class="gap-5 p-4 flex justify-around items-center w-fit gap-5">
             <span
                 class="inline-flex h-20 w-20  items-center justify-center rounded-full bg-gray-500">
                 <span class="font-medium leading-none text-white">{{ Auth::user()->getInitials() }}</span>
             </span>
-            <div class="flex flex-col gap-2">
+            <div class="flex flex-col gap-2" @password-changed="showPassReset = false" x-data="{showPassReset : false}">
                 <span>{{ Auth::user()->name }}</span>
                 <span class="text-gray-500">{{ Auth::user()->email }}</span>
                {{-- <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button> --}}
+                <button @click="showPassReset = !showPassReset">Wachtwoord aanpassen</button>
+                <form wire:submit="passReset" x-show="showPassReset" x-cloak x-transition>
+                    <input wire:model="newPass" placeholder="nieuw wachtwoord">
+                    @error('newPass') <span class="error">{{ $message }}</span> @enderror
+                    <input wire:model="newPassConfirm" placeholder="nieuw wachtwoord herhalen">
+                    @error('newPassConfirm') <span class="error">{{ $message }}</span> @enderror
+                    <button type="submit">Wachtwoord veranderen</button>
+                </form>
+
             </div>
     </div>
         <div class="w-full">
