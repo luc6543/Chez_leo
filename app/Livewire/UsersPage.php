@@ -40,7 +40,17 @@ class UsersPage extends Component
     }
 
     public function toggleRole(Role $role,User $medewerker) {
-        $medewerker->hasRole($role) ? $medewerker->removeRole($role) : $medewerker->assignRole($role);
+        if($medewerker->hasRole($role)) {
+            $medewerker->removeRole($role);
+            if ($role->name == 'admin') {
+                $medewerker->removeRole('medewerker');
+            }
+        } else {
+            if ($role->name == 'admin') {
+                $medewerker->assignRole('medewerker');
+            }
+            $medewerker->assignRole($role);
+        }
     }
     public function delete(User $user)
     {
