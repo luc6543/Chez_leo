@@ -3,7 +3,7 @@
 @endphp
 
 <div>
-    <div class="bg-[#0f172b] py-10 mt-16">
+    <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <h1 class="text-base font-bold text-white">Reservations</h1>
@@ -27,13 +27,13 @@
             <table class="min-w-full divide-y divide-gray-700 mt-8">
                 <thead>
                     <tr>
-                        <th class="py-3.5 text-left text-sm font-semibold text-white">ID</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Klant</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Personen</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Tafelnummer</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Actief</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Start datum en tijd</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold text-white">Eind datum en tijd</th>
+                        <th class="py-3.5 text-left text-sm font-semibold">ID</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Klant</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Personen</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Tafelnummer</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Actief</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Start datum en tijd</th>
+                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Eind datum en tijd</th>
                         <th class="py-3.5"></th>
                         <th class="py-3.5"></th>
                     </tr>
@@ -41,24 +41,24 @@
                 <tbody class="divide-y divide-gray-800">
                     @if ($reservations->isEmpty())
                         <tr>
-                            <td class="py-4 text-sm text-white" colspan="9">Geen reserveringen gevonden</td>
+                            <td class="py-4 text-sm" colspan="9">Geen reserveringen gevonden</td>
                         </tr>
                     @else
                         @foreach ($reservations as $reservation)
                             @if ($reservation != null && $reservation->user != null && $reservation->table != null)
                                 <tr>
-                                    <td class="py-4 text-sm text-white">{{ $reservation->id }}</td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->user->name }}
+                                    <td class="py-4 text-sm ">{{ $reservation->id }}</td>
+                                    <td class="px-3 py-4 text-sm ">{{ $reservation->user->name }}
                                     </td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->people }}</td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">{{ $reservation->table->table_number }}</td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                    <td class="px-3 py-4 text-sm ">{{ $reservation->people }}</td>
+                                    <td class="px-3 py-4 text-sm ">{{ $reservation->table->table_number }}</td>
+                                    <td class="px-3 py-4 text-sm ">
                                         {{ $reservation->active ? 'Ja' : 'Niet' }}
                                     </td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                    <td class="px-3 py-4 text-sm ">
                                         {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
                                     </td>
-                                    <td class="px-3 py-4 text-sm text-gray-300">
+                                    <td class="px-3 py-4 text-sm ">
                                         {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
                                     </td>
                                     <td class="text-right">
