@@ -85,6 +85,7 @@
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/tables">tafels beheer</a>
                                 @endrole
                             </div>
                         </div>

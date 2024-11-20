@@ -23,58 +23,55 @@
                     Voeg reservation toe
                 </button>
             </div>
+            <div class="px-4 sm:px-6 lg:px-8">
+                <div class="mt-8 flow-root">
+                    <div class="-my-2 overflow-x-auto">
+                        <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
+                            <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg mt-2">
+                                <table class="min-w-full divide-y divide-gray-300">
+                                    <thead class="bg-gray-50">
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">ID</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Klant</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Personen</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Tafelnummer</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actief</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Start datum en tijd</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Eind datum en tijd</th>
+                                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
+                                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
 
-            <table class="min-w-full divide-y divide-gray-700 mt-8">
-                <thead>
-                    <tr>
-                        <th class="py-3.5 text-left text-sm font-semibold">ID</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Klant</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Personen</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Tafelnummer</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Actief</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Start datum en tijd</th>
-                        <th class="px-3 py-3.5 text-left text-sm font-semibold">Eind datum en tijd</th>
-                        <th class="py-3.5"></th>
-                        <th class="py-3.5"></th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-gray-800">
-                    @if ($reservations->isEmpty())
-                        <tr>
-                            <td class="py-4 text-sm" colspan="9">Geen reserveringen gevonden</td>
-                        </tr>
-                    @else
-                        @foreach ($reservations as $reservation)
-                            @if ($reservation != null && $reservation->user != null && $reservation->table != null)
-                                <tr>
-                                    <td class="py-4 text-sm ">{{ $reservation->id }}</td>
-                                    <td class="px-3 py-4 text-sm ">{{ $reservation->user->name }}
-                                    </td>
-                                    <td class="px-3 py-4 text-sm ">{{ $reservation->people }}</td>
-                                    <td class="px-3 py-4 text-sm ">{{ $reservation->table->table_number }}</td>
-                                    <td class="px-3 py-4 text-sm ">
-                                        {{ $reservation->active ? 'Ja' : 'Niet' }}
-                                    </td>
-                                    <td class="px-3 py-4 text-sm ">
-                                        {{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}
-                                    </td>
-                                    <td class="px-3 py-4 text-sm ">
-                                        {{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}
-                                    </td>
-                                    <td class="text-right">
-                                        <button wire:click="edit({{ $reservation->id }})"
-                                            class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander</button>
-                                    </td>
-                                    <td class="text-right">
-                                        <button wire:click="delete({{ $reservation->id }})"
-                                            class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder</button>
-                                    </td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    @endif
-                </tbody>
-            </table>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="divide-y w-full divide-gray-200 bg-white">
+                                    @foreach($reservations as $reservation)
+                                        <tr class="w-full">
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $reservation->id }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $reservation->user->name}}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $reservation->people }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $reservation->table->table_number }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $reservation->active ? 'Ja' : 'Niet' }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ Carbon::parse($reservation->start_time)->format('Y-m-d H:i') }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ Carbon::parse($reservation->end_time)->format('Y-m-d H:i') }}</td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                <button wire:click="edit({{ $reservation->id }})"
+                                                    class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander
+                                                </button>
+                                            </td>
+                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                <button wire:click="delete({{ $reservation->id }})"
+                                                    class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
