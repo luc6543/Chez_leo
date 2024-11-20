@@ -27,22 +27,22 @@
                 <div class="mb-4">
                     <label for="rating" class="block text-gray-700 text-sm font-bold mb-2">Rating:</label>
                     <select 
-                        id="rating" 
-                        wire:model="rating" 
-                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                    >
-                        <option value="">Selecteer een rating</option>
-                        @for($i = 1; $i <= 5; $i++)
-                            <option value="{{ $i }}">{{ $i }}</option>
-                        @endfor
+                    id="rating" 
+                    wire:model="rating" 
+                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                    <option value="">Selecteer een rating</option>
+                    @for($i = 1; $i <= 5; $i++)
+                        <option value="{{ $i }}">
+                            {!! str_repeat('★', $i) . str_repeat('☆', 5 - $i) !!}
+                        </option>
+                    @endfor
                     </select>
                     @error('rating') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
                 <button 
                     type="submit" 
-                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-                >
+                    class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
                     Plaats Review
                 </button>
             </form>
