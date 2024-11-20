@@ -27,6 +27,7 @@ class ReservationPage extends Component
     public $tables;
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
+    public $originalTableId;
 
     // Validatieregels voor invoervelden
     protected $rules = [
@@ -64,6 +65,11 @@ class ReservationPage extends Component
                 ->whereDate('end_time', '>=', $date)
                 ->pluck('table_id')
                 ->toArray();
+
+            // Include the original table attached to the reservation being edited
+            if ($this->originalTableId) {
+                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
+            }
 
             $this->tables = Table::whereNotIn('id', $usedTableIds)->get();
         } else {
@@ -110,6 +116,7 @@ class ReservationPage extends Component
         $this->end_time = '';
         $this->active = false;
         $this->people = '';
+        $this->originalTableId = null;
     }
 
     // Bijwerken van specifieke eigenschappen
@@ -135,6 +142,11 @@ class ReservationPage extends Component
                 ->whereDate('end_time', '>=', $date)
                 ->pluck('table_id')
                 ->toArray();
+
+            // Include the original table attached to the reservation being edited
+            if ($this->originalTableId) {
+                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
+            }
 
             $this->tables = Table::where('chairs', '>=', $this->people)
                 ->whereNotIn('id', $usedTableIds)
@@ -202,6 +214,7 @@ class ReservationPage extends Component
         $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
         $this->active = $reservation->active;
         $this->people = $reservation->people;
+        $this->originalTableId = $reservation->table_id;
 
         $this->isModalOpen = true;
     }

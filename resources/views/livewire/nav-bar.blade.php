@@ -33,19 +33,19 @@
                     </li>
                     @endauth
                     @role("medewerker")
-                    <li class="w-20">
-                        <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
-                            <div style="display:none" x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
-                                @role("admin")
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
-                                @endrole
+                        <li class="w-20">
+                            <div x-data="{ open: false }" class="relative">
+                                <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                                <div style="display:none" x-show="open"x-collapse @click.away="open = false" class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
+                                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
+                                    @role("admin")
+                                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                    @endrole
+                                </div>
                             </div>
-                        </div>
-                    </li>
-                @endrole
+                        </li>
+                    @endrole
             <a href="/#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
         </div>
     </div>
@@ -79,12 +79,13 @@
                     @role("medewerker")
                     <li class="w-20">
                         <div x-data="{ open: false }" class="relative">
-                            <button @click="open = !open" class="text-[#FEA116] ">beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
+                            <button @click="open = !open" class="text-[#FEA116] ">Beheer <i style="display:none" x-show="!open" class="bi bi-chevron-down"></i> <i style="display:none" x-show="open" class="bi bi-chevron-up"></i></button>
                             <div style="display:none" x-show="open"x-collapse @click.away="open = false" class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">Reserveringen</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">Bestellingen</a>
                                 @role("admin")
-                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/tables">Tafels</a>
                                 @endrole
                             </div>
                         </div>
