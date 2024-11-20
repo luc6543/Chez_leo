@@ -1,5 +1,5 @@
 <div>
-    <div class="bg-white py-10">
+    <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
                 <h1 class="text-base font-semibold text-white">Tafels</h1>
@@ -8,7 +8,6 @@
                     Voeg tafel toe
                 </button>
             </div>
-
             <div class="px-4 sm:px-6 lg:px-8">
                 <div class="mt-8 flow-root">
                     <div class="-my-2 overflow-x-auto">
