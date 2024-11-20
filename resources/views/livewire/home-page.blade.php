@@ -1,5 +1,5 @@
 <div lang="en" x-data="{videoModal: false}">
-    <div class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
+    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
