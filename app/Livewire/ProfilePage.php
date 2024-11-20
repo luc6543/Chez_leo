@@ -33,7 +33,7 @@ class ProfilePage extends Component
         Auth::user()->password = Hash::make($this->newPass);
         Auth::user()->save();
         $this->dispatch('password-changed');
-        session()->flash('message', 'Password Changed Successfully');
+        session()->flash('message', 'wachtwoord sucessvol aangepast!');
 
     }
 }
