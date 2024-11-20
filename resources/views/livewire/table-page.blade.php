@@ -4,7 +4,7 @@
             <div class="flex justify-between items-center">
                 <h1 class="text-base font-semibold text-white">Tafels</h1>
                 <button wire:click="openModal"
-                    class="bg-yellow-500 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-yellow-400">
+                    class="bg-blue-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-600">
                     Voeg tafel toe
                 </button>
             </div>
