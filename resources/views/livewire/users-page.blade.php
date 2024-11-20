@@ -103,9 +103,9 @@
                                         @foreach($roles as $role)
                                             @if($role->name != 'klant')
                                                 @if($user->hasRole($role))
-                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 bg-green-500 text-white cursor-pointer rounded-full">{{ $role->name }}</span>
+                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})"  class="p-2 select-none bg-green-500 text-white cursor-pointer rounded-full">{{ $role->name }}</span>
                                                 @else
-                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 cursor-pointer bg-red-500 text-white rounded-full">{{ $role->name }}</span>
+                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 select-none cursor-pointer bg-red-500 text-white rounded-full">{{ $role->name }}</span>
                                                 @endif
                                             @endif
                                         @endforeach
@@ -115,7 +115,7 @@
                                         <button @click="confirmationModal = true" class="text-white font-bold bg-red-500 p-2 px-4 rounded shadow">Verwijderen</button>
 
                                         {{--Confirmation modal--}}
-                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" style="display:none;" x-show="confirmationModal">
+                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center"  style="display:none;" x-show="confirmationModal">
                                             <div class="p-6 shadow bg-white flex flex-col gap-5" @click.away="confirmationModal = false">
                                                 <h1>Weet je het zeker?</h1>
                                                 <div class="w-full flex justify-around items-center">
