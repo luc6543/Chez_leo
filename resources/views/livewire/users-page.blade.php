@@ -110,7 +110,7 @@
                                             @endif
                                         @endforeach
                                     </td>
-                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-5" x-data="{confirmationModal : false }">
+                                    <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-5" @user-deleted.window="confirmationModal = false" x-data="{confirmationModal : false }">
                                         <button @click="modifyUserModal = true" wire:click="loadUser({{$user->id}})" class="text-indigo-600 hover:text-indigo-900">Aanpassen</button>
                                         <button @click="confirmationModal = true" class="text-white font-bold bg-red-500 p-2 px-4 rounded shadow">Verwijderen</button>
 

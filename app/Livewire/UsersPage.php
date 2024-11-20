@@ -46,6 +46,7 @@ class UsersPage extends Component
     {
         $user->delete();
         $this->search();
+        $this->dispatch('user-deleted');
         session()->flash('userMessage', 'gebruiker successvol verwijdert.');
     }
 
