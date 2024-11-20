@@ -1,4 +1,4 @@
-<div class="mt-20 p-4 flex flex-col lg:flex-row gap-2 lg:gap-10 items-center lg:items-stat lg:justify-center">
+<div class="mt-20 p-4 flex flex-col lg:flex-row gap-2 lg:gap-10 items-center lg:items-start lg:justify-center">
     <div class="rounded-full flex justify-center items-center p-2 bg-[#11172b] shadow">
         <a href="/profile" class="" ><i class=" fa fa-3x fa-arrow-left"></i></a>
     </div>
@@ -17,7 +17,7 @@
         </div>
         @foreach($bill->products as $product)
             <div class="flex justify-between gap-5">
-                <span class="">{{$product->dish_name}} {{ $product->pivot->quantity }}x {{$product->price}}</span>
+                <span class="">{{$product->dish_name}} {{ $product->pivot->quantity }}x €{{$product->price}}</span>
                 <span class="">€ {{ number_format($product->pivot->quantity * $product->price,2) }}</span>
             </div>
         @endforeach
