@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('bills', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id');
-            $table->foreignId('table_id');
+            $table->foreignId('reservation_id');
             $table->boolean('paid')->default(false);
             $table->timestamps();
         });

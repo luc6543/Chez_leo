@@ -857,9 +857,11 @@
     @vite(['resources/js/app.js'])
 </head>
 
-<body class="bg-slate-100 lg:mt-36 mt-16">
+<body class="bg-slate-100">
     <livewire:navBar />
     {{ $slot }}
+    <livewire:footer-page />
+    
     @livewireScripts
     @stack('scripts')
     <!-- jQuery -->

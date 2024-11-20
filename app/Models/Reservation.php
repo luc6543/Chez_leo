@@ -12,9 +12,11 @@ class Reservation extends Model
     protected $fillable = [
         'user_id',
         'table_id',
+        'special_request',
         'start_time',
         'end_time',
         'active',
+        'people',
     ];
 
     protected $casts = [
@@ -29,5 +31,8 @@ class Reservation extends Model
     public function table()
     {
         return $this->belongsTo(Table::class);
+    }
+    public function bill() {
+        return $this->hasOne(Bill::class);
     }
 }

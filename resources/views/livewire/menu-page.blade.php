@@ -1,4 +1,4 @@
-<div class="bg-stone-800 text-white w-screen h-fit">
+<div class="bg-stone-800 text-white w-full h-fit">
     @push('styles')
         <meta charset="utf-8">
         <title>Chez Leo | Menu</title>
@@ -69,6 +69,16 @@
                             </div>
                         </a>
                     </li>
+                    <li wire:click="filter('Drank')" class="nav-item">
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
+                         @endif" href="#">
+                            <i class="fa fa-ice-cream fa-2x "></i>
+                            <div class="ps-3">
+                                <small class="text-body">Goede</small>
+                                <h6 class="mt-n1 mb-0 text-white">Drankjes</h6>
+                            </div>
+                        </a>
+                    </li>
                 </ul>
                 <div class="tab-content">
                     <div id="tab-1" class="tab-pane fade show p-0 active">
@@ -99,7 +109,7 @@
                     <h5 class="section-title text-white text-center fw-normal">Ons</h5>
                     <h1 class="mb-5 text-white">Menu</h1>
                 </div>
-                    <div class="flex flex-row gap-5 w-full justify-around items-center">
+                    <div class="flex flex-row gap-2 w-full justify-around">
                         <div class="tab-content flex flex-col flex-grow">
                             <div class="d-flex align-items-center text-start mx-3 pb-3">
                                 <i class="fa fa-bread-slice fa-2x "></i>
@@ -153,6 +163,28 @@
                                 </div>
                             </div>
                             @foreach($dessert as $product)
+                                <div class="w-full px-4 p-2">
+                                    <div class="flex items-center">
+                                        <div class="w-100 d-flex flex-column text-start ps-4">
+                                            <h5 class="d-flex justify-content-between border-bottom pb-2">
+                                                <span class="text-white">{{$product->dish_name}}</span>
+                                                <span class="text-white">€{{$product->price}}</span>
+                                            </h5>
+                                            <small class="fst-italic">{{$product->description}}</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                        <div class="tab-content">
+                            <div class="flex items-center text-start mx-3 me-0 pb-3" href="#">
+                                <i class="fa fa-2x text-white fa-wine-glass"></i>
+                                <div class="ps-3">
+                                    <small class="text-body">Goede</small>
+                                    <h6 class="mt-n1 mb-0 text-white">Drankjes</h6>
+                                </div>
+                            </div>
+                            @foreach($drank as $product)
                                 <div class="w-full px-4 p-2">
                                     <div class="flex items-center">
                                         <div class="w-100 d-flex flex-column text-start ps-4">

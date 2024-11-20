@@ -11,6 +11,7 @@ class MenuPage extends Component
     public $lunch;
     public $diner;
     public $dessert;
+    public $drank;
     public $category = "Lunch";
     public function render()
     {
@@ -20,7 +21,8 @@ class MenuPage extends Component
         $this->lunch = Product::Where("category", "Lunch")->get();
         $this->products = $this->lunch;
         $this->diner = Product::Where("category", "Diner")->get();
-        $this->dessert = Product::Where("category", "dessert")->get();
+        $this->dessert = Product::Where("category", "Dessert")->get();
+        $this->drank = Product::Where("category", "Drank")->get();
     }
     public function filter($category){
         $this->category = $category;

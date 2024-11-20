@@ -1,16 +1,12 @@
-<div class="mt-[190px]" x-data="{newUserModal : false}">
-    <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
-        @if (session()->has('message'))
-
+<div class="mt-[190px] mb-5" x-data="{newUserModal : false , modifyUserModal : false}" @user-created.window="newUserModal = false" @user-modified.window="modifyUserModal = false">
+    @if (session()->has('userMessage'))
+        <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
-
-                {{ session('message') }}
-
+                {{ session('userMessage') }}
             </div>
-
-        @endif
-    </div>
-    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="newUserModal">
+        </div>
+    @endif
+    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="newUserModal" style="display:none;">
         <div class="p-6 shadow bg-white flex flex-col gap-5 rounded" @click.away="newUserModal = false">
             <form wire:submit.prevent="createUser" class="flex flex-col gap-2">
                 <div>
@@ -42,9 +38,41 @@
 
         </div>
     </div>
+    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="modifyUserModal" style="display:none;">
+        <div class="p-6 shadow bg-white flex flex-col gap-5 rounded" @click.away="modifyUserModal = false">
+            <form wire:submit.prevent="modifyUser" class="flex flex-col gap-2">
+                <div>
+                    <input wire:model="modifyingUser.name" placeholder="naam" class="@error('modifyingUser.name') border-red-500 @enderror p-2 px-4 rounded shadow">
+                    @error('modifyingUser.name')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <input wire:model="modifyingUser.email" placeholder="email" class="@error('modifyingUser.email') border-red-500 @enderror p-2 px-4 rounded shadow">
+                    @error('modifyingUser.email')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <input wire:model="modifyingUser.password" placeholder="Wachtwoord" type="password" class="@error('modifyingUser.password') border-red-500 @enderror p-2 px-4 rounded shadow">
+                    @error('modifyingUser.password')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div>
+                    <input wire:model="modifyingUser.passwordRepeat" placeholder="Wachtwoord herhalen" type="password" class="@error('modifyingUser.passwordRepeat') border-red-500 @enderror p-2 px-4 rounded shadow">
+                    @error('modifyingUser.passwordRepeat')
+                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                    @enderror
+                </div>
+                <button type="submit" class="bg-sky-500 p-2 px-4 rounded shadow text-white">Aanpassen</button>
+            </form>
+
+        </div>
+    </div>
     <div class="px-4 sm:px-6 lg:px-8">
         <div class="sm:flex sm:items-center">
-            <div class="sm:flex-auto">
+            <div class="sm:flex-auto ml-[2rem]">
                 <h1 class="text-base font-semibold text-gray-900">Gebruikers</h1>
             </div>
             <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
@@ -52,7 +80,7 @@
             </div>
         </div>
         <div class="mt-8 flow-root">
-            <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+            <div class="-my-2 overflow-x-auto">
                 <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
                     <input class="border-none bg-white p-2 px-4 rounded shadow" wire:model.live="searchTerm" placeholder="Zoeken..">
                     <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg mt-2">
@@ -73,19 +101,21 @@
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{$user->email}}</td>
                                     <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                         @foreach($roles as $role)
-                                            @if($user->hasRole($role))
-                                                <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 bg-green-500 text-white cursor-pointer rounded-full">{{ $role->name }}</span>
-                                            @else
-                                                <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 cursor-pointer bg-red-500 text-white rounded-full">{{ $role->name }}</span>
+                                            @if($role->name != 'klant')
+                                                @if($user->hasRole($role))
+                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 bg-green-500 text-white cursor-pointer rounded-full">{{ $role->name }}</span>
+                                                @else
+                                                    <span wire:click.prevent="toggleRole({{$role}},{{$user}})" class="p-2 cursor-pointer bg-red-500 text-white rounded-full">{{ $role->name }}</span>
+                                                @endif
                                             @endif
                                         @endforeach
                                     </td>
                                     <td class="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6 flex gap-5" x-data="{confirmationModal : false }">
-                                        <button class="text-indigo-600 hover:text-indigo-900">Aanpassen</button>
+                                        <button @click="modifyUserModal = true" wire:click="loadUser({{$user->id}})" class="text-indigo-600 hover:text-indigo-900">Aanpassen</button>
                                         <button @click="confirmationModal = true" class="text-white font-bold bg-red-500 p-2 px-4 rounded shadow">Verwijderen</button>
 
                                         {{--Confirmation modal--}}
-                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" x-show="confirmationModal">
+                                        <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center" style="display:none;" x-show="confirmationModal">
                                             <div class="p-6 shadow bg-white flex flex-col gap-5" @click.away="confirmationModal = false">
                                                 <h1>Weet je het zeker?</h1>
                                                 <div class="w-full flex justify-around items-center">
