@@ -13,6 +13,13 @@ use Carbon\Carbon;
 class ReservationPage extends Component
 {
     // Declareren van publieke eigenschappen
+    const TIME_RANGES = [
+        3 => [17, 22], // Wednesday
+        4 => [12, 22], // Thursday
+        5 => [12, 23], // Friday
+        6 => [12, 23], // Saturday
+        0 => [12, 23]  // Sunday
+    ];
     public $reservations;
     public $reservationId;
     public $user_id;
@@ -181,7 +188,32 @@ class ReservationPage extends Component
             return;
         }
 
-        $this->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
+        // Convert start_time and end_time to the proper format
+        $startTime = Carbon::parse($this->start_time);
+        $dayOfWeek = $startTime->dayOfWeek;
+        $hour = $startTime->hour;
+
+        // Determine the reservation duration
+        if ($hour >= 12 && $hour < 18) {
+            // Afternoon: reservation lasts 1.5 hours
+            $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
+        } else {
+            // Evening: reservation lasts 3 hours
+            $endTime = $startTime->copy()->addHours(3);
+        }
+
+        // Check if the end time exceeds the closing time
+        if (isset(self::TIME_RANGES[$dayOfWeek])) {
+            $closingHour = self::TIME_RANGES[$dayOfWeek][1];
+            $closingTime = $startTime->copy()->setTime($closingHour, 0);
+
+            if ($endTime->greaterThan($closingTime)) {
+                $endTime = $closingTime;
+            }
+        }
+
+        // Set the end_time property
+        $this->end_time = $endTime->format('Y-m-d H:i:s');
 
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
