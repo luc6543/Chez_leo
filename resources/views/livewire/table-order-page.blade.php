@@ -14,8 +14,8 @@
             <div x-data="{openMenu : false}" class="w-full">
                 <div @click="openMenu = !openMenu" class="bg-white flex justify-between cursor-pointer w-full shadow p-4 rounded ">
                     <span class="select-none">{{$category}}</span>
-                    <i x-show="!openMenu" class="bi bi-chevron-down" style="display:none;"></i>
-                    <i x-show="openMenu" class="bi bi-chevron-up" style="display:none;"></i>
+                    <i x-show="!openMenu" class="bi bi-chevron-down" x-cloak></i>
+                    <i x-show="openMenu" class="bi bi-chevron-up" x-cloak></i>
                 </div>
                 <div class="flex shadow rounded flex-wrap gap-5 justify-around w-full h-fit" x-show="openMenu" style="display:none;">
                     @foreach($products as $product)
