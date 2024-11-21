@@ -120,6 +120,11 @@
                         </select>
                     </div>
                     <div class="mb-4">
+                        <label class="block text-sm font-medium">Speciaal verzoek</label>
+                        <textarea wire:model.defer="special_request"
+                            class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                    </div>
+                    <div class="mb-4">
                         <label class="block text-sm font-medium">Actief</label>
                         <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
                     </div>
@@ -131,3 +136,24 @@
         </div>
     @endif
 </div>
+
+
+<script>
+    console.log('test');
+    function toggleSpecialRequest(reservationId) {
+        console.log('toggleSpecialRequest');
+        const specialRequest = document.getElementById(`specialRequest-${reservationId}`);
+        const chevronDown = document.getElementById(`chevron-down-${reservationId}`);
+        const chevronUp = document.getElementById(`chevron-up-${reservationId}`);
+
+        if (specialRequest.classList.contains('hidden')) {
+            specialRequest.classList.remove('hidden');
+            chevronDown.classList.remove('hidden');
+            chevronUp.classList.add('hidden');
+        } else {
+            specialRequest.classList.add('hidden');
+            chevronDown.classList.add('hidden');
+            chevronUp.classList.remove('hidden');
+        }
+    }
+</script>
