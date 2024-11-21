@@ -860,8 +860,10 @@
 <body class="bg-slate-100">
     <livewire:navBar />
     {{ $slot }}
-    <livewire:footer-page />
-    
+    @if (!Str::startsWith(Route::currentRouteName(), 'admin'))
+        <livewire:footer-page />
+    @endif
+
     @livewireScripts
     @stack('scripts')
     <!-- jQuery -->
