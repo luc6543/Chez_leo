@@ -60,34 +60,34 @@ class UsersPage extends Component
         session()->flash('userMessage', 'gebruiker successvol verwijdert.');
     }
 
-    public function modifyUser() {
-        $this->validate([
-            'modifyingUser.name' => 'required|string|max:255',
-            'modifyingUser.email' => 'required|email|max:255',
-            'modifyingUser.password' => 'string|min:8',
-            'modifyingUser.passwordRepeat' => 'string|min:8|same:modifyingUser.password',
-        ], [
-            'required' => 'Het veld :attribute is verplicht.',
-            'string' => 'Het veld :attribute moet een tekst zijn.',
-            'max' => 'Het veld :attribute mag niet meer dan :max tekens bevatten.',
-            'min' => 'Het veld :attribute moet minimaal :min tekens bevatten.',
-            'email' => 'Het veld :attribute moet een geldig e-mailadres zijn.',
-            'same' => 'Het veld :attribute en :other moeten overeenkomen.',
-        ], [
-            'modifyingUser.name' => 'naam',
-            'modifyingUser.email' => 'email',
-            'modifyingUser.password' => 'wachtwoord',
-            'modifyingUser.passwordRepeat' => 'wachtwoord',
-        ]);
-        if(isset($this->modifyingUser['password'])) {
-            isset($this->modifyingUser['password']) != "" ? $this->modifyingUser['password'] = Hash::make($this->modifyingUser['password']) : '';
-         }
-        User::find($this->modifyingUser['id'])->update($this->modifyingUser);
-        $this->dispatch('user-modified');
-        session()->flash('userMessage', 'Gebruiker succesvol aangepast');
-        $this->modifyingUser = [];
-        $this->search();
-}
+//    public function modifyUser() {
+//        $this->validate([
+//            'modifyingUser.name' => 'required|string|max:255',
+//            'modifyingUser.email' => 'required|email|max:255',
+//            'modifyingUser.password' => 'string|min:8',
+//            'modifyingUser.passwordRepeat' => 'string|min:8|same:modifyingUser.password',
+//        ], [
+//            'required' => 'Het veld :attribute is verplicht.',
+//            'string' => 'Het veld :attribute moet een tekst zijn.',
+//            'max' => 'Het veld :attribute mag niet meer dan :max tekens bevatten.',
+//            'min' => 'Het veld :attribute moet minimaal :min tekens bevatten.',
+//            'email' => 'Het veld :attribute moet een geldig e-mailadres zijn.',
+//            'same' => 'Het veld :attribute en :other moeten overeenkomen.',
+//        ], [
+//            'modifyingUser.name' => 'naam',
+//            'modifyingUser.email' => 'email',
+//            'modifyingUser.password' => 'wachtwoord',
+//            'modifyingUser.passwordRepeat' => 'wachtwoord',
+//        ]);
+//        if(isset($this->modifyingUser['password'])) {
+//            isset($this->modifyingUser['password']) != "" ? $this->modifyingUser['password'] = Hash::make($this->modifyingUser['password']) : '';
+//         }
+//        User::find($this->modifyingUser['id'])->update($this->modifyingUser);
+//        $this->dispatch('user-modified');
+//        session()->flash('userMessage', 'Gebruiker succesvol aangepast');
+//        $this->modifyingUser = [];
+//        $this->search();
+//}
 
     public function loadUser(User $user) {
         if (Auth()->user()->hasRole('admin')) {
