@@ -18,4 +18,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('admin/reservation/{reservation}', \App\Livewire\TableOrderPage::class)->middleware('role:medewerker');
     Route::get('/recenties/toevoegen', \App\Livewire\RecentiesToevoegPage::class);
     Route::get('/bill/{bill}',\App\Livewire\BillDetailPage::class);
+    Route::get("/admin/recenties",\App\Livewire\AdminRecenties::class)->middleware('role:admin');
 });
