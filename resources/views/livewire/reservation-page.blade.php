@@ -206,9 +206,7 @@
 
 
 <script>
-    console.log('test');
     function toggleSpecialRequest(reservationId) {
-        console.log('toggleSpecialRequest');
         const specialRequest = document.getElementById(`specialRequest-${reservationId}`);
         const tdSrP = document.getElementById(`td-sr-p-${reservationId}`);
         const chevronDown = document.getElementById(`chevron-down-${reservationId}`);
