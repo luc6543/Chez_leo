@@ -7,7 +7,6 @@ use Livewire\Component;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
-use App\Models\TableReservation;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 
