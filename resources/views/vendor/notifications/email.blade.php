@@ -6,15 +6,15 @@
 @if ($level === 'error')
 # @lang('Whoops!')
 @else
-# @lang('Hello!')
+# @lang('Welkom!')
 @endif
 @endif
 
-{{-- Intro Lines --}}
-@foreach ($introLines as $line)
-{{ $line }}
+{{-- Intro --}}
+{{ $line = "Heel erg bedankt voor uw reservering!
+    U hebt deze mail ontvangen om uw eigen wachtwoord aan te maken voor uw account.
+    De link verloopt over een uur." }}
 
-@endforeach
 
 {{-- Action Button --}}
 @isset($actionText)
@@ -23,32 +23,30 @@
         'success', 'error' => $level,
         default => 'primary',
     };
-?>
+    ?>
 <x-mail::button :url="$actionUrl" :color="$color">
-{{ $actionText }}
+    {{ $actionText = "Verifieer account"}}
 </x-mail::button>
 @endisset
 
 {{-- Outro Lines --}}
-@foreach ($outroLines as $line)
-{{ $line }}
-
-@endforeach
+{{$line = "Als u deze mail ontvangt zonder iets te hebben gedaan,
+    neem dan contact met ons op via +31 06 345 67890"}}
 
 {{-- Salutation --}}
 @if (! empty($salutation))
 {{ $salutation }}
 @else
-@lang('Regards,')<br>
-{{ config('app.name') }}
+@lang('Met vriendelijke groeten,')<br>
+Chez Leo
 @endif
 
 {{-- Subcopy --}}
 @isset($actionText)
 <x-slot:subcopy>
 @lang(
-    "If you're having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'hier jesse :',
+    "Als u problemen hebt met het klikken op de \":actionText\" knop, kopier en plak de URL\n".
+    'van hier :',
     [
         'actionText' => $actionText,
     ]
