@@ -16,14 +16,28 @@ class TableOrderPage extends Component
 
     public function mount(Reservation $reservation)
     {
+        $lunchStart = 11;
+        $lunchEnd = 17;
+
         $this->reservation = $reservation;
 
-        // Fetch all products
-        $this->products = Product::all()->groupBy('category')->toArray();
+        $currentHour = now()->hour;
+        if($currentHour >= $lunchStart && $currentHour < $lunchEnd) {
+            $this->products = Product::WhereNot('category', 'Diner')->WhereNot('category', 'dessert')->get()
+                ->groupBy('category')
+                ->toArray();
+        }
+        else {
+            $this->products = Product::WhereNot('category', 'Lunch')
+                ->groupBy('category')
+                ->toArray();
+        }
 
-        foreach($this->products as $category => $products){
-            foreach($products as $product){
-                $this->quantities[$product['id']] = 0; // add quantity and product to quantities array.
+        $this->quantities = [];
+
+        foreach ($this->products as $category => $products) {
+            foreach ($products as $product) {
+                $this->quantities[$product['id']] = 0;
             }
         }
     }
