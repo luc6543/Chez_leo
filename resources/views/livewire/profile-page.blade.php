@@ -47,7 +47,7 @@
                         </div>
                         <div class="flex justify-center">
                                 <a href="/bill/{{ $reservation->bill->id }}" class="border rounded-md px-14 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]">
-                                    <div class="">Bekijken!</div>
+                                    <div class="">Bekijken</div>
                                 </a>   
                         </div>
                     </div>
