@@ -21,18 +21,18 @@
                     @foreach($reviews as $review)
                         <tr>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->id }}</td>
-                            <td class="px-6 py-4 text-sm text-gray-500">
+                            <td class="px-6 py-4 text-sm">
                                 <div x-data="{ expanded: false }">
                                     <p x-show="!expanded">
-                                        {{ Str::limit($review->review, 255) }}
-                                        @if(strlen($review->review) > 255)
+                                        {{ Str::limit($review->review, 50) }}
+                                        @if(strlen($review->review) > 50)
                                             <button class="text-blue-500 hover:underline ml-2" @click="expanded = true">Lees meer</button>
                                         @endif
                                     </p>
-                                    <p x-show="expanded">
-                                        {{ $review->review }}
+                                    <div x-show="expanded" class="mt-2 p-2 rounded">
+                                        <p class="whitespace-pre-wrap break-all">{{$review->review}}</p>
                                         <button class="text-blue-500 hover:underline ml-2" @click="expanded = false">Lees minder</button>
-                                    </p>
+                                    </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->rating }}</td>
