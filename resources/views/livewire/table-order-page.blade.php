@@ -8,7 +8,7 @@
     @endif
     <div class="overflow-y-scroll w-full h-full flex flex-col gap-10 items-start justify-start">
         <div class="mt-10 ml-5 w-[50%] z-50">
-            <a href="/admin/order"class="" ><i class=" fa fa-3x fa-arrow-left"></i></a>
+            <a href="/admin/order"><i class=" fa fa-3x fa-arrow-left"></i></a>
         </div>
         @foreach($this->products as $category => $products)
             <div x-data="{openMenu : false}" class="w-full">
@@ -30,12 +30,14 @@
                                 <span>{{ $quantities[$product['id']] }}</span>
                                 <button wire:click="addQuantity({{$product['id']}})" class="p-3 mx-2 rounded shadow text-white bg-green-500">+</button>
                             </div>
-                            <button class="rounded w-[95%] m-2 p-2 text-center shadow bg-white hover:text-gray-800 text-[#FEA116]" wire:click="orderProduct({{$product['id']}})">Bestellen</button>
                         </div>
                     @endforeach
                 </div>
             </div>
         @endforeach
-        <button wire:click.prevent="billPaid" class="w-full p-2 bg-green-500 shadow px-4 text-white">Rekening betaald</button>
+        <div class="bottom-0 fixed left-0 w-screen flex justify-around">
+            <button wire:click.prevent="order" class="w-1/3 p-2 bg-green-500 shadow px-4 text-white">Bestellen</button>
+            <button wire:click.prevent="billPaid" class="w-1/3 p-2 bg-green-500 shadow px-4 text-white">Rekening betaald</button>
+        </div>
     </div>
 </div>
