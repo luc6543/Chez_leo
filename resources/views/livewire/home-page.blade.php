@@ -295,7 +295,7 @@
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea wire:model="special_request" class="form-control" placeholder="Speciale
+                                            <textarea maxlength="255" wire:model="special_request" class="form-control" placeholder="Speciale
                                             Verzoeken"
                                                        id="message"
                                                       style="height: 100px"></textarea>
