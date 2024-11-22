@@ -68,10 +68,10 @@ class HomePage extends Component
                 session()->flash('error', 'Dit e-mailadres is al in gebruik.');
             } elseif ($this->start_time == null) {
                 session()->flash('error', 'Vul een datum in.');
-            } elseif (Carbon::parse($this->start_time)->isPast()) {
+            } elseif (Carbon::parse($this->start_time)->lt(Carbon::now()->addHour())) {
                 session()->flash('error', 'De datum mag niet in het verleden liggen.');
-            } elseif (Carbon::parse($this->start_time)->lt(Carbon::now()->addHours(2))) {
-                session()->flash('error', 'Reserveringen moeten minstens 2 uur van tevoren worden gemaakt.');
+            } elseif (Carbon::parse($this->start_time)->lt(Carbon::now()->addHour()->addMinutes(30))) {
+                session()->flash('error', 'Reserveringen moeten minstens 30 minuten van tevoren worden gemaakt. Als u eerder een tafel nodig heeft, neem dan telefonisch contact met ons op.');
             } elseif ($this->people == null) {
                 session()->flash('error', 'Vul het aantal personen in.');
             } else {
