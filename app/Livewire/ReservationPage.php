@@ -34,6 +34,7 @@ class ReservationPage extends Component
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
     public $originalTableId;
+    public $special_request;
 
     // Validatieregels voor invoervelden
     protected $rules = [
@@ -123,6 +124,7 @@ class ReservationPage extends Component
         $this->active = false;
         $this->people = '';
         $this->originalTableId = null;
+        $this->special_request = '';
     }
 
     // Bijwerken van specifieke eigenschappen
@@ -224,6 +226,7 @@ class ReservationPage extends Component
                 'end_time' => $this->end_time,
                 'active' => $this->active,
                 'people' => $this->people,
+                'special_request' => $this->special_request,
             ]
         );
 
@@ -245,6 +248,7 @@ class ReservationPage extends Component
         $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
         $this->active = $reservation->active;
         $this->people = $reservation->people;
+        $this->special_request = $reservation->special_request;
         $this->originalTableId = $reservation->table_id;
 
         $this->isModalOpen = true;
