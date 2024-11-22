@@ -7,6 +7,7 @@ use App\Models\Product;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use App\Models\Reservation;
+use App\Models\Review;
 use App\Models\Table;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -37,6 +38,7 @@ class HomePage extends Component
     public $reservationId;
     public $people = 1;
     public $special_request;
+    public $reviews;
 
     public function mount()
     {
@@ -45,6 +47,7 @@ class HomePage extends Component
     public function render()
     {
         $this->users = User::all();
+        $this->reviews = Review::all();
 
         return view('livewire.home-page');
     }

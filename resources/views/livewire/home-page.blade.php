@@ -354,58 +354,39 @@
                 <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
+                
+                @foreach ($reviews as $review)
+                    @if ($review->is_approved == 1)
+                        <div class="testimonial-item bg-transparent border rounded p-4 h-[300px] flex flex-col justify-between">
+                            {{-- <i class="fa fa-quote-left fa-2x text-primary mb-3"></i> --}}
+                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <div class="d-flex align-items-center mt-auto mb-4">
+                                <img 
+                                    class="img-fluid flex-shrink-0 rounded-circle" 
+                                    src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
+                                    alt="{{ $review->user->name }}" 
+                                    style="width: 50px; height: 50px;" 
+                                >
+                                <div class="ps-3 gap-9">
+                                    <h5 class="mb-1">{{ $review->user->name }}</h5>
+                                    <small class="flex">
+                                        @php
+                                            $averageRating = $reviews->avg('rating');
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </small>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-2.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-3.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-4.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
+                    @endif
+                @endforeach
+                @if ($reviews->isEmpty())
+                    <p class="text-gray-700">Geen recenties gevonden.</p>
+                @endif
             </div>
         </div>
     </div>

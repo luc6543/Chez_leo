@@ -13,7 +13,7 @@
             <a href="/">Home</a>
             <a href="/over-ons">Over ons</a>
             <a href="/menu">Menu</a>
-            <a href="/recenties">Recenties</a>
+            <a href="/recensies">Recensies</a>
             @guest
                 <a href="/login">Login</a>
             @endguest
@@ -41,6 +41,9 @@
                                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
                                     @role("admin")
                                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
+                                        <a class="block px-4 py-2 text-[#FEA116]" href="/tables">Tafels</a>
+                                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
+
                                     @endrole
                                 </div>
                             </div>
@@ -57,7 +60,7 @@
                 <li class=""><a href="/">Home</a></li>
                 <li class="w-16"><a href="/over-ons" >Over ons</a></li>
                 <li class=""><a href="/menu" class="">Menu</a></li>
-                <li class=""><a href="/recenties" class="">Recenties</a></li>
+                <li class=""><a href="/recensies" class="">Recensies</a></li>
                 @guest
                     <a href="/login">Login</a>
                 @endguest
@@ -86,6 +89,7 @@
                                 @role("admin")
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
                                     <a class="block px-4 py-2 text-[#FEA116]" href="/tables">Tafels</a>
+                                    <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
                                 @endrole
                             </div>
                         </div>
