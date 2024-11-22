@@ -154,7 +154,12 @@ class HomePage extends Component
                         'end_time' => $this->end_time,
                     ]);
                     // Show a success message
-                    session()->flash('success', 'Je reservering is succesvol aangemaakt.');
+                    $successMessage = 'Uw reservering is succesvol aangemaakt.';
+                    if (true) {
+                        $successMessage .= "\nU ontvangt een e-mail met uw tijdelijke wachtwoord.";
+                    }
+                    session()->flash('success', nl2br($successMessage));
+
                 } else {
                     // Handle the case where no table is available
                     session()->flash('error', 'Er is geen tafel beschikbaar voor de geselecteerde datum en het aantal personen.');
