@@ -5,7 +5,7 @@
 <div>
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center">
+            <div class="flex justify-between items-center ">
                 <h1 class="text-base font-bold text-white">Reservations</h1>
 
                 <button wire:click="toggleShowPastReservations"

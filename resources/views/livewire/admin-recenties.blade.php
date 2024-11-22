@@ -15,6 +15,7 @@
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Gemaakt op</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aangepast op</th>
                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"></th>
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
@@ -29,7 +30,7 @@
                                             <button class="text-blue-500 hover:underline ml-2" @click="expanded = true">Lees meer</button>
                                         @endif
                                     </p>
-                                    <div x-show="expanded" class="mt-2 p-2 rounded">
+                                    <div x-show="expanded" x-cloak class="mt-2 p-2 rounded">
                                         <p class="whitespace-pre-wrap break-all">{{$review->review}}</p>
                                         <button class="text-blue-500 hover:underline ml-2" @click="expanded = false">Lees minder</button>
                                     </div>
@@ -40,7 +41,8 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->created_at)) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->updated_at)) }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><button>Verwijder</button></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 "><button class="hover:text-red-600">Verwijder</button></td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 "><button></button></td>
                         </tr>
                     @endforeach
                 </tbody>
