@@ -126,7 +126,8 @@
                                                 </td>
                                             </tr>
                                             <td id="td-sr-p-{{ $reservation->id }}" colspan="10" class="pb-4">
-                                                <p id="specialRequest-{{ $reservation->id }}" class="hidden px-4 py-0">
+                                                <p id="specialRequest-{{ $reservation->id }}"
+                                                    class="hidden px-4 py-0 break-all">
                                                     {{ $reservation->special_request }}
                                                 </p>
                                             </td>
