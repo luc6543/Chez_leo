@@ -247,13 +247,13 @@
 
                         @if (session()->has('error'))
                             <div class="alert alert-danger text-red-500">
-                            {{ session('error') }}
+                            {!! session('error') !!}
                             </div>
                         @endif
 
                         @if (session()->has('success'))
                             <div class="alert alert-success text-green-500">
-                            {{ session('success') }}
+                                {!! session('success') !!}
                             </div>
                         @endif
 
