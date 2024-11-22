@@ -383,11 +383,11 @@
                             </div>
                         </div>
                     @endif
-                @endforeach
-                @if ($reviews->isEmpty())
-                    <p class="text-gray-700">Geen recenties gevonden.</p>
-                @endif
+                @endforeach  
             </div>
+            @if ($reviews->isEmpty() || $reviews->where('is_approved', 0))
+                    <p class="text-gray-700">Geen recensies gevonden.</p>
+            @endif
         </div>
     </div>
     <!-- Testimonial End -->
