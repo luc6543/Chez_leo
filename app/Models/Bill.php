@@ -20,6 +20,14 @@ class Bill extends Model
         return $this->belongsTo(Table::class);
     }
 
+    public function user() {
+        return $this->belongsTo(User::class);
+    }
+
+    public function reservation() {
+        return $this->belongsTo(Reservation::class);
+    }
+
     public function getSum() {
         $sum = 0;
         foreach($this->products as $product) {

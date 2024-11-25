@@ -9,21 +9,33 @@ use Livewire\Component;
 class TableOrderPage extends Component
 {
     public $products;
-    public $categories;
-    public $groupedProducts;
-    public $quantities; // Holds quantities for products
+    public $quantities;
     public $reservation;
 
     public function mount(Reservation $reservation)
     {
+        $lunchStart = 11;
+        $lunchEnd = 17;
+
         $this->reservation = $reservation;
 
-        // Fetch all products
-        $this->products = Product::all()->groupBy('category')->toArray();
+        $currentHour = now()->hour;
+        if($currentHour >= $lunchStart && $currentHour < $lunchEnd) {
+            $this->products = Product::WhereNot('category', 'Diner')->WhereNot('category', 'dessert')->get()
+                ->groupBy('category')
+                ->toArray();
+        }
+        else {
+            $this->products = Product::WhereNot('category', 'Lunch')
+                ->groupBy('category')
+                ->toArray();
+        }
 
-        foreach($this->products as $category => $products){
-            foreach($products as $product){
-                $this->quantities[$product['id']] = 0; // add quantity and product to quantities array.
+        $this->quantities = [];
+
+        foreach ($this->products as $category => $products) {
+            foreach ($products as $product) {
+                $this->quantities[$product['id']] = 0;
             }
         }
     }
@@ -40,20 +52,34 @@ class TableOrderPage extends Component
         }
     }
 
-    public function orderProduct(int $productId)
+    public function order()
     {
-        $quantity = $this->quantities[$productId];
+        if ($this->reservation->bill->paid != true) {
 
-        if ($quantity > 0) {
-            $this->reservation->bill->products()->attach($productId, ['quantity' => $quantity]);
+            // variable for added something or not alert
+            $addedSomething = false;
+            foreach ($this->quantities as $product => $quantity) {
+                if ($quantity > 0) {
+                    $addedSomething = true;
+                    $this->reservation->bill->products()->attach($product, ['quantity' => $quantity]);
 
-            // Reset quantity for the product
-            $this->quantities[$productId] = 0;
-
-            session()->flash('userMessage', 'Product toegevoegd aan de rekening!');
-        } else {
-            session()->flash('userMessage', 'Quantity must be greater than zero.');
+                    // Reset quantity for the product
+                    $this->quantities[$product] = 0;
+                    session()->flash('userMessage','Producten toegevoegd aan rekening.');
+                }
+            }
+            if (!$addedSomething) {
+                session()->flash('userMessage','Geen producten toegevoegd.');
+            }
         }
+    }
+
+
+    public function billPaid() {
+        $this->reservation->bill->paid = true;
+        $this->reservation->bill->save();
+        $this->redirect('/admin/order');
+        session()->flash('userMessage', 'Rekening betaald.');
     }
 
     public function render()

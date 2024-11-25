@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('reservation_bill', function (Blueprint $table) {
+        Schema::create('bills', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('reservation_id');
-            $table->foreignId('bill_id');
+            $table->foreignId('user_id')->nullable()->references('id')->on('users')->onDelete('cascade');
+            $table->foreignId('reservation_id')->references('id')->on('reservations')->onDelete('cascade');
+            $table->boolean('paid')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('table_bill');
+        Schema::dropIfExists('bills');
     }
 };

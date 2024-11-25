@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bills', function (Blueprint $table) {
+        Schema::create('bill_products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
-            $table->foreignId('reservation_id');
-            $table->boolean('paid')->default(false);
+            $table->foreignId('product_id');
+            $table->foreignId('bill_id')->references('id')->on('bills')->onDelete('cascade');
+            $table->integer('quantity')->default(1);
             $table->timestamps();
         });
     }
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bills');
+        Schema::dropIfExists('bill_product');
     }
 };

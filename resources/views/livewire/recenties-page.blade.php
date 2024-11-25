@@ -1,79 +1,60 @@
-<div class="container mx-auto p-6">
-    <!-- Overzicht van alle reviews -->
-    <div class="bg-white">
-  <div>
-    <h2 class="sr-only">Customer Reviews</h2>
+<div class="bg-white">
+    <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:grid lg:max-w-7xl lg:grid-cols-12 lg:gap-x-8 lg:px-8 lg:py-32">
+        <!-- Linkerkolom: Overzicht -->
+        <div class="lg:col-span-4">
+            <h2 class="text-2xl font-bold tracking-tight text-gray-900">Klanten recenties</h2>
+            <div class="mt-3 flex items-center">
+                <div>
+                    <!-- Gemiddelde beoordeling -->
+                    @php
+                        $averageRating = $reviews->avg('rating');
+                    @endphp
+                    <div class="flex items-center">
+                        @for ($i = 1; $i <= 5; $i++)
+                            <svg class="w-5 h-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                            </svg>
+                        @endfor
+                    </div>
+                    <p class="ml-2 text-sm text-gray-900">Gemiddelde van {{ $reviews->count() }} recenties</p>
+                </div>
+            </div>
 
-    <div class="-my-10">
-      <div class="flex space-x-4 text-sm text-gray-500">
-        <div class="flex-none py-10">
-          <img src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80" alt="" class="size-10 rounded-full bg-gray-100">
+            <div class="mt-6">
+                <h3 class="text-lg font-medium text-gray-900">Deel jouw mening</h3>
+                <p class="mt-1 text-sm text-gray-600">Was het allemaal goed bevallen? Laat het ons weten!</p>
+                <a href="/recenties/toevoegen" class="mt-6 inline-flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50 sm:w-auto lg:w-full">Schrijf een recentie</a>
+            </div>
         </div>
-        <div class="flex-1 py-10">
-          <h3 class="font-medium text-gray-900">Emily Selman</h3>
-          <p><time datetime="2021-07-16">July 16, 2021</time></p>
 
-          <div class="mt-4 flex items-center">
-            <!-- Active: "text-yellow-400", Default: "text-gray-300" -->
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <p class="sr-only">5 out of 5 stars</p>
-
-          <div class="mt-4 text-sm/6 text-gray-500">
-            <p>This icon pack is just what I need for my latest project. There's an icon for just about anything I could ever need. Love the playful look!</p>
-          </div>
+        <!-- Rechterkolom: Recente Reviews -->
+        <div class="mt-16 lg:col-span-7 lg:col-start-6 lg:mt-0">
+            <h3 class="sr-only">Lijst van recenties</h3>
+            <div class="flow-root">
+                <div class="-my-12 divide-y divide-gray-200">
+                    @foreach ($reviews as $review)
+                        <div class="py-12">
+                            <div class="flex items-center">
+                                <img src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}" alt="{{ $review->user->name }}" class="w-12 h-12 rounded-full">
+                                <div class="ml-4">
+                                    <h4 class="text-sm font-bold text-gray-900">{{ $review->user->name }}</h4>
+                                    <div class="mt-1 flex items-center">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </div>
+                                    <p class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-6 text-base text-gray-600">
+                                <p>{{ $review->review }}</p>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
         </div>
-      </div>
-      <div class="flex space-x-4 text-sm text-gray-500">
-        <div class="flex-none py-10">
-          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=256&h=256&q=80" alt="" class="size-10 rounded-full bg-gray-100">
-        </div>
-        <div class="flex-1 border-t border-gray-200 py-10">
-          <h3 class="font-medium text-gray-900">Hector Gibbons</h3>
-          <p><time datetime="2021-07-12">July 12, 2021</time></p>
-
-          <div class="mt-4 flex items-center">
-            <!-- Active: "text-yellow-400", Default: "text-gray-300" -->
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-            <svg class="size-5 shrink-0 text-yellow-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" data-slot="icon">
-              <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
-            </svg>
-          </div>
-          <p class="sr-only">5 out of 5 stars</p>
-
-          <div class="mt-4 text-sm/6 text-gray-500">
-            <p>Blown away by how polished this icon pack is. Everything looks so consistent and each SVG is optimized out of the box so I can use it directly with confidence. It would take me several hours to create a single icon this good, so it's a steal at this price.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- More reviews... -->
     </div>
-  </div>
-</div>
 </div>

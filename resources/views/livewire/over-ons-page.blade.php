@@ -1,4 +1,4 @@
-<div class="bg-slate-200">
+<div class="bg-slate-200 mt-16">
     <div class="container mx-auto px-4">
         <div>
             <!-- Team Start -->
