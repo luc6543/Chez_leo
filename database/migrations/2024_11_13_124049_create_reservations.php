@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('reservations', function (Blueprint $table) {
             $table->id(); // Creates an unsigned BIGINT primary key
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('cascade');
             $table->foreignId('table_id'); // No constraint for now
             $table->string('special_request')->nullable();
             $table->dateTime('start_time');

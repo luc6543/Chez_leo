@@ -15,31 +15,45 @@
                             <div class="overflow-hidden shadow ring-1 ring-black/5 sm:rounded-lg mt-2">
                                 <table class="min-w-full divide-y divide-gray-300">
                                     <thead class="bg-gray-50">
-                                    <tr>
-                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">Tafelnummer</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Stoelen</th>
-                                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
-                                        <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
+                                        <tr>
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-6">
+                                                Tafelnummer</th>
+                                            <th scope="col"
+                                                class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                                Stoelen</th>
+                                            <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
+                                            <th class="relative py-3.5 pl-3 pr-4 sm:pr-6"></th>
 
-                                    </tr>
+                                        </tr>
                                     </thead>
                                     <tbody class="divide-y w-full divide-gray-200 bg-white">
-                                    @foreach($tables as $table)
-                                        <tr class="w-full">
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $table->table_number }}</td>
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">{{ $table->chairs }}</td>
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                <button wire:click="edit({{ $table->id }})"
-                                                    class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander
-                                                </button>
-                                            </td>
-                                            <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                <button wire:click="delete({{ $table->id }})"
-                                                    class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
-                                                </button>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                        @foreach($tables as $table)
+                                            <tr class="w-full">
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                    {{ $table->table_number }}
+                                                </td>
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                    {{ $table->chairs }}
+                                                </td>
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                    <button wire:click="edit({{ $table->id }})"
+                                                        class="bg-green-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-green-600">Verander
+                                                    </button>
+                                                </td>
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
+                                                    <button wire:click="delete({{ $table->id }})"
+                                                        x-data="{ isDeleting: false }" @click="isDeleting = true"
+                                                        :disabled="isDeleting"
+                                                        class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
