@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
@@ -10,13 +11,21 @@ class ProfilePage extends Component
 {
     public $newPass;
     public $newPassConfirm;
+    public $reservations;
     public function render()
     {
         return view('livewire.profile-page');
     }
 
     public function mount() {
+        $this->reservations = Reservation::all();
+    }
 
+    public function annuleerReservering($id){
+        $reservation = Reservation::findOrFail($id);
+
+        $reservation->delete();
+        session()->flash('message', 'Reservering geannuleerd!');
     }
 
     public function passReset() {

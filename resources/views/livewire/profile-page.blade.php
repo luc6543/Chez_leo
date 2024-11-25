@@ -6,7 +6,7 @@
             </div>
         </div>
     @endif
-    <div class="lg:w-3/4 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
+    <div class="{{$reservations->isEmpty() ? 'lg:w-3/4' : 'lg:w-[99%]' }} mt-2 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex flex-wrap justify-around items-center w-full">
             <span
                 class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-500">
@@ -65,38 +65,56 @@
                                     <div class="">Bekijken</div>
                                 </a>
                         </div>
+                        <div class="flex justify-center">
+                            <button class="border rounded-md px-12 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]" >aanpassen</button>
+                        </div>
+                        <div class="flex justify-center">
+                            <button class="border rounded-md px-[3.2rem] py-2 bg-red-500 text-white hover:bg-red-400">annuleren</button>
+                        </div>
                     </div>
                     @endforeach
                 </div>
                 <div class="hidden md:block">
                     <!-- Desktop Version -->
-                    <div class="overflow-hidden md:px-5">
-                        <table class="w-full divide-y divide-gray-300 text-sm">
-                            <thead>
-                                <tr>
-                                    <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-semibold text-gray-900 sm:pl-0">Reserverings nummer</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Tafel nummer</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Datum</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Rekening</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Voldaan</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach(Auth::user()->reservations as $reservation)
-                                <tr>
-                                    <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $reservation->id }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->table->table_number }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>
-                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                        <a href="/bill/{{ $reservation->bill->id }}" class="hover:underline">Bekijken</a>
-                                    </td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                    @if ($reservations->isEmpty())
+                        <div class="flex justify-center items-center">
+                            <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
+                        </div>
+                    @else
+                        <div class="overflow-hidden md:px-8">
+                            <table class="w-full divide-y divide-gray-300 text-sm">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-semibold text-gray-900 sm:pl-0">Reserverings nummer</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Tafel nummer</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Datum</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Rekening</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Voldaan</th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-gray-200">
+                                    @foreach(Auth::user()->reservations as $reservation)
+                                    <tr>
+                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $reservation->id }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->table->table_number }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                            <a href="/bill/{{ $reservation->bill->id }}" class="hover:underline">Bekijken</a>
+                                        </td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a class="hover:underline cursor-pointer" @click="">Aanpassen</a></td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><a class="hover:underline cursor-pointer text-red-500 hover:text-red-400" wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a></td>
+                                        {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button></td> --}}
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @endif
                 </div>
             </div>
         </div>
