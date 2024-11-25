@@ -28,13 +28,13 @@
                     <div class="flex items-center space-x-1">
                         @for ($i = 1; $i <= 5; $i++)
                             <svg 
-                                wire:click="setRating({{ $i }})" 
-                                class="w-8 h-8 cursor-pointer {{ $i <= $rating ? 'text-yellow-400' : 'text-gray-300' }}" 
-                                viewBox="0 0 20 20" 
-                                fill="currentColor" 
-                                aria-hidden="true"
-                            >
-                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c-.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                            wire:click="setRating({{ $i }})" 
+                            data-rating="{{ $i }}" 
+                            class="star w-8 h-8 cursor-pointer {{ $i <= $rating ? 'text-yellow-400' : 'text-gray-300' }}" 
+                            viewBox="0 0 20 20" 
+                            fill="currentColor" 
+                            aria-hidden="true">
+                            <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c-.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
                             </svg>
                         @endfor
                     </div>
@@ -62,3 +62,58 @@
         @endauth
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star');
+        let selectedRating = 0; // Houdt de geselecteerde rating bij
+
+        stars.forEach((star) => {
+            star.addEventListener('mouseover', function () {
+                if (selectedRating > 0) return; // Geen hover-effect als er een ster is geselecteerd
+
+                const rating = parseInt(this.getAttribute('data-rating'));
+
+                // Kleur sterren tot en met de gehoverde ster
+                stars.forEach((s) => {
+                    const starRating = parseInt(s.getAttribute('data-rating'));
+                    if (starRating <= rating) {
+                        s.classList.add('text-yellow-400');
+                        s.classList.remove('text-gray-300');
+                    } else {
+                        s.classList.add('text-gray-300');
+                        s.classList.remove('text-yellow-400');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseout', function () {
+                if (selectedRating > 0) return; // Geen reset als er een ster is geselecteerd
+
+                // Reset kleuren naar standaard (allemaal grijs)
+                stars.forEach((s) => {
+                    s.classList.add('text-gray-300');
+                    s.classList.remove('text-yellow-400');
+                });
+            });
+
+            star.addEventListener('click', function () {
+                // Sla de geselecteerde rating op
+                selectedRating = parseInt(this.getAttribute('data-rating'));
+
+                // Kleur sterren tot en met de geselecteerde ster
+                stars.forEach((s) => {
+                    const starRating = parseInt(s.getAttribute('data-rating'));
+                    if (starRating <= selectedRating) {
+                        s.classList.add('text-yellow-400');
+                        s.classList.remove('text-gray-300');
+                    } else {
+                        s.classList.add('text-gray-300');
+                        s.classList.remove('text-yellow-400');
+                    }
+                });
+            });
+        });
+    });
+</script>
+

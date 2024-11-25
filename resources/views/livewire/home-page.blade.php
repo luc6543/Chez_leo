@@ -317,7 +317,7 @@
     <div class="  py-5 wow fadeInUp" data-wow-delay="0.1s">
         <div class="container">
             <div class="text-center">
-                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recenties</h5>
+                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recensies</h5>
                 <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
             </div>
             <div class="owl-carousel testimonial-carousel">

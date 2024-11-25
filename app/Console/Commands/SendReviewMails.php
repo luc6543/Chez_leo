@@ -32,7 +32,7 @@ class SendReviewMails extends Command
         ->where('email_send', 0)
         ->where('end_time', '<', now()->subHours(3))
         ->get();
-        $linkString = '<a href="'.env('APP_URL').'/recenties/toevoegen'.'"> Leave a review </a>';
+        $linkString = '<a href="'.env('APP_URL').'/recensies/toevoegen'.'"> Leave a review </a>';
 
         foreach($reservations as $reservation) {
             Mail::To($reservation->user->email)->send(new MailTemplate('Chez Leo: Laat een review achter.','Laat ons weten wat je ervan vond!',"Wat vond je van je recente bezoek van chez leo? ".$linkString));

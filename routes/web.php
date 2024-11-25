@@ -8,7 +8,7 @@ Route::get('/reservations', \App\Livewire\ReservationPage::class)->middleware('r
 Route::get('/menu', \App\Livewire\MenuPage::class);
 
 Route::get('/over-ons', \App\Livewire\OverOnsPage::class);
-Route::get('/recenties', \App\Livewire\RecentiesPage::class);
+Route::get('/recensies', \App\Livewire\RecentiesPage::class);
 
 Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/reservations', \App\Livewire\ReservationPage::class)->middleware('role:medewerker');
@@ -16,5 +16,5 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/profile', \App\Livewire\ProfilePage::class);
     Route::get('admin/order', \App\Livewire\OrderPage::class)->middleware('role:medewerker');
     Route::get('admin/reservation/{reservation}', \App\Livewire\TableOrderPage::class)->middleware('role:medewerker');
-    Route::get('/recenties/toevoegen', \App\Livewire\RecentiesToevoegPage::class);
+    Route::get('/recensies/toevoegen', \App\Livewire\RecentiesToevoegPage::class);
 });
