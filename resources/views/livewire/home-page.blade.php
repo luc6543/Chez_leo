@@ -204,10 +204,9 @@
                         </a>
                     </li>
                 </ul>
-
                 <div class="tab-content">
-                    <div class="tab-pane fade show p-0 active">
-                        <div id="{{$category}}" class="row g-4">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="row g-4">
                             @foreach($products as $product)
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">

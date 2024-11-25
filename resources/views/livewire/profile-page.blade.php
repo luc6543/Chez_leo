@@ -14,9 +14,24 @@
                     {{ Auth::user()->getInitials() }}
                 </span>
             </span>
-            <div class="flex flex-col gap-2 w-full md:w-auto" @password-changed="showPassReset = false" x-data="{ showPassReset: false }">
-                <span class="text-center md:text-left">{{ Auth::user()->name }}</span>
-                <span class="text-gray-500 text-center md:text-left">{{ Auth::user()->email }}</span>
+            <div class="flex flex-col gap-5" x-data="{passReset : false}" @password-changed="passReset=false">
+                <span>{{ Auth::user()->name }}</span>
+                <span class="text-gray-500">{{ Auth::user()->email }}</span>
+                {{-- <button @click="passReset = !passReset">Wachtwoord veranderen</button> --}}
+                {{--<button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
+                {{-- <div x-show="passReset" x-collapse style="display:none;">
+                    <form class="flex flex-col gap-2" wire:submit="passReset">
+                        <input wire:model="newPass" type='password' placeholder="nieuw wachtwoord">
+                        @error('newPass')
+                            <span>{{ $message }}</span>
+                        @enderror
+                        <input wire:model="newPassConfirm" type='password' placeholder="nieuw wachtwoord herhalen">
+                        @error('newPass')
+                            <span>{{ $message }}</span>
+                        @enderror
+                        <button class="p-2 px-4 rounded shadow bg-white text-black" type="submit">Wachtwoord aanpassen</button>
+                    </form>
+                </div> --}}
             </div>
         </div>
         <div class="w-full mt-8">
@@ -47,8 +62,8 @@
                         </div>
                         <div class="flex justify-center">
                                 <a href="/bill/{{ $reservation->bill->id }}" class="border rounded-md px-14 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]">
-                                    <div class="">Bekijken!</div>
-                                </a>   
+                                    <div class="">Bekijken</div>
+                                </a>
                         </div>
                     </div>
                     @endforeach
