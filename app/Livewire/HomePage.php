@@ -43,12 +43,10 @@ class HomePage extends Component
     public function mount()
     {
         $this->products = Product::Where("category", "Lunch")->get();
+        $this->reviews = Review::all();
     }
     public function render()
     {
-        $this->users = User::all();
-        $this->reviews = Review::all();
-
         return view('livewire.home-page');
     }
     public function filter($category)

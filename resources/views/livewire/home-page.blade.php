@@ -204,7 +204,7 @@
                         </a>
                     </li>
                 </ul>
-                
+
                 <div class="tab-content">
                     <div class="tab-pane fade show p-0 active">
                         <div id="{{$category}}" class="row g-4">
@@ -366,11 +366,11 @@
                         <div class="bg-transparent border rounded p-4 h-[300px] flex flex-col justify-between">
                             <p class="text-black break-all">{{ $review->review }}</p>
                             <div class="d-flex align-items-center mt-auto mb-4">
-                                <img 
-                                    class="img-fluid flex-shrink-0 rounded-circle" 
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
                                     src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
-                                    alt="{{ $review->user->name }}" 
-                                    style="width: 50px; height: 50px;" 
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
                                 >
                                 <div class="ps-3 gap-9">
                                     <h5 class="mb-1">{{ $review->user->name }}</h5>
@@ -391,17 +391,17 @@
                 @endforeach
             </div>
         @else
-            <div class="swiper swiperCarousel !h-[300px]">
+            <div wire:ignore class="swiper swiperCarousel !h-[300px]">
                 <div class="swiper-wrapper !h-[100%]">
                     @foreach ($approvedReviews as $review)
                         <div class="swiper-slide bg-transparent border rounded p-4 !flex !flex-col !justify-between">
                             <p class="text-black break-all">{{ $review->review }}</p>
                             <div class="d-flex align-items-center mt-auto mb-4">
-                                <img 
-                                    class="img-fluid flex-shrink-0 rounded-circle" 
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
                                     src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
-                                    alt="{{ $review->user->name }}" 
-                                    style="width: 50px; height: 50px;" 
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
                                 >
                                 <div class="ps-3 gap-9">
                                     <h5 class="mb-1">{{ $review->user->name }}</h5>
@@ -417,9 +417,9 @@
                                     </small>
                                 </div>
                             </div>
-                        </div>    
-                    @endforeach 
-                </div> 
+                        </div>
+                    @endforeach
+                </div>
                 <div class="swiper-pagination"></div>
             </div>
         @endif
