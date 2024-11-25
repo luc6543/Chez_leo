@@ -17,9 +17,9 @@
             <div class="flex flex-col gap-5" x-data="{passReset : false}" @password-changed="passReset=false">
                 <span>{{ Auth::user()->name }}</span>
                 <span class="text-gray-500">{{ Auth::user()->email }}</span>
-                <button @click="passReset = !passReset">Wachtwoord veranderen</button>
-{{--                <button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
-                <div x-show="passReset" x-collapse style="display:none;">
+                {{-- <button @click="passReset = !passReset">Wachtwoord veranderen</button> --}}
+                {{--<button class="bg-sky-500 p-2 rounded shadow text-white">Info bewerken</button>--}}
+                {{-- <div x-show="passReset" x-collapse style="display:none;">
                     <form class="flex flex-col gap-2" wire:submit="passReset">
                         <input wire:model="newPass" type='password' placeholder="nieuw wachtwoord">
                         @error('newPass')
@@ -31,7 +31,7 @@
                         @enderror
                         <button class="p-2 px-4 rounded shadow bg-white text-black" type="submit">Wachtwoord aanpassen</button>
                     </form>
-                </div>
+                </div> --}}
             </div>
         </div>
         <div class="w-full mt-8">
