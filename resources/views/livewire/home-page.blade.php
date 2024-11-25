@@ -286,6 +286,7 @@
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                             <option value="5">5</option>
+                                            <option value="6">6</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
@@ -302,6 +303,7 @@
                                 <div class="col-12">
                                     <button wire:click="createReservation" class="btn btn-primary w-100 py-3">Reserveer Nu</button>
                                 </div>
+                                <p>Wilt u reserveren met meer dan 6 personen?<br>Neem dan telefonisch contact met ons op.</p>
 
                             </div>
                         </div>
