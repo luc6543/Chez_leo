@@ -1,4 +1,3 @@
-import Swiper from "swiper/bundle";
 $(document).ready(function ($) {
     "use strict";
 
@@ -90,5 +89,33 @@ $(document).ready(function ($) {
     //     });
     // });
 
+    // Initialize Swiper
+    let swiperInstance;
 
-})(jQuery);
+    function initializeSwiper() {
+        if (swiperInstance) {
+            swiperInstance.destroy(true, true);
+        }
+        swiperInstance = new Swiper(".swiperCarousel", {
+            spaceBetween: 15,
+            slidesPerView: 3,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            speed: 1000,
+            loop: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+        });
+        console.log(swiperInstance);
+    }
+
+    initializeSwiper();
+
+    window.addEventListener("swiper-reinit", function () {
+        initializeSwiper();
+    });
+});
