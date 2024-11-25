@@ -303,6 +303,7 @@
                                 <div class="col-12">
                                     <button wire:click="createReservation" class="btn btn-primary w-100 py-3">Reserveer Nu</button>
                                 </div>
+                                <p>Wilt u reserveren met meer dan 6 personen?<br>Neem dan telefonisch contact met ons op.</p>
 
                             </div>
                         </div>
