@@ -26,7 +26,7 @@ class TableOrderPage extends Component
                 ->toArray();
         }
         else {
-            $this->products = Product::WhereNot('category', 'Lunch')
+            $this->products = Product::WhereNot('category', 'Lunch')->get()
                 ->groupBy('category')
                 ->toArray();
         }
