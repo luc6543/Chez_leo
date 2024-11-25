@@ -30,7 +30,9 @@
                                         <p>Van {{ Carbon::parse($reservation->start_time)->format('H:i') }} tot
                                             {{ Carbon::parse($reservation->end_time)->format('H:i') }}
                                         </p>
-                                        <p>Klant: {{ $reservation->user->name }}</p>
+                                        @if ($reservation->user)
+                                            <p>Klant: {{ $reservation->user->name }}</p>
+                                        @endif
                                         <p>{{ $reservation->people }}
                                             {{ $reservation->people == 1 ? 'persoon' : 'personen' }}
                                         </p>

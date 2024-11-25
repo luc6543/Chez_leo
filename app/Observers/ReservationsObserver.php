@@ -11,14 +11,12 @@ class ReservationsObserver
      */
     public function created(Reservation $reservation): void
     {
-        if($reservation->user == !null)
-        {
+        if ($reservation->user != null) {
             $reservation->bill()->create([
                 'reservation_id' => $reservation->id,
                 'user_id' => $reservation->user->id
             ]);
-        }
-        else {
+        } else {
             $reservation->bill()->create([
                 'reservation_id' => $reservation->id,
             ]);
