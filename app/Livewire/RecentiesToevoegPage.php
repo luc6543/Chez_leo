@@ -39,7 +39,9 @@ class RecentiesToevoegPage extends Component
         $this->reset(['review', 'rating']);
 
         // Succesbericht
-        session()->flash('message', 'Review is toegevoegd!');
+       // session()->flash('message', 'Review is toegevoegd!');
+
+        return redirect('/recensies');
     }
 
     // Laat de pagina zien
