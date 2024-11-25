@@ -4,9 +4,11 @@ namespace App\Livewire;
 
 use App\Mail\NewTemporaryPasswordMail;
 use App\Models\Product;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use App\Models\Reservation;
+use App\Models\Review;
 use App\Models\Table;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -37,21 +39,22 @@ class HomePage extends Component
     public $reservationId;
     public $people = 1;
     public $special_request;
+    public $reviews;
 
     public function mount()
     {
         $this->products = Product::Where("category", "Lunch")->get();
+        $this->reviews = Review::all();
     }
     public function render()
     {
-        $this->users = User::all();
-
         return view('livewire.home-page');
     }
     public function filter($category)
     {
         $this->category = $category;
         $this->products = Product::Where("category", $category)->get();
+        // dd($category);
         sleep(0.5);
     }
 
@@ -109,10 +112,11 @@ class HomePage extends Component
                         'password' => Hash::make($temporaryPassword),
                     ]);
 
-                    // Send an email with the temporary password
-                    Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
-                }
-            }
+            // Send an email with the temporary password
+            Password::sendResetLink(['email' => $this->email]);
+//            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+        }
+    }
 
             // Convert start_time and end_time to the proper format
             $startTime = Carbon::parse($this->start_time);

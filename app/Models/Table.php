@@ -20,4 +20,13 @@ class Table extends Model
     {
         return $this->hasMany(Reservation::class);
     }
+
+    public function getCurrentReservation() {
+        return $this->reservations()
+            ->where('start_time', '<=', now())
+            ->where('end_time', '>=', now())->whereHas('bill', function ($query) {
+                $query->where('paid', '!=', '1'); // Filter related bill records
+            })
+            ->first();
+    }
 }

@@ -154,25 +154,43 @@ instance.set('minTime', '12:00');
     //     });
     // });
 
-    $(".testimonial-carousel").owlCarousel({
-        autoplay: true,
-        smartSpeed: 1000,
-        center: true,
-        margin: 24,
-        dots: true,
-        loop: true,
-        nav: false,
-        responsive: {
-            0: {
-                items: 1,
-            },
-            768: {
-                items: 2,
-            },
-            992: {
-                items: 3,
-            },
-        },
-    });
+    // Initialize Swiper
+    let swiperInstance;
 
-})(jQuery);
+    function initializeSwiper() {
+        if (swiperInstance) {
+            swiperInstance.destroy(true, true);
+        }
+        swiperInstance = new Swiper(".swiperCarousel", {
+            spaceBetween: 15,
+            slidesPerView: 3,
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+            speed: 1000,
+            loop: true,
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+            breakpoints: {
+                0: {
+                    slidesPerView: 1,
+                },
+                768: {
+                    slidesPerView: 2,
+                },
+                1200: {
+                    slidesPerView: 3,
+                },
+            },
+        });
+    }
+
+    initializeSwiper();
+
+    window.addEventListener("swiper-reinit", function () {
+        initializeSwiper();
+    });
+});

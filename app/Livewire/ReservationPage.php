@@ -35,10 +35,11 @@ class ReservationPage extends Component
     public $showNonActiveReservations = false;
     public $originalTableId;
     public $special_request;
+    public $maxChairs;
 
     // Validatieregels voor invoervelden
     protected $rules = [
-        'user_id' => 'required',
+        'user_id' => 'nullable',
         'table_id' => 'required',
         'start_time' => 'required|date|after:today',
         'active' => 'boolean',
@@ -95,6 +96,9 @@ class ReservationPage extends Component
             $this->tables = Table::all();
         }
 
+        // Berekenen van het maximale aantal stoelen
+        $this->calculateMaxChairs();
+
         // Alle gebruikers ophalen
         $this->users = User::all();
         return view('livewire.reservation-page');
@@ -116,7 +120,7 @@ class ReservationPage extends Component
     public function resetInputFields()
     {
         $this->reservationId = null;
-        $this->user_id = '';
+        $this->user_id = null;
         $this->table_id = '';
         $this->start_time = '';
         $this->end_time = '';
@@ -137,7 +141,7 @@ class ReservationPage extends Component
     // Bijwerken van de lijst met beschikbare tafels
     public function updateTableList()
     {
-        if (!$this->people) {
+        if (!$this->people || $this->people > Table::max('chairs')) {
             $this->tables = Table::all();
             return;
         }
@@ -168,10 +172,29 @@ class ReservationPage extends Component
         $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
     }
 
+    public function calculateMaxChairs()
+    {
+        $tempMaxChairs = 0;
+        foreach ($this->tables as $table) {
+            $tempMaxChairs += $table->chairs;
+        }
+        $this->maxChairs = $tempMaxChairs;
+    }
+
+    // Nieuwe reservering aanmaken
+    public function create()
+    {
+        $reservation = new Reservation();
+        $reservation->start_time = date('Y-m-d', strtotime(now())) . ' 23:59:00';
+        $reservation->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
+        $reservation->user_id = Auth::user()->id;
+        $reservation->table_id = 2;
+        $reservation->save();
+    }
+
     // Reservering opslaan of bijwerken
     public function store()
     {
-//        dd($this->start_time);
         $this->validate();
 
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
@@ -179,7 +202,6 @@ class ReservationPage extends Component
         $dayOfWeek = $startTime->dayOfWeek;
         $hour = $startTime->hour;
 
-//        dd($startTime->hour);
 
         // Determine the reservation duration
         if ($hour >= 12 && $hour < 18) {
@@ -202,7 +224,6 @@ class ReservationPage extends Component
 
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
-        $this->start_time = $startTime->format('Y-m-d H:i:s');
 
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
