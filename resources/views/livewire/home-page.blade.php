@@ -171,7 +171,7 @@
                         </a>
                     </li>
                     <li wire:click="filter('Diner')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner")active
+                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner") active
                          @endif" data-bs-toggle="pill"
                            href="#tab-2">
                             <i class="fa fa-hamburger fa-2x text-primary"></i>
@@ -182,7 +182,7 @@
                         </a>
                     </li>
                     <li wire:click="filter('Dessert')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert")active
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert") active
                          @endif" data-bs-toggle="pill"
                            href="#tab-3">
                             <i class="fa fa-ice-cream fa-2x text-primary"></i>
@@ -195,7 +195,7 @@
                     <li wire:click="filter('Drank')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
                          @endif" data-bs-toggle="pill"
-                           href="#tab-3">
+                           href="#tab-4">
                             <i class="fa fa-2x text-primary fa-wine-glass"></i>
                             <div class="ps-3">
                                 <small class="text-body">Smakelijke</small>
@@ -204,9 +204,10 @@
                         </a>
                     </li>
                 </ul>
+
                 <div class="tab-content">
-                    <div id="tab-1" class="tab-pane fade show p-0 active">
-                        <div class="row g-4">
+                    <div class="tab-pane fade show p-0 active">
+                        <div id="{{$category}}" class="row g-4">
                             @foreach($products as $product)
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">
@@ -311,73 +312,85 @@
                 </div>
             </div>
         </div>
-    <!-- Reservation Start -->
+    <!-- Reservation End -->
 
 
-    <!-- Testimonial Start -->
-    <div class="  py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recenties</h5>
-                <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-2.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-3.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-4.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    @php
+    $approvedReviews = $reviews->where('is_approved', 1);
+@endphp
+<!-- Testimonial Start -->
+<div class="py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recensies</h5>
+            <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
         </div>
+        @if ($approvedReviews->isEmpty())
+            <p class="text-gray-700">Geen recensies gevonden.</p>
+        @elseif ($approvedReviews->count() < 3)
+            <div class="row">
+                @foreach ($approvedReviews as $review)
+                    <div class="col-md-4">
+                        <div class="bg-transparent border rounded p-4 h-[300px] flex flex-col justify-between">
+                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <div class="d-flex align-items-center mt-auto mb-4">
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
+                                    src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
+                                >
+                                <div class="ps-3 gap-9">
+                                    <h5 class="mb-1">{{ $review->user->name }}</h5>
+                                    <small class="flex">
+                                        @php
+                                            $averageRating = $reviews->avg('rating');
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div wire:ignore class="swiper swiperCarousel !h-[300px]">
+                <div class="swiper-wrapper !h-[100%]">
+                    @foreach ($approvedReviews as $review)
+                        <div class="swiper-slide shadow-sm  bg-white border rounded-md p-4 !flex flex-col justify-between">
+                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <div class="d-flex align-items-center mt-auto mb-4">
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
+                                    src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
+                                >
+                                <div class="ps-3 gap-9">
+                                    <h5 class="mb-1">{{ $review->user->name }}</h5>
+                                    <small class="flex">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        @endif
     </div>
-    <!-- Testimonial End -->
+</div>
+<!-- Testimonial End -->
 
 
     <!-- Back to Top -->

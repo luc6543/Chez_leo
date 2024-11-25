@@ -14,7 +14,7 @@
             <a href="/">Home</a>
             <a href="/over-ons">Over ons</a>
             <a href="/menu">Menu</a>
-            <a href="/recenties">Recenties</a>
+            <a href="/recensies">Recensies</a>
             @guest
                 <a href="/login">Login</a>
             @endguest
@@ -34,13 +34,12 @@
                                     class="w-full text-left px-4 pt-2 text-[#FEA116] hover:text-red-500">Log uit</button>
                             </form>
                         </div>
-                    </div>
                 </li>
             @endauth
             @role("medewerker")
-            <li class="w-20">
-                <div x-data="{ open: false }" class="relative">
-                    <button @click="open = !open" class="text-[#FEA116] ">Beheer <i style="display:none" x-show="!open"
+                <li class="w-20">
+                    <div x-data="{ open: false }" class="relative">
+                        <button @click="open = !open" class="text-[#FEA116] ">Beheer <i style="display:none" x-show="!open"
                             class="bi bi-chevron-down"></i> <i style="display:none" x-show="open"
                             class="bi bi-chevron-up"></i></button>
                     <div style="display:none" x-show="open" x-collapse @click.away="open = false"
@@ -51,11 +50,13 @@
                         @role("admin")
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables">Tafels</a>
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
+                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
                         @endrole
                     </div>
                 </div>
             </li>
             @endrole
+
             <a href="/#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
         </div>
     </div>
@@ -67,7 +68,7 @@
                 <li class=""><a href="/">Home</a></li>
                 <li class="w-16"><a href="/over-ons">Over ons</a></li>
                 <li class=""><a href="/menu" class="">Menu</a></li>
-                <li class=""><a href="/recenties" class="">Recenties</a></li>
+                <li class=""><a href="/recensies" class="">Recensies</a></li>
                 @guest
                     <a href="/login">Login</a>
                 @endguest
@@ -105,6 +106,7 @@
                             @role("admin")
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables">Tafels</a>
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
                             @endrole
                         </div>
                     </div>

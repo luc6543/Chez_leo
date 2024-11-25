@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', \App\Livewire\HomePage::class)->name('home');
 Route::get('/menu', \App\Livewire\MenuPage::class)->name('menu');
 
+
 Route::get('/over-ons', \App\Livewire\OverOnsPage::class)->name('over-ons');
 Route::get('/recenties', \App\Livewire\RecentiesPage::class)->name('recenties');
 
@@ -16,5 +17,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/table-view', \App\Livewire\ReservedTableViewPage::class)->middleware('role:medewerker')->name('admin.table-view');
     Route::get('/recenties/toevoegen', \App\Livewire\RecentiesToevoegPage::class)->name('recenties.toevoegen');
     Route::get('/bill/{bill}', \App\Livewire\BillDetailPage::class)->name('bill.detail');
+    Route::get("/admin/recensies",\App\Livewire\AdminRecenties::class)->middleware('role:admin');
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile');
 });
