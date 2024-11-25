@@ -121,6 +121,8 @@
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
                                                     <button wire:click="delete({{ $reservation->id }})"
+                                                        x-data="{ isDeleting: false }" @click="isDeleting = true"
+                                                        :disabled="isDeleting"
                                                         class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
                                                     </button>
                                                 </td>
