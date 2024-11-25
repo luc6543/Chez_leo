@@ -312,8 +312,6 @@
             </div>
         </div>
     <!-- Reservation End -->
-
-
     @php
     $approvedReviews = $reviews->where('is_approved', 1);
 @endphp
