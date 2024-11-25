@@ -315,7 +315,7 @@
                                 @endif
                                 <div class="col-md-6">
                                     <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <x-flatpickr id="flatPickr" max-time="21:30" clearable onChange="handleChange" :disable="['monday','tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
+                                        <x-flatpickr id="flatPickr" max-time="20:30" clearable onChange="handleChange" :disable="['monday','tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
 
 
             {{--            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />--}}
