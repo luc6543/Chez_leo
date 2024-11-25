@@ -13,25 +13,28 @@ class TablesSeeder extends Seeder
      */
     public function run(): void
     {
-        Table::updateOrCreate([
-            'chairs' => 10,
-            'table_number' => 1,
-        ]);
-        Table::updateOrCreate([
-            'chairs' => 2,
-            'table_number' => 2,
-        ]);
-        Table::updateOrCreate([
-            'chairs' => 4,
-            'table_number' => 3,
-        ]);
-        Table::updateOrCreate([
-            'chairs' => 4,
-            'table_number' => 4,
-        ]);
-        Table::updateOrCreate([
-            'chairs' => 6,
-            'table_number' => 5,
-        ]);
+        // Remove all existing tables
+        Table::truncate();
+
+        // Define the tables based on the number of chairs and the count of tables given by the client
+        $tables = [
+            ['chairs' => 2, 'count' => 6],
+            ['chairs' => 4, 'count' => 4],
+            ['chairs' => 5, 'count' => 2],
+            ['chairs' => 6, 'count' => 2],
+        ];
+
+        // Initialize the table number
+        $tableNumber = 1;
+
+        // Create the tables
+        foreach ($tables as $table) {
+            for ($i = 0; $i < $table['count']; $i++) {
+                Table::updateOrCreate([
+                    'chairs' => $table['chairs'],
+                    'table_number' => $tableNumber++,
+                ]);
+            }
+        }
     }
 }

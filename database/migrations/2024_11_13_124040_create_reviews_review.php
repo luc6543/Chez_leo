@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id');
+            $table->foreignId('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('review');
             $table->integer('rating');
+            $table->boolean('is_approved')->default(false);
             $table->timestamps();
         });
     }

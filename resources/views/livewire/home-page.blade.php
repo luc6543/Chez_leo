@@ -1,5 +1,5 @@
 <div lang="en" x-data="{videoModal: false}">
-    <div class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
+    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -171,7 +171,7 @@
                         </a>
                     </li>
                     <li wire:click="filter('Diner')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner")active
+                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner") active
                          @endif" data-bs-toggle="pill"
                            href="#tab-2">
                             <i class="fa fa-hamburger fa-2x text-primary"></i>
@@ -182,7 +182,7 @@
                         </a>
                     </li>
                     <li wire:click="filter('Dessert')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert")active
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert") active
                          @endif" data-bs-toggle="pill"
                            href="#tab-3">
                             <i class="fa fa-ice-cream fa-2x text-primary"></i>
@@ -195,7 +195,7 @@
                     <li wire:click="filter('Drank')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
                          @endif" data-bs-toggle="pill"
-                           href="#tab-3">
+                           href="#tab-4">
                             <i class="fa fa-2x text-primary fa-wine-glass"></i>
                             <div class="ps-3">
                                 <small class="text-body">Smakelijke</small>
@@ -247,13 +247,13 @@
 
                         @if (session()->has('error'))
                             <div class="alert alert-danger text-red-500">
-                            {{ session('error') }}
+                            {!! session('error') !!}
                             </div>
                         @endif
 
                         @if (session()->has('success'))
                             <div class="alert alert-success text-green-500">
-                            {{ session('success') }}
+                                {!! session('success') !!}
                             </div>
                         @endif
 
@@ -273,14 +273,11 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-                                    <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <input wire:model="start_time" type="datetime-local" class="form-control
-                                        datetimepicker-input" id="datetime"
-                                               placeholder="Datum & Tijd" data-target="#date3"
-                                               data-toggle="datetimepicker" />
-                                        <label for="datetime">Datum & Tijd</label>
-                                    </div>
-                                </div>
+        <div class="form-floating date" id="date3" data-target-input="nearest">
+            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />
+            <label for="datetimepicker">Datum & Tijd</label>
+        </div>
+    </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <select wire:model="people" class="form-select" id="select1">
@@ -289,13 +286,14 @@
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                             <option value="5">5</option>
+                                            <option value="6">6</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea wire:model="special_request" class="form-control" placeholder="Speciale
+                                            <textarea maxlength="255" wire:model="special_request" class="form-control" placeholder="Speciale
                                             Verzoeken"
                                                        id="message"
                                                       style="height: 100px"></textarea>
@@ -305,78 +303,91 @@
                                 <div class="col-12">
                                     <button wire:click="createReservation" class="btn btn-primary w-100 py-3">Reserveer Nu</button>
                                 </div>
+                                <p>Wilt u reserveren met meer dan 6 personen?<br>Neem dan telefonisch contact met ons op.</p>
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    <!-- Reservation Start -->
-
-
-    <!-- Testimonial Start -->
-    <div class="  py-5 wow fadeInUp" data-wow-delay="0.1s">
-        <div class="container">
-            <div class="text-center">
-                <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recensies</h5>
-                <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
-            </div>
-            <div class="owl-carousel testimonial-carousel">
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-1.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-2.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-3.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-                <div class="testimonial-item bg-transparent border rounded p-4">
-                    <i class="fa fa-quote-left fa-2x text-primary mb-3"></i>
-                    <p>Dolor et eos labore, stet justo sed est sed. Diam sed sed dolor stet amet eirmod eos labore
-                        diam</p>
-                    <div class="d-flex align-items-center">
-                        <img class="img-fluid flex-shrink-0 rounded-circle" src="img/testimonial-4.jpg"
-                             style="width: 50px; height: 50px;">
-                        <div class="ps-3">
-                            <h5 class="mb-1">Klant Naam</h5>
-                            <small>Profession</small>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <!-- Reservation End -->
+    @php
+    $approvedReviews = $reviews->where('is_approved', 1);
+@endphp
+<!-- Testimonial Start -->
+<div class="py-5 wow fadeInUp" data-wow-delay="0.1s">
+    <div class="container">
+        <div class="text-center">
+            <h5 class="section-title ff-secondary text-center text-primary fw-normal">Recensies</h5>
+            <h1 class="mb-5">Onze Klanten Zeggen!!!</h1>
         </div>
+        @if ($approvedReviews->isEmpty())
+            <p class="text-gray-700">Geen recensies gevonden.</p>
+        @elseif ($approvedReviews->count() < 3)
+            <div class="row">
+                @foreach ($approvedReviews as $review)
+                    <div class="col-md-4">
+                        <div class="bg-transparent border rounded p-4 h-[300px] flex flex-col justify-between">
+                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <div class="d-flex align-items-center mt-auto mb-4">
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
+                                    src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
+                                >
+                                <div class="ps-3 gap-9">
+                                    <h5 class="mb-1">{{ $review->user->name }}</h5>
+                                    <small class="flex">
+                                        @php
+                                            $averageRating = $reviews->avg('rating');
+                                        @endphp
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @else
+            <div wire:ignore class="swiper swiperCarousel !h-[300px]">
+                <div class="swiper-wrapper !h-[100%]">
+                    @foreach ($approvedReviews as $review)
+                        <div class="swiper-slide shadow-sm  bg-white border rounded-md p-4 !flex flex-col justify-between">
+                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <div class="d-flex align-items-center mt-auto mb-4">
+                                <img
+                                    class="img-fluid flex-shrink-0 rounded-circle"
+                                    src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
+                                    alt="{{ $review->user->name }}"
+                                    style="width: 50px; height: 50px;"
+                                >
+                                <div class="ps-3 gap-9">
+                                    <h5 class="mb-1">{{ $review->user->name }}</h5>
+                                    <small class="flex">
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
+                                            </svg>
+                                        @endfor
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+                <div class="swiper-pagination"></div>
+            </div>
+        @endif
     </div>
-    <!-- Testimonial End -->
+</div>
+<!-- Testimonial End -->
 
 
     <!-- Back to Top -->
