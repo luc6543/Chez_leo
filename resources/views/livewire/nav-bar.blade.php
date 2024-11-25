@@ -46,6 +46,7 @@
                     <div style="display:none" x-show="open" x-collapse @click.away="open = false"
                         class=" mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">beheer reserveringen</a>
+                        <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view">Gereserveerde tafels</a>
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">klant bestelling</a>
                         @role("admin")
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">beheer gebruikers</a>
@@ -98,6 +99,7 @@
                         <div style="display:none" x-show="open" x-collapse @click.away="open = false"
                             class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">Reserveringen</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view">Gereserveerde tafels</a>
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">Bestellingen</a>
                             @role("admin")
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
