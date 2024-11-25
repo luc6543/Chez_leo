@@ -13,6 +13,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/admin/users', \App\Livewire\UsersPage::class)->middleware('role:admin')->name('admin.users');
     Route::get('/admin/reservation/{reservation}', \App\Livewire\TableOrderPage::class)->middleware('role:medewerker')->name('admin.reservation');
     Route::get('/admin/order', \App\Livewire\OrderPage::class)->middleware('role:medewerker')->name('admin.order');
+    Route::get('/admin/table-view', \App\Livewire\ReservedTableViewPage::class)->middleware('role:medewerker')->name('admin.table-view');
     Route::get('/recenties/toevoegen', \App\Livewire\RecentiesToevoegPage::class)->name('recenties.toevoegen');
     Route::get('/bill/{bill}', \App\Livewire\BillDetailPage::class)->name('bill.detail');
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile');
