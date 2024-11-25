@@ -2,7 +2,7 @@
     use Carbon\Carbon;
 @endphp
 
-<div x-data="{modalOpened : false}" @close-modal=" modalOpened = false ">
+<div x-data="{modalOpened : false}" @close-modal=" modalOpened = false " @open-modal="modalOpened = true">
     @push('styles')
         @include('flatpickr::components.style')
     @endpush
@@ -189,12 +189,6 @@
                 {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
             </h2>
 
-            @if (session()->has('error'))
-                <div class="alert alert-danger text-red-500">
-                    {{ session('error') }}
-                </div>
-            @endif
-
             <form wire:submit.prevent="store">
                 <div class="mb-4 mt-2">
                     <label class="block text-sm font-medium">Klant</label>
@@ -204,16 +198,31 @@
                             <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
                         @endforeach
                     </select>
+                    @error('user_id')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <div class="mb-4">
-                    <x-flatpickr id="flatPickr" max-time="20:30" clearable onChange="handleChange"
+                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" clearable onChange="handleChange"
                         :disable="['monday', 'tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd"
                         :min-date="today()" wire:model="start_time" show-time />
+                    @error('start_time')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Personen</label>
                     <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
                         max="6" class="mt-1 block w-full rounded-md border-gray-300">
+                    @error('people')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Tafel</label>
@@ -225,18 +234,33 @@
                             </option>
                         @endforeach
                     </select>
+                    @error('table_id')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Speciaal verzoek</label>
                     <textarea maxlength="255" wire:model.defer="special_request"
                         class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                    @error('special_request')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Actief</label>
                     <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
+                    @error('active')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
+                    </div>
+                    @enderror
                 </div>
                 <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
-                <button type="button" wire:click="closeModal"
+                <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
                     class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
             </form>
         </div>
