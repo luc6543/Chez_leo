@@ -35,6 +35,7 @@ class ReservationPage extends Component
     public $showNonActiveReservations = false;
     public $originalTableId;
     public $special_request;
+    public $maxChairs;
 
     // Validatieregels voor invoervelden
     protected $rules = [
@@ -82,6 +83,9 @@ class ReservationPage extends Component
         } else {
             $this->tables = Table::all();
         }
+
+        // Berekenen van het maximale aantal stoelen
+        $this->calculateMaxChairs();
 
         // Alle gebruikers ophalen
         $this->users = User::all();
@@ -138,7 +142,7 @@ class ReservationPage extends Component
     // Bijwerken van de lijst met beschikbare tafels
     public function updateTableList()
     {
-        if (!$this->people) {
+        if (!$this->people || $this->people > Table::max('chairs')) {
             $this->tables = Table::all();
             return;
         }
@@ -167,6 +171,15 @@ class ReservationPage extends Component
         }
 
         $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
+    }
+
+    public function calculateMaxChairs()
+    {
+        $tempMaxChairs = 0;
+        foreach ($this->tables as $table) {
+            $tempMaxChairs += $table->chairs;
+        }
+        $this->maxChairs = $tempMaxChairs;
     }
 
     // Nieuwe reservering aanmaken
