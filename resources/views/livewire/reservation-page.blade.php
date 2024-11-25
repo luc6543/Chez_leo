@@ -2,7 +2,47 @@
     use Carbon\Carbon;
 @endphp
 
-<div>
+<div x-data="{modalOpened : false}" @close-modal=" modalOpened = false ">
+    @push('styles')
+        @include('flatpickr::components.style')
+    @endpush
+    @push('scripts')
+        @include('flatpickr::components.script')
+
+        <script>
+            function handleChange(selectedDates, dateStr, instance) {
+                console.log({ selectedDates, dateStr, instance });
+
+                if (!selectedDates.length) return; // If no date is selected, return.
+
+                const selectedDate = selectedDates[0];
+                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                let minTime = null;
+
+                switch (dayOfWeek) {
+                    case 0: // Sunday
+                    case 5: // Friday
+                    case 6: // Saturday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    case 3: // Wednesday
+                        minTime = "17:00"; // 5 PM
+                        break;
+                    case 4: // Thursday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    default: // Monday and Tuesday (Closed)
+                        instance.close(); // Close the calendar for closed days
+                        alert("Gesloten (Closed) on this day.");
+                        return;
+                }
+
+                // Set the new minTime for Flatpickr
+                instance.set("minTime", minTime);
+                console.log(`Min time set to: ${minTime}`);
+            }
+        </script>
+    @endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
@@ -18,7 +58,7 @@
                     {{ $showNonActiveReservations ? 'Verberg inactieve reserveringen' : 'Toon inactieve reserveringen' }}
                 </button>
 
-                <button wire:click="openModal"
+                <button @click="modalOpened = true"
                     class="bg-blue-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-600">
                     Voeg reservation toe
                 </button>
@@ -142,10 +182,8 @@
             </div>
         </div>
     </div>
-
-    @if($isModalOpen)
-        <div class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg p-6 w-1/3">
+        <div x-show="modalOpened" x-cloak class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+            <div @click.away="modalOpened = false" x-transition class="bg-white rounded-lg p-6 w-1/3">
                 <h2 class="text-lg font-semibold mb-2">
                     {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
                 </h2>
@@ -167,9 +205,7 @@
                         </select>
                     </div>
                     <div class="mb-4">
-                        <label class="block text-sm font-medium">Start tijd</label>
-                        <input type="datetime-local" wire:model.live.debounce.20ms="start_time"
-                            class="mt-1 block w-full rounded-md border-gray-300">
+                        <x-flatpickr id="flatPickr" max-time="21:30" clearable onChange="handleChange" :disable="['monday','tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Personen</label>
@@ -202,7 +238,6 @@
                 </form>
             </div>
         </div>
-    @endif
 </div>
 
 

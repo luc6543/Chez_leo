@@ -183,6 +183,7 @@ class ReservationPage extends Component
     // Reservering opslaan of bijwerken
     public function store()
     {
+        $this->start_time = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
         try {
             $this->validate();
         } catch (ValidationException $e) {
@@ -232,6 +233,7 @@ class ReservationPage extends Component
 
         session()->flash('message', $this->reservationId ? 'Reservering bijgewerkt.' : 'Reservering aangemaakt.');
 
+        $this->dispatch('close-modal');
         $this->closeModal();
         $this->resetInputFields();
     }
