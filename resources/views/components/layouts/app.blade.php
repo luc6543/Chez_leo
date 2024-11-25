@@ -30,6 +30,9 @@
   <!-- Other head elements -->
   <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
+    <!-- Flatpickr -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
 
     <!-- Styles -->
@@ -862,8 +865,10 @@
 <body class="bg-slate-100">
     <livewire:navBar />
     {{ $slot }}
-    <livewire:footer-page />
-    
+    @if (!Str::startsWith(Route::currentRouteName(), 'admin'))
+        <livewire:footer-page />
+    @endif
+
     @livewireScripts
     @stack('scripts')
     <!-- jQuery -->

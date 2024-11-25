@@ -248,13 +248,13 @@
 
                         @if (session()->has('error'))
                             <div class="alert alert-danger text-red-500">
-                            {{ session('error') }}
+                            {!! session('error') !!}
                             </div>
                         @endif
 
                         @if (session()->has('success'))
                             <div class="alert alert-success text-green-500">
-                            {{ session('success') }}
+                                {!! session('success') !!}
                             </div>
                         @endif
 
@@ -274,14 +274,11 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-                                    <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <input id="datetimepicker" wire:model="start_time" type="datetime-local" class="form-control
-                                        datetimepicker-input" id="datetime"
-                                               placeholder="Datum & Tijd" data-target="#date3"
-                                               data-toggle="datetimepicker" />
-                                        <label for="datetime">Datum & Tijd</label>
-                                    </div>
-                                </div>
+        <div class="form-floating date" id="date3" data-target-input="nearest">
+            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />
+            <label for="datetimepicker">Datum & Tijd</label>
+        </div>
+    </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <select wire:model="people" class="form-select" id="select1">
@@ -290,13 +287,14 @@
                                             <option value="3">3</option>
                                             <option value="4">4</option>
                                             <option value="5">5</option>
+                                            <option value="6">6</option>
                                         </select>
                                         <label for="select1">Aantal Personen</label>
                                     </div>
                                 </div>
                                 <div class="col-12">
                                     <div class="form-floating">
-                                            <textarea wire:model="special_request" class="form-control" placeholder="Speciale
+                                            <textarea maxlength="255" wire:model="special_request" class="form-control" placeholder="Speciale
                                             Verzoeken"
                                                        id="message"
                                                       style="height: 100px"></textarea>
@@ -306,37 +304,7 @@
                                 <div class="col-12">
                                     <button wire:click="createReservation" class="btn btn-primary w-100 py-3">Reserveer Nu</button>
                                 </div>
-
-                                        <script>
-                                            const validate = dateString => {
-                                                const date = new Date(dateString);
-                                                const day = date.getDay();
-                                                const hours = date.getHours();
-                                                const minutes = date.getMinutes();
-
-                                                const timeRanges = {
-                                                    3: [17, 22], // Wednesday
-                                                    4: [12, 22], // Thursday
-                                                    5: [12, 23], // Friday
-                                                    6: [12, 23], // Saturday
-                                                    0: [12, 23]  // Sunday
-                                                }
-
-                                                if (day == 1 || day == 2) return false; // Monday or Tuesday
-                                                if (timeRanges[day]) {
-                                                    const [start, end] = timeRanges[day];
-                                                    if (hours < start || (hours == end && minutes > 0) || hours > end) return false;
-                                                }
-
-                                                return true;
-                                            }
-
-                                            document.querySelector('#datetimepicker').addEventListener('input', evt => {
-                                                if (!validate(evt.target.value)) {
-                                                    evt.target.value = '';
-                                                }
-                                            });
-                                        </script>
+                                <p>Wilt u reserveren met meer dan 6 personen?<br>Neem dan telefonisch contact met ons op.</p>
 
                             </div>
                         </div>
