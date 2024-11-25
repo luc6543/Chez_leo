@@ -352,7 +352,7 @@
     border-radius: 38px 38px 0 0;
 }
 
-/*** Testimonial ***/
+/** Testimonial **
 .testimonial-carousel .owl-item .testimonial-item,
 .testimonial-carousel .owl-item.center .testimonial-item * {
     transition: 0.5s;
@@ -384,8 +384,8 @@
 .testimonial-carousel .owl-dot.active {
     background: var(--primary);
     /* color: var(--dark); */
-    border-color: var(--primary);
-}
+/* border-color: var(--primary); */
+/* }  */
 
 /*** Footer ***/
 .footer .btn.btn-social {

@@ -55,6 +55,7 @@ class HomePage extends Component
     {
         $this->category = $category;
         $this->products = Product::Where("category", $category)->get();
+        // dd($category);
         sleep(0.5);
     }
 
