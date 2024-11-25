@@ -162,7 +162,7 @@
                         <a class="d-flex align-items-center text-start mx-3 ms-0 pb-3 @if($category == "Lunch")active
                          @endif"
                            data-bs-toggle="pill"
-                           href="#{{$category = "Lunch"}}">
+                           href="#tab-1">
                             <i class="fa fa-bread-slice fa-2x text-primary"></i>
                             <div class="ps-3">
                                 <small class="text-body">Onze</small>
@@ -171,9 +171,9 @@
                         </a>
                     </li>
                     <li wire:click="filter('Diner')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner")active
+                        <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner") active
                          @endif" data-bs-toggle="pill"
-                           href="#{{$category = "Diner"}}">
+                           href="#tab-2">
                             <i class="fa fa-hamburger fa-2x text-primary"></i>
                             <div class="ps-3">
                                 <small class="text-body">Heerlijke</small>
@@ -182,9 +182,9 @@
                         </a>
                     </li>
                     <li wire:click="filter('Dessert')" class="nav-item">
-                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert")active
+                        <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert") active
                          @endif" data-bs-toggle="pill"
-                           href="#{{$category = "Dessert"}}">
+                           href="#tab-3">
                             <i class="fa fa-ice-cream fa-2x text-primary"></i>
                             <div class="ps-3">
                                 <small class="text-body">Smakelijke</small>
@@ -195,7 +195,7 @@
                     <li wire:click="filter('Drank')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
                          @endif" data-bs-toggle="pill"
-                           href="#{{$category = "Drank"}}">
+                           href="#tab-4">
                             <i class="fa fa-2x text-primary fa-wine-glass"></i>
                             <div class="ps-3">
                                 <small class="text-body">Smakelijke</small>
@@ -394,7 +394,7 @@
             <div wire:ignore class="swiper swiperCarousel !h-[300px]">
                 <div class="swiper-wrapper !h-[100%]">
                     @foreach ($approvedReviews as $review)
-                        <div class="swiper-slide bg-transparent border rounded p-4 !flex !flex-col !justify-between">
+                        <div class="swiper-slide shadow-sm  bg-white border rounded-md p-4 !flex flex-col justify-between">
                             <p class="text-black break-all">{{ $review->review }}</p>
                             <div class="d-flex align-items-center mt-auto mb-4">
                                 <img
@@ -406,11 +406,8 @@
                                 <div class="ps-3 gap-9">
                                     <h5 class="mb-1">{{ $review->user->name }}</h5>
                                     <small class="flex">
-                                        @php
-                                            $averageRating = $reviews->avg('rating');
-                                        @endphp
                                         @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-5 h-5 {{ $i <= $averageRating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <svg class="w-5 h-5 {{ $i <= $review->rating ? 'text-yellow-400' : 'text-gray-300' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                                                 <path fill-rule="evenodd" d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" />
                                             </svg>
                                         @endfor
