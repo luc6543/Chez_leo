@@ -2,10 +2,50 @@
     use Carbon\Carbon;
 @endphp
 
-<div>
+<div x-data="{modalOpened : false}" @close-modal=" modalOpened = false " @open-modal="modalOpened = true">
+    @push('styles')
+        @include('flatpickr::components.style')
+    @endpush
+    @push('scripts')
+        @include('flatpickr::components.script')
+
+        <script>
+            function handleChange(selectedDates, dateStr, instance) {
+                console.log({ selectedDates, dateStr, instance });
+
+                if (!selectedDates.length) return; // If no date is selected, return.
+
+                const selectedDate = selectedDates[0];
+                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                let minTime = null;
+
+                switch (dayOfWeek) {
+                    case 0: // Sunday
+                    case 5: // Friday
+                    case 6: // Saturday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    case 3: // Wednesday
+                        minTime = "17:00"; // 5 PM
+                        break;
+                    case 4: // Thursday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    default: // Monday and Tuesday (Closed)
+                        instance.close(); // Close the calendar for closed days
+                        alert("Gesloten (Closed) on this day.");
+                        return;
+                }
+
+                // Set the new minTime for Flatpickr
+                instance.set("minTime", minTime);
+                console.log(`Min time set to: ${minTime}`);
+            }
+        </script>
+    @endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center ">
+            <div class="flex justify-between items-center">
                 <h1 class="text-base font-bold text-white">Reservations</h1>
 
                 <button wire:click="toggleShowPastReservations"
@@ -18,7 +58,7 @@
                     {{ $showNonActiveReservations ? 'Verberg inactieve reserveringen' : 'Toon inactieve reserveringen' }}
                 </button>
 
-                <button wire:click="openModal"
+                <button @click="modalOpened = true"
                     class="bg-blue-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-blue-600">
                     Voeg reservation toe
                 </button>
@@ -144,67 +184,89 @@
             </div>
         </div>
     </div>
+    <div x-show="modalOpened" x-cloak
+        class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+        <div x-transition class="bg-white rounded-lg p-6 w-1/3">
+            <h2 class="text-lg font-semibold mb-2">
+                {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
+            </h2>
 
-    @if($isModalOpen)
-        <div class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-            <div class="bg-white rounded-lg p-6 w-1/3">
-                <h2 class="text-lg font-semibold mb-2">
-                    {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
-                </h2>
-
-                @if (session()->has('error'))
+            <form wire:submit.prevent="store">
+                <div class="mb-4 mt-2">
+                    <label class="block text-sm font-medium">Klant</label>
+                    <select wire:model.defer="user_id" class="mt-1 block w-full rounded-md border-gray-300">
+                        <option value="">Selecteer een klant</option>
+                        @foreach($users as $user)
+                            <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
+                        @endforeach
+                    </select>
+                    @error('user_id')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" clearable onChange="handleChange"
+                        :disable="['monday', 'tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd"
+                        :min-date="today()" wire:model="start_time" show-time />
+                    @error('start_time')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Personen</label>
+                    <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
+                        max="6" class="mt-1 block w-full rounded-md border-gray-300">
+                    @error('people')
                     <div class="alert alert-danger text-red-500">
-                        {{ session('error') }}
+                        {{ $message }}
                     </div>
-                @endif
-
-                <form wire:submit.prevent="store">
-                    <div class="mb-4 mt-2">
-                        <label class="block text-sm font-medium">Klant</label>
-                        <select wire:model.defer="user_id" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">Selecteer een klant</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
-                            @endforeach
-                        </select>
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Tafel</label>
+                    <select wire:model.defer="table_id" class="mt-1 block w-full rounded-md border-gray-300">
+                        <option value="">Selecteer een tafel</option>
+                        @foreach($tables as $table)
+                            <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
+                                {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('table_id')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Start tijd</label>
-                        <input type="datetime-local" wire:model.live.debounce.20ms="start_time"
-                            class="mt-1 block w-full rounded-md border-gray-300">
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Speciaal verzoek</label>
+                    <textarea maxlength="255" wire:model.defer="special_request"
+                        class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                    @error('special_request')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Personen ({{ $maxChairs }} max)</label>
-                        <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
-                            :max="{{ $maxChairs }}" class="mt-1 block w-full rounded-md border-gray-300">
+                    @enderror
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium">Actief</label>
+                    <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
+                    @error('active')
+                    <div class="alert alert-danger text-red-500">
+                        {{ $message }}
                     </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Tafel</label>
-                        <select wire:model.defer="table_id" class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">Selecteer een tafel</option>
-                            @foreach($tables as $table)
-                                <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
-                                    {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Speciaal verzoek</label>
-                        <textarea maxlength="255" wire:model.defer="special_request"
-                            class="mt-1 block w-full rounded-md border-gray-300"></textarea>
-                    </div>
-                    <div class="mb-4">
-                        <label class="block text-sm font-medium">Actief</label>
-                        <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
-                    </div>
-                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
-                    <button type="button" wire:click="closeModal"
-                        class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
-                </form>
-            </div>
+                    @enderror
+                </div>
+                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
+                <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
+                    class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
+            </form>
         </div>
-    @endif
+    </div>
 </div>
 
 
