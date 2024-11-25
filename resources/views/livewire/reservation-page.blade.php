@@ -67,7 +67,7 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    {{ $reservation->user->name}}
+                                                    {{ $reservation->user->name ?? 'Geen klant' }}
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
