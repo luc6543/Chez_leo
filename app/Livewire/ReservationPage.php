@@ -39,7 +39,7 @@ class ReservationPage extends Component
 
     // Validatieregels voor invoervelden
     protected $rules = [
-        'user_id' => 'required',
+        'user_id' => 'nullable',
         'table_id' => 'required',
         'start_time' => 'required|date',
         'active' => 'boolean',
@@ -121,7 +121,7 @@ class ReservationPage extends Component
     public function resetInputFields()
     {
         $this->reservationId = null;
-        $this->user_id = '';
+        $this->user_id = null;
         $this->table_id = '';
         $this->start_time = '';
         $this->end_time = '';
