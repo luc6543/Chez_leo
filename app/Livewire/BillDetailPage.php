@@ -15,7 +15,7 @@ class BillDetailPage extends Component
     }
 
     public function mount(Bill $bill){
-        if( $bill->user->id != Auth::user()->id || !Auth::user()->hasRole('medewerker') || !Auth::user()->hasRole('admin') ) {
+        if( $bill->user->id != Auth::user()->id && !Auth::user()->hasRole('medewerker') || !Auth::user()->hasRole('admin') ) {
             abort(403,'Deze rekening is niet van u.');
         }
         $this->bill = $bill;
