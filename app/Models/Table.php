@@ -16,14 +16,12 @@ class Table extends Model
     {
         return $this->hasMany(Bill::class);
     }
-
     public function reservations()
     {
-        return $this->belongsToMany(Reservation::class, 'reservation_table');
+        return $this->hasMany(Reservation::class);
     }
 
-    public function getCurrentReservation()
-    {
+    public function getCurrentReservation() {
         return $this->reservations()
             ->where('start_time', '<=', now())
             ->where('end_time', '>=', now())->whereHas('bill', function ($query) {
