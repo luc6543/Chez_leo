@@ -58,7 +58,7 @@
             </li>
             @endrole
 
-            <a href="/#Reserveer" wire:navigate class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
+            <a href="/#Reserveer" class="btn btn-primary py-2 px-4">Reserveer een tafel</a>
         </div>
     </div>
 
@@ -116,8 +116,7 @@
                 </li>
                 @endrole
             </ul>
-            <a href="/#Reserveer" wire:navigate
-                class="btn btn-primary py-sm-3 px-3 me-3 animated slideInLeft">Reserveer</a>
+            <a href="/#Reserveer" class="btn btn-primary py-sm-3 px-3 me-3 animated slideInLeft">Reserveer</a>
         </div>
     </div>
 </nav>
