@@ -186,7 +186,7 @@
     </div>
     <div x-show="modalOpened" x-cloak  
             class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-            <div @click.away="modalOpened = false" x-transition class="bg-white rounded-lg p-6 w-1/3">
+            <div x-transition class="bg-white rounded-lg p-6 w-1/3">
                 <h2 class="text-lg font-semibold mb-2">
                     {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
                 </h2>
