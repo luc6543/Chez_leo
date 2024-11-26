@@ -1,4 +1,4 @@
-<nav class="md:items-start !fixed z-10 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row"
+<nav class="md:items-start !fixed z-50 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row"
     x-data="{navBarShown : false}">
     <div class="flex gap-5 w-full items-center justify-around lg:justify-start">
         <a href="/" wire:navigate class="navbar-brand p-0">
@@ -51,6 +51,7 @@
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
                         @endrole
+                        <a class="block px-4 py-2 text-[#FEA116]" wire:navigate href="/admin/kitchen-manager">keuken-manager</a>
                     </div>
                 </div>
             </li>
@@ -98,17 +99,15 @@
                                 class="bi bi-chevron-up"></i></button>
                         <div style="display:none" x-show="open" x-collapse @click.away="open = false"
                             class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations"
-                                wire:navigate>Reserveringen</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view"
-                                wire:navigate>Gereserveerde tafels</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations" wire:navigate>Reserveringen</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view" wire:navigate>Gereserveerde tafels</a>
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order" wire:navigate>Bestellingen</a>
                             @role("admin")
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables" wire:navigate>Tafels</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users" wire:navigate>Gebruikers</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies"
-                                wire:navigate>Recensies</a>
+                                <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables" wire:navigate>Tafels</a>
+                                <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users" wire:navigate>Gebruikers</a>
+                                <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies" wire:navigate>Recensies</a>
                             @endrole
+                            <a class="block px-4 py-2 text-[#FEA116]" wire:navigate href="/admin/kitchen-manager">keuken-manager</a>
                         </div>
                     </div>
                 </li>
