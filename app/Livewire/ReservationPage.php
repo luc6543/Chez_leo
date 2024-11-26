@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
+use App\Models\ReservationTable;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 
@@ -24,7 +25,8 @@ class ReservationPage extends Component
     public $reservationId;
     public $user_id;
     public $guest_name;
-    public $table_id;
+    public $table_id = 1;
+    public $table_ids = [];
     public $start_time;
     public $end_time;
     public $active = false;
@@ -43,7 +45,6 @@ class ReservationPage extends Component
     protected $rules = [
         'user_id' => 'nullable',
         'guest_name' => 'nullable',
-        'table_id' => 'required',
         'start_time' => 'required|date|after:today',
         'active' => 'boolean',
         'people' => 'required',
@@ -51,7 +52,6 @@ class ReservationPage extends Component
     public function messages()
     {
         return [
-            'table_id.required' => 'De tafel is verplicht.',
             'start_time.required' => 'De starttijd is verplicht.',
             'start_time.date' => 'De starttijd moet een geldige datum zijn.',
             'start_time.after' => 'De starttijd moet na vandaag zijn.',
@@ -80,12 +80,12 @@ class ReservationPage extends Component
         // Ophalen van reserveringen
         $this->reservations = $query->get();
 
-        // Beschikbare tafels ophalen
         if ($this->start_time) {
             $date = Carbon::parse($this->start_time)->format('Y-m-d');
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
+            $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
+                ->whereDate('reservations.start_time', '<=', $date)
+                ->whereDate('reservations.end_time', '>=', $date)
+                ->pluck('reservation_tables.table_id')
                 ->toArray();
 
             // Include the original table attached to the reservation being edited
@@ -141,44 +141,42 @@ class ReservationPage extends Component
     // Bijwerken van specifieke eigenschappen
     public function updated($propertyName, $value)
     {
-        $this->$propertyName = $value;
-
-        $this->updateTableList();
+        $this->calculateMaxChairs();
     }
 
     // Bijwerken van de lijst met beschikbare tafels
-    public function updateTableList()
-    {
-        if (!$this->people || $this->people > Table::max('chairs')) {
-            $this->tables = Table::all();
-            return;
-        }
+    // public function updateTableList()
+    // {
+    //     if (!$this->people || $this->people > Table::max('chairs')) {
+    //         $this->tables = Table::all();
+    //         return;
+    //     }
 
-        if ($this->start_time) {
-            $date = Carbon::parse($this->start_time)->format('Y-m-d');
+    //     if ($this->start_time) {
+    //         $date = Carbon::parse($this->start_time)->format('Y-m-d');
 
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
-                ->toArray();
+    //         $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
+    //             ->whereDate('end_time', '>=', $date)
+    //             ->pluck('table_id')
+    //             ->toArray();
 
-            // Include the original table attached to the reservation being edited
-            if ($this->originalTableId) {
-                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
-            }
+    //         // Include the original table attached to the reservation being edited
+    //         if ($this->originalTableId) {
+    //             $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
+    //         }
 
-            $this->tables = Table::where('chairs', '>=', $this->people)
-                ->whereNotIn('id', $usedTableIds)
-                ->orderBy('chairs', 'asc')
-                ->get();
-        } else {
-            $this->tables = Table::where('chairs', '>=', $this->people)
-                ->orderBy('chairs', 'asc')
-                ->get();
-        }
+    //         $this->tables = Table::where('chairs', '>=', $this->people)
+    //             ->whereNotIn('id', $usedTableIds)
+    //             ->orderBy('chairs', 'asc')
+    //             ->get();
+    //     } else {
+    //         $this->tables = Table::where('chairs', '>=', $this->people)
+    //             ->orderBy('chairs', 'asc')
+    //             ->get();
+    //     }
 
-        $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
-    }
+    //     $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
+    // }
 
     public function calculateMaxChairs()
     {
@@ -254,6 +252,10 @@ class ReservationPage extends Component
                 'special_request' => $this->special_request,
             ]
         );
+
+        if ($this->table_ids) {
+            $reservation->tables()->sync($this->table_ids);
+        }
 
         session()->flash('message', $this->reservationId ? 'Reservering bijgewerkt.' : 'Reservering aangemaakt.');
 

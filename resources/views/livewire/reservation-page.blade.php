@@ -100,7 +100,7 @@
                                                 Personen</th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                                Tafelnummer</th>
+                                                Tafelnummers</th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actief
                                             </th>
@@ -133,7 +133,9 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    {{ $reservation->table->table_number }}
+                                                    @foreach ($reservation->tables as $table)
+                                                        Tafel {{ $table->table_number }} <br>
+                                                    @endforeach
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -259,9 +261,9 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Personen</label>
-                    <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
-                        max="6" class="mt-1 block w-full rounded-md border-gray-300">
+                    <label class="block text-sm font-medium">Personen ({{ $maxChairs }} max)</label>
+                    <input wire:model.live.debounce.20ms="people" type="number" min="1" max="{{ $maxChairs }}"
+                        class="mt-1 block w-full rounded-md border-gray-300">
                     @error('people')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
@@ -270,7 +272,8 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Tafel</label>
-                    <select wire:model.defer="table_id" class="mt-1 block w-full rounded-md border-gray-300">
+                    <select name="options[]" multiple wire:model.defer="table_ids"
+                        class="mt-1 block w-full rounded-md border-gray-300">
                         <option value="">Selecteer een tafel</option>
                         @foreach($tables as $table)
                             <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
