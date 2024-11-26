@@ -1,4 +1,4 @@
-<nav class="md:items-start !fixed z-10 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row"
+<nav class="md:items-start !fixed z-50 top-0 left-0 w-screen navbar-expand-lg bg-[#0f172b] lg:bg-[#0f172b] px-4 px-lg-5 py-3 py-lg-3 flex flex-col lg:flex-row"
     x-data="{navBarShown : false}">
     <div class="flex gap-5 w-full items-center justify-around lg:justify-start">
         <a href="/" wire:navigate class="navbar-brand p-0">
