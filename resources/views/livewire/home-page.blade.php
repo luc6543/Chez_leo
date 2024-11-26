@@ -315,13 +315,11 @@
                                 @endif
                                 <div class="col-md-6">
                                     <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <x-flatpickr id="flatPickr" max-time="20:30" clearable onChange="handleChange" :disable="['monday','tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
-
-
-            {{--            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />--}}
-{{--            <label for="datetimepicker">Datum & Tijd</label>--}}
-        </div>
-    </div>
+                                        <x-flatpickr id="flatPickr" max-time="20:30" onChange="handleChange" :disable="['monday','tuesday']" class="bg-white py-3" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
+                                        {{-- <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />--}}
+                                        {{--<label for="datetimepicker">Datum & Tijd</label>--}}
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <select wire:model="people" class="form-select" id="select1">
@@ -434,7 +432,7 @@
 <!-- Testimonial End -->
 
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 </body>
 

@@ -15,8 +15,12 @@ class Reservation extends Model
         'special_request',
         'start_time',
         'end_time',
+        'paid',
+        'email_send',
+        'present',
         'active',
         'people',
+        'guest_name',
     ];
 
     protected $casts = [
@@ -38,7 +42,8 @@ class Reservation extends Model
                 $query->where('paid', '!=', '1'); // Filter related bill records
             })->get();
     }
-    public function bill() {
+    public function bill()
+    {
         return $this->hasOne(Bill::class);
     }
 }

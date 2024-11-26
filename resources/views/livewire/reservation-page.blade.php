@@ -107,7 +107,7 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    {{ $reservation->user->name ?? 'Geen klant' }}
+                                                    {{ ($reservation->user->name ?? $reservation->guest_name) ?? 'Geen klant' }}
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -194,12 +194,31 @@
             <form wire:submit.prevent="store">
                 <div class="mb-4 mt-2">
                     <label class="block text-sm font-medium">Klant</label>
-                    <select wire:model.defer="user_id" class="mt-1 block w-full rounded-md border-gray-300">
-                        <option value="">Selecteer een klant</option>
-                        @foreach($users as $user)
-                            <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
-                        @endforeach
-                    </select>
+                    <div class="flex items-center justify-between">
+
+                        @if ($showGuestNameInput)
+                            <input wire:model.defer="guest_name" id="guest-name"
+                                class="mt-1 w-full rounded-md border-gray-300" placeholder="Type de naam van de klant">
+                        @else
+                            <select id="user-select" wire:model.defer="user_id"
+                                class="mt-1 block w-full rounded-md border-gray-300">
+                                <option value="">Selecteer een klant</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
+
+
+                        <button type="button" wire:click="toggleGuestInput" class="ml-4 mr-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="size-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M7.5 21 3 16.5m0 0L7.5 12M3 16.5h13.5m0-13.5L21 7.5m0 0L16.5 12M21 7.5H7.5" />
+                            </svg>
+                        </button>
+                    </div>
+
                     @error('user_id')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
@@ -207,9 +226,9 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" clearable onChange="handleChange"
-                        :disable="['monday', 'tuesday']" class="h-full" date-format="d-m-Y" placeholder="Datum & Tijd"
-                        :min-date="today()" wire:model="start_time" show-time />
+                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30"
+                        onChange="handleChange" :disable="['monday', 'tuesday']" class="h-full mt-1 block w-full !rounded-md bg-white !border-gray-300" date-format="d-m-Y"
+                        placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
@@ -221,9 +240,9 @@
                     <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
                         max="6" class="mt-1 block w-full rounded-md border-gray-300">
                     @error('people')
-                    <div class="alert alert-danger text-red-500">
-                        {{ $message }}
-                    </div>
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-4">
@@ -237,28 +256,28 @@
                         @endforeach
                     </select>
                     @error('table_id')
-                    <div class="alert alert-danger text-red-500">
-                        {{ $message }}
-                    </div>
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Speciaal verzoek</label>
                     <textarea maxlength="255" wire:model.defer="special_request"
-                        class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                        class="mt-1 block w-full resize-none rounded-md border-gray-300"></textarea>
                     @error('special_request')
-                    <div class="alert alert-danger text-red-500">
-                        {{ $message }}
-                    </div>
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Actief</label>
                     <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
                     @error('active')
-                    <div class="alert alert-danger text-red-500">
-                        {{ $message }}
-                    </div>
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
                     @enderror
                 </div>
                 <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>

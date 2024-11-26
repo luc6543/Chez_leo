@@ -5,7 +5,7 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Bedrijf</h4>
-                    <a class="btn btn-link" href="/over-ons">Over Ons</a>
+{{--                    <a class="btn btn-link" href="/over-ons">Over Ons</a>--}}
                     <a class="btn btn-link" href="/#Reserveer">Reserveren</a>
                     {{-- <a class="btn btn-link" href="">Privacybeleid</a>
                     <a class="btn btn-link" href="">Algemene voorwaarden</a> --}}
@@ -38,9 +38,9 @@
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
                         <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text"
-                               placeholder="Uw email">
+                            placeholder="Uw email">
                         <button type="button"
-                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Inschrijven</button>
+                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Inschrijven</button>
                     </div>
                 </div>
             </div>
