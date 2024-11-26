@@ -51,6 +51,7 @@
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables">Tafels</a>
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
                         <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
+                        <a class="block px-4 py-2 text-[#FEA116]" wire:navigate href="/admin/recensies">Keuken manager</a>
                         @endrole
                     </div>
                 </div>
@@ -107,6 +108,7 @@
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables">Tafels</a>
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
                             <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" wire:navigate href="/admin/kitchen-manager">Keuken manager</a>
                             @endrole
                         </div>
                     </div>

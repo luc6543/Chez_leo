@@ -16,5 +16,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/bill/{bill}', \App\Livewire\BillDetailPage::class)->name('bill.detail');
     Route::get("/admin/recensies",\App\Livewire\AdminRecenties::class)->middleware('role:admin');
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile');
+    Route::get('/admin/kitchen-manager', \App\Livewire\KitchenManager::class)->name('admin.kitchen-manager');
 });
 
