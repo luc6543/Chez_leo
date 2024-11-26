@@ -15,8 +15,12 @@ class Reservation extends Model
         'special_request',
         'start_time',
         'end_time',
+        'paid',
+        'email_send',
+        'present',
         'active',
         'people',
+        'guest_name',
     ];
 
     protected $casts = [
@@ -32,7 +36,8 @@ class Reservation extends Model
     {
         return $this->belongsTo(Table::class);
     }
-    public function bill() {
+    public function bill()
+    {
         return $this->hasOne(Bill::class);
     }
 }
