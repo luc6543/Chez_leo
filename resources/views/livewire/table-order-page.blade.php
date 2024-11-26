@@ -8,7 +8,7 @@
     @endif
     <div class="w-full h-full flex flex-col gap-10 items-start justify-start">
         <div class="mt-10 ml-5 w-[50%] z-50">
-            <a href="/admin/order"><i class=" fa fa-3x fa-arrow-left"></i></a>
+            <a href="/admin/order" wire:navigate><i class=" fa fa-3x fa-arrow-left"></i></a>
         </div>
         @foreach($this->products as $category => $products)
             <div x-data="{openMenu : false}" class="w-full">

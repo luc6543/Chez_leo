@@ -51,7 +51,7 @@
                     </li>
                     <li wire:click="filter('Diner')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 pb-3 @if($category == "Diner")active
-                         @endif" href="#">
+                         @endif" href="">
                             <i class="fa fa-hamburger fa-2x "></i>
                             <div class="ps-3">
                                 <small class="text-body">Heerlijke</small>
@@ -61,7 +61,7 @@
                     </li>
                     <li wire:click="filter('Dessert')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Dessert")active
-                         @endif" href="#">
+                         @endif" href="">
                             <i class="fa fa-ice-cream fa-2x "></i>
                             <div class="ps-3">
                                 <small class="text-body">Smakelijke</small>
@@ -71,7 +71,7 @@
                     </li>
                     <li wire:click="filter('Drank')" class="nav-item">
                         <a class="d-flex align-items-center text-start mx-3 me-0 pb-3 @if($category == "Drank")active
-                         @endif" href="#">
+                         @endif" href="">
                             <i class="fa fa-ice-cream fa-2x "></i>
                             <div class="ps-3">
                                 <small class="text-body">Goede</small>
@@ -155,7 +155,7 @@
                             @endforeach
                         </div>
                         <div class="tab-content">
-                            <div class="flex items-center text-start mx-3 me-0 pb-3" href="#">
+                            <div class="flex items-center text-start mx-3 me-0 pb-3" href="">
                                 <i class="fa fa-ice-cream fa-2x"></i>
                                 <div class="ps-3">
                                     <small class="text-body">Smakelijke</small>
@@ -177,7 +177,7 @@
                             @endforeach
                         </div>
                         <div class="tab-content">
-                            <div class="flex items-center text-start mx-3 me-0 pb-3" href="#">
+                            <div class="flex items-center text-start mx-3 me-0 pb-3" href="">
                                 <i class="fa fa-2x text-white fa-wine-glass"></i>
                                 <div class="ps-3">
                                     <small class="text-body">Goede</small>
