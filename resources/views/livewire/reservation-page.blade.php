@@ -226,8 +226,8 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" clearable
-                        onChange="handleChange" :disable="['monday', 'tuesday']" class="h-full" date-format="d-m-Y"
+                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30"
+                        onChange="handleChange" :disable="['monday', 'tuesday']" class="h-full mt-1 block w-full !rounded-md bg-white !border-gray-300" date-format="d-m-Y"
                         placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
@@ -264,7 +264,7 @@
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Speciaal verzoek</label>
                     <textarea maxlength="255" wire:model.defer="special_request"
-                        class="mt-1 block w-full rounded-md border-gray-300"></textarea>
+                        class="mt-1 block w-full resize-none rounded-md border-gray-300"></textarea>
                     @error('special_request')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
