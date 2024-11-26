@@ -42,6 +42,11 @@ class Reservation extends Model
                 $query->where('paid', '!=', '1'); // Filter related bill records
             })->get();
     }
+    public function tables()
+    {
+        return $this->belongsToMany(Table::class, 'reservation_table');
+    }
+
     public function bill()
     {
         return $this->hasOne(Bill::class);
