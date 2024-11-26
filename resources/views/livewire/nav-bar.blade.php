@@ -11,10 +11,6 @@
     {{-- hamburger menu --}}
     <div style="display:none" x-show="navBarShown" x-collapse id="navbarCollapse">
         <div class="lg:hidden flex-col pl-0 mb-0 list-none flex ms-auto w-fit py-0 pe-4">
-            <a href="/">Home</a>
-{{--            <a href="/over-ons">Over ons</a>--}}
-            <a href="/menu">Menu</a>
-            <a href="/recensies">Recensies</a>
             <a href="/" wire:navigate>Home</a>
             <a href="/menu" wire:navigate>Menu</a>
             <a href="/recensies" wire:navigate>Recensies</a>
@@ -68,10 +64,6 @@
     <div class="gap-2">
         <div class="hidden lg:flex gap-5">
             <ul class="flex gap-3 pt-3">
-                <li class=""><a href="/">Home</a></li>
-{{--                <li class="w-16"><a href="/over-ons">Over ons</a></li>--}}
-                <li class=""><a href="/menu" class="">Menu</a></li>
-                <li class=""><a href="/recensies" class="">Recensies</a></li>
                 <li class=""><a href="/" wire:navigate>Home</a></li>
                 <li class=""><a href="/menu" wire:navigate class="">Menu</a></li>
                 <li class=""><a href="/recensies" wire:navigate class="">Recensies</a></li>
