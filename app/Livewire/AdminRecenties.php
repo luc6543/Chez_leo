@@ -28,22 +28,27 @@ class AdminRecenties extends Component
     }
 
     public function getVerbeterPunten() {
-        $this->AIGenerated = '';
+        try {
+            $this->AIGenerated = '';
 
-        $reviews = 'review: ' . $this->reviews->pluck('review')->implode("\n");
+            $reviews = 'review: ' . $this->reviews->pluck('review')->implode("\n");
 
-        $reviews = 'reageer op het volgende met een li in html eromheen: op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews laat ook zien op basis van welke specifieke texten deze zijn bedacht: ' . $reviews;
-        $wordLimit = 100; // Set the word limit to 20 million.
-        $wordsArray = explode(' ', $reviews); // Split the string into an array of words.
-        $limitedWordsArray = array_slice($wordsArray, 0, $wordLimit); // Take only the first $wordLimit words.
-        $reviews = implode(' ', $limitedWordsArray); // Rebuild the string from the sliced array.
+            $reviews = 'reageer op het volgende met een li in html eromheen: op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews laat ook zien op basis van welke specifieke texten deze zijn bedacht: ' . $reviews;
+            $wordLimit = 100; // Set the word limit to 20 million.
+            $wordsArray = explode(' ', $reviews); // Split the string into an array of words.
+            $limitedWordsArray = array_slice($wordsArray, 0, $wordLimit); // Take only the first $wordLimit words.
+            $reviews = implode(' ', $limitedWordsArray); // Rebuild the string from the sliced array.
 
-        $client = new Client(env('GEMINI_API'));
-        $response = $client->geminiPro()->generateContent(
-            new TextPart($reviews),
-        );
+            $client = new Client(env('GEMINI_API'));
+            $response = $client->geminiPro()->generateContent(
+                new TextPart($reviews),
+            );
 
-        $this->AIGenerated = $response->text();
+            $this->AIGenerated = $response->text();
+        }
+        catch (\Exception $e) {
+            $this->AIGenerated = "Er is een rate limit op het ophalen van verbeter punten probeer het over een kleine minuut nog eens.";
+        }
     }
 
 
