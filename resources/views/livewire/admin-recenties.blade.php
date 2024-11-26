@@ -1,4 +1,9 @@
 <div class="mx-auto p-4 mt-24">
+    <div wire:loading.flex class="bg-black/75 inset-0 fixed flex items-center justify-center transition-opacity duration-500 ease-out delay-500 z-[99999]">
+        <div class="border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 animate-spin" role="status">
+            <span class="sr-only">Laden...</span>
+        </div>
+    </div>
     <h1 class="text-2xl font-bold mb-4">Admin Reviews</h1>
     <div class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
         @if($reviews->isEmpty())
@@ -41,29 +46,29 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->created_at)) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->updated_at)) }}</td>
-                            <td 
-                                id="approve-{{ $review->id }}" 
-                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? 'hidden' : '' }}" 
+                            <td
+                                id="approve-{{ $review->id }}"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? 'hidden' : '' }}"
                                 >
-                                <button 
-                                    wire:click="RecensieBevestiging({{ $review->id }})" 
+                                <button
+                                    wire:click="RecensieBevestiging({{ $review->id }})"
                                     class="hover:text-[#FEA116]">
                                     sta toe
                                 </button>
                             </td>
-                            <td 
-                                id="no_approve-{{ $review->id }}" 
-                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? '' : 'hidden' }}" 
+                            <td
+                                id="no_approve-{{ $review->id }}"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? '' : 'hidden' }}"
                                 >
-                                <button 
-                                    wire:click="RecensieBevestiging({{ $review->id }})" 
+                                <button
+                                    wire:click="RecensieBevestiging({{ $review->id }})"
                                     class="hover:text-[#FEA116]">
                                     sta niet toe
                                 </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
-                                <button 
-                                    wire:click="verwijderRecensie({{ $review->id }})" 
+                                <button
+                                    wire:click="verwijderRecensie({{ $review->id }})"
                                     class="hover:text-red-600">
                                     verwijder
                                 </button>
@@ -73,5 +78,11 @@
                 </tbody>
             </table>
         @endif
+        <div>
+            <button wire:click="getVerbeterPunten" class="bg-sky-500 rounded shadow text-white p-2 px-4 mb-5">Laat AI de reviews analyzeren</button>
+            <ul class="list-disc">
+            {!! $AIGenerated !!}
+            </ul>
+        </div>
     </div>
 </div>
