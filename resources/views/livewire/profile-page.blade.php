@@ -76,7 +76,7 @@
                 </div> --}}
             </div>
         </div>
-        <div class="w-full mt-8">
+        <div class="w-full mt-12">
             <div class="flow-root">
                 <div class="block md:hidden">
                     <!-- Mobile Version -->
@@ -120,55 +120,10 @@
                             </div>
                         </div>
                     @endforeach
-                    <div class="px-4 py-3">
-                        <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de reservering</small>
-                    </div>
                 </div>
                 <div class="hidden md:block">
                     <!-- Desktop Version -->
-                    <div class="overflow-hidden md:px-5">
-                        <table class="w-full divide-y divide-gray-300 text-sm">
-                            <thead>
-                                <tr>
-                                    <th scope="col"
-                                        class="py-3.5 pl-4 pr-3 text-left font-semibold text-gray-900 sm:pl-0">
-                                        Reserverings nummer</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Tafel
-                                        nummer</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Datum</th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Rekening
-                                    </th>
-                                    <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Voldaan
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @foreach(Auth::user()->reservations as $reservation)
-                                    <tr>
-                                        <td
-                                            class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
-                                            {{ $reservation->id }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            {{ $reservation->table->table_number }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            {{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€
-                                            {{ $reservation->bill->getSum() }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            {{ $reservation->bill->paid ? 'Ja' : 'Nee' }}
-                                        </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            <a href="/bill/{{ $reservation->bill->id }}" wire:navigate
-                                                class="hover:underline">Bekijken</a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                    <div>
                     @if ($reservations->isEmpty())
                         <div class="flex justify-center items-center">
                             <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
@@ -217,7 +172,6 @@
                                                 <span class="text-gray-500 cursor-not-allowed">annuleren</span>
                                             </td>
                                         @endif
-
                                         {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button></td> --}}
                                     </tr>
                                     @endforeach
@@ -228,8 +182,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div x-show="modalOpened" x-cloak
+        <div x-show="modalOpened" x-cloak
             class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
             <div x-transition class="bg-white rounded-lg p-6 w-1/3">
                 <h2 class="text-lg font-semibold mb-2">
@@ -270,4 +223,5 @@
         </div>
     </div>
 </div>
+    
 
