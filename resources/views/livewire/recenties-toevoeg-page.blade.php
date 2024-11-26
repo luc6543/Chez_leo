@@ -10,7 +10,7 @@
             @endif
 
             <!-- Formulier voor ingelogde gebruikers -->
-            <form wire:submit.prevent="addReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+            <form wire:submit.prevent="saveReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
                 <div class="mb-4">
                     <label for="review" class="block text-gray-700 text-sm font-bold mb-2">Review:</label>
                     <textarea 
@@ -41,10 +41,11 @@
                     @error('rating') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Dynamische knoptekst -->
                 <button 
                     type="submit" 
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Plaats Review
+                    {{ $reviewId ? 'Update Review' : 'Plaats Review' }}
                 </button>
             </form>
         <!-- @else
@@ -62,58 +63,3 @@
         @endauth
     </div>
 </div>
-
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const stars = document.querySelectorAll('.star');
-        let selectedRating = 0; // Houdt de geselecteerde rating bij
-
-        stars.forEach((star) => {
-            star.addEventListener('mouseover', function () {
-                if (selectedRating > 0) return; // Geen hover-effect als er een ster is geselecteerd
-
-                const rating = parseInt(this.getAttribute('data-rating'));
-
-                // Kleur sterren tot en met de gehoverde ster
-                stars.forEach((s) => {
-                    const starRating = parseInt(s.getAttribute('data-rating'));
-                    if (starRating <= rating) {
-                        s.classList.add('text-yellow-400');
-                        s.classList.remove('text-gray-300');
-                    } else {
-                        s.classList.add('text-gray-300');
-                        s.classList.remove('text-yellow-400');
-                    }
-                });
-            });
-
-            star.addEventListener('mouseout', function () {
-                if (selectedRating > 0) return; // Geen reset als er een ster is geselecteerd
-
-                // Reset kleuren naar standaard (allemaal grijs)
-                stars.forEach((s) => {
-                    s.classList.add('text-gray-300');
-                    s.classList.remove('text-yellow-400');
-                });
-            });
-
-            star.addEventListener('click', function () {
-                // Sla de geselecteerde rating op
-                selectedRating = parseInt(this.getAttribute('data-rating'));
-
-                // Kleur sterren tot en met de geselecteerde ster
-                stars.forEach((s) => {
-                    const starRating = parseInt(s.getAttribute('data-rating'));
-                    if (starRating <= selectedRating) {
-                        s.classList.add('text-yellow-400');
-                        s.classList.remove('text-gray-300');
-                    } else {
-                        s.classList.add('text-gray-300');
-                        s.classList.remove('text-yellow-400');
-                    }
-                });
-            });
-        });
-    });
-</script>
-
