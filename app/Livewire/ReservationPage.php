@@ -224,13 +224,14 @@ class ReservationPage extends Component
 
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
+        $format_start_time = Carbon::parse($this->start_time)->format('Y-m-d H:i:s');
 
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
             [
                 'user_id' => $this->user_id,
                 'table_id' => $this->table_id,
-                'start_time' => $this->start_time,
+                'start_time' => $format_start_time,
                 'end_time' => $this->end_time,
                 'active' => $this->active,
                 'people' => $this->people,
@@ -253,7 +254,7 @@ class ReservationPage extends Component
         $this->user_id = $reservation->user_id;
         $this->table_id = $reservation->table_id;
         $this->start_time = date('d-m-Y H:i', strtotime($reservation->start_time));
-        $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
+        $this->end_time = date('Y-m-d', strtotime($reservation->start_time));
         $this->active = $reservation->active;
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
