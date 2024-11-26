@@ -1,3 +1,6 @@
+@php
+    use Carbon\Carbon;
+@endphp
 <div class="my-28" x-data="{modalOpened : false}" @close-modal=" modalOpened = false " @open-modal="modalOpened = true">
     @push('styles')
         @include('flatpickr::components.style')
@@ -105,14 +108,19 @@
                                     <div class="">Bekijken</div>
                                 </a>
                         </div>
-                        <div class="flex justify-center">
-                            <button class="border rounded-md px-12 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]" >aanpassen</button>
-                        </div>
-                        <div class="flex justify-center">
-                            <button class="border rounded-md px-[3.2rem] py-2 bg-red-500 text-white hover:bg-red-400">annuleren</button>
-                        </div>
+                        @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
+                            <div class="flex justify-center">
+                                <button class="border rounded-md px-12 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]" >aanpassen</button>
+                            </div>
+                            <div class="flex justify-center">
+                                <button class="border rounded-md px-[3.2rem] py-2 bg-red-500 text-white hover:bg-red-400">annuleren</button>
+                            </div>
+                        @endif
                     </div>
                     @endforeach
+                    <div class="px-4 py-3">
+                        <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de reservering</small>
+                    </div>
                 </div>
                 <div class="hidden md:block">
                     <!-- Desktop Version -->
@@ -121,6 +129,9 @@
                             <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
                         </div>
                     @else
+                    <div class="px-4 py-3">
+                        <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de reservering</small>
+                    </div>
                         <div class="overflow-hidden md:px-8">
                             <table class="w-full divide-y divide-gray-300 text-sm">
                                 <thead>
@@ -146,8 +157,22 @@
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                             <a href="/bill/{{ $reservation->bill->id }}" class="hover:underline">Bekijken</a>
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a class="hover:underline cursor-pointer" @click="modalOpened = true" wire:click="edit({{$reservation->id}})">Aanpassen</a></td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><a class="hover:underline cursor-pointer text-red-500 hover:text-red-400" wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a></td>
+                                        @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                <a class="hover:underline cursor-pointer" wire:click="edit({{ $reservation->id }})">Aanpassen</a>
+                                            </td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
+                                                <a class="hover:underline cursor-pointer text-red-500 hover:text-red-400" wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a>
+                                            </td>
+                                        @else
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                <span class="text-gray-500 cursor-not-allowed">Aanpassen</span>
+                                            </td>
+                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                <span class="text-gray-500 cursor-not-allowed">annuleren</span>
+                                            </td>
+                                        @endif
+                                        
                                         {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button></td> --}}
                                     </tr>
                                     @endforeach
