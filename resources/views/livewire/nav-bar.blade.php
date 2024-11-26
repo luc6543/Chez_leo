@@ -15,8 +15,11 @@
 {{--            <a href="/over-ons">Over ons</a>--}}
             <a href="/menu">Menu</a>
             <a href="/recensies">Recensies</a>
+            <a href="/" wire:navigate>Home</a>
+            <a href="/menu" wire:navigate>Menu</a>
+            <a href="/recensies" wire:navigate>Recensies</a>
             @guest
-                <a href="/login">Login</a>
+                <a href="/login" wire:navigate>Login</a>
             @endguest
 
             @auth
@@ -69,8 +72,11 @@
 {{--                <li class="w-16"><a href="/over-ons">Over ons</a></li>--}}
                 <li class=""><a href="/menu" class="">Menu</a></li>
                 <li class=""><a href="/recensies" class="">Recensies</a></li>
+                <li class=""><a href="/" wire:navigate>Home</a></li>
+                <li class=""><a href="/menu" wire:navigate class="">Menu</a></li>
+                <li class=""><a href="/recensies" wire:navigate class="">Recensies</a></li>
                 @guest
-                    <a href="/login">Login</a>
+                    <a href="/login" wire:navigate>Login</a>
                 @endguest
 
                 @auth
@@ -81,7 +87,7 @@
                                     class="bi bi-chevron-up"></i></button>
                             <div style="display:none" x-show="open" x-collapse @click.away="open = false"
                                 class="absolute left-1 right-0 mt-2 w-48 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
-                                <a href="/profile" class="block px-4 py-2 text-[#FEA116]">Profiel</a>
+                                <a href="/profile" wire:navigate class="block px-4 py-2 text-[#FEA116]">Profiel</a>
                                 <form method="post" action="/logout" class="block">
                                     @csrf
                                     <button type="submit"
@@ -100,13 +106,16 @@
                                 class="bi bi-chevron-up"></i></button>
                         <div style="display:none" x-show="open" x-collapse @click.away="open = false"
                             class="absolute left-1 top-8 right-0 mt-2 w-52 bg-[#0f172b] rounded-md shadow-lg py-1 z-20">
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations">Reserveringen</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view">Gereserveerde tafels</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order">Bestellingen</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/reservations"
+                                wire:navigate>Reserveringen</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/table-view"
+                                wire:navigate>Gereserveerde tafels</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/order" wire:navigate>Bestellingen</a>
                             @role("admin")
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables">Tafels</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users">Gebruikers</a>
-                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies">Recensies</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/tables" wire:navigate>Tafels</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/users" wire:navigate>Gebruikers</a>
+                            <a class="block px-4 py-2 text-[#FEA116]" href="/admin/recensies"
+                                wire:navigate>Recensies</a>
                             @endrole
                         </div>
                     </div>
