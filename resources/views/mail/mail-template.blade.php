@@ -63,7 +63,7 @@
 		<p>contact</p>
 		<ul>
 			<li>EenStraat 109, 3651 EenPlek, Nederland</li>
-			<li>+31 06 345 67890</li>
+			<li>+31 06 556 232 50</li>
 			<li>info@chezleo.nl</li>
 		</ul>
 		<p>Copyright 2023 Chez Leo</p>
