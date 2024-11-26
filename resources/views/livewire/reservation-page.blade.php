@@ -195,19 +195,22 @@
                 <div class="mb-4 mt-2">
                     <label class="block text-sm font-medium">Klant</label>
                     <div class="flex items-center justify-between">
-                        <select id="user-select" wire:model.defer="user_id"
-                            class="mt-1 block w-full rounded-md border-gray-300">
-                            <option value="">Selecteer een klant</option>
-                            @foreach($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
-                            @endforeach
-                        </select>
 
-                        <input wire:model.defer="guest_name" id="guest-name"
-                            class="mt-1 w-full rounded-md border-gray-300 hidden"
-                            placeholder="Type de naam van de klant">
+                        @if ($showGuestNameInput)
+                            <input wire:model.defer="guest_name" id="guest-name"
+                                class="mt-1 w-full rounded-md border-gray-300" placeholder="Type de naam van de klant">
+                        @else
+                            <select id="user-select" wire:model.defer="user_id"
+                                class="mt-1 block w-full rounded-md border-gray-300">
+                                <option value="">Selecteer een klant</option>
+                                @foreach($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
+                                @endforeach
+                            </select>
+                        @endif
 
-                        <button type="button" onclick="toggleGuestInput()" class="ml-4 mr-3">
+
+                        <button type="button" wire:click="toggleGuestInput" class="ml-4 mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
                                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -215,21 +218,6 @@
                             </svg>
                         </button>
                     </div>
-
-                    <script>
-                        function toggleGuestInput() {
-                            const userSelect = document.getElementById('user-select');
-                            const guestName = document.getElementById('guest-name');
-
-                            if (guestName.classList.contains('hidden')) {
-                                guestName.classList.remove('hidden');
-                                userSelect.classList.add('hidden');
-                            } else {
-                                guestName.classList.add('hidden');
-                                userSelect.classList.remove('hidden');
-                            }
-                        }
-                    </script>
 
                     @error('user_id')
                         <div class="alert alert-danger text-red-500">

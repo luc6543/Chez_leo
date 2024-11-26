@@ -37,6 +37,7 @@ class ReservationPage extends Component
     public $originalTableId;
     public $special_request;
     public $maxChairs;
+    public $showGuestNameInput = false;
 
     // Validatieregels voor invoervelden
     protected $rules = [
@@ -115,6 +116,11 @@ class ReservationPage extends Component
     public function toggleShowNonActiveReservations()
     {
         $this->showNonActiveReservations = !$this->showNonActiveReservations;
+    }
+
+    public function toggleGuestInput()
+    {
+        $this->showGuestNameInput = !$this->showGuestNameInput;
     }
 
     // Invoervelden resetten
