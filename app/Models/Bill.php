@@ -36,7 +36,7 @@ class Bill extends Model
         return number_format($sum, 2);
     }
     public function products() {
-        return $this->belongsToMany(Product::class, 'bill_products', 'bill_id', 'product_id')->withPivot('quantity');
+        return $this->belongsToMany(Product::class, 'bill_products', 'bill_id', 'product_id')->withPivot('quantity', 'completed', 'id');
     }
 
 }

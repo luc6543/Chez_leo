@@ -1,4 +1,45 @@
 <div lang="en" x-data="{videoModal: false}">
+
+    @push('styles')
+        @include('flatpickr::components.style')
+    @endpush
+        @push('scripts')
+            @include('flatpickr::components.script')
+
+            <script>
+                function handleChange(selectedDates, dateStr, instance) {
+                    console.log({ selectedDates, dateStr, instance });
+
+                    if (!selectedDates.length) return; // If no date is selected, return.
+
+                    const selectedDate = selectedDates[0];
+                    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                    let minTime = null;
+
+                    switch (dayOfWeek) {
+                        case 0: // Sunday
+                        case 5: // Friday
+                        case 6: // Saturday
+                            minTime = "12:00"; // 12 PM
+                            break;
+                        case 3: // Wednesday
+                            minTime = "17:00"; // 5 PM
+                            break;
+                        case 4: // Thursday
+                            minTime = "12:00"; // 12 PM
+                            break;
+                        default: // Monday and Tuesday (Closed)
+                            instance.close(); // Close the calendar for closed days
+                            alert("Gesloten (Closed) on this day.");
+                            return;
+                    }
+
+                    // Set the new minTime for Flatpickr
+                    instance.set("minTime", minTime);
+                    console.log(`Min time set to: ${minTime}`);
+                }
+            </script>
+        @endpush
     <div style="display: none" class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
@@ -204,10 +245,9 @@
                         </a>
                     </li>
                 </ul>
-
                 <div class="tab-content">
-                    <div class="tab-pane fade show p-0 active">
-                        <div id="{{$category}}" class="row g-4">
+                    <div id="tab-1" class="tab-pane fade show p-0 active">
+                        <div class="row g-4">
                             @foreach($products as $product)
                             <div class="col-lg-6">
                                 <div class="d-flex align-items-center">
@@ -274,11 +314,12 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-        <div class="form-floating date" id="date3" data-target-input="nearest">
-            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />
-            <label for="datetimepicker">Datum & Tijd</label>
-        </div>
-    </div>
+                                    <div class="form-floating date" id="date3" data-target-input="nearest">
+                                        <x-flatpickr id="flatPickr" max-time="20:30" onChange="handleChange" :disable="['monday','tuesday']" class="bg-white py-3" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
+                                        {{-- <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />--}}
+                                        {{--<label for="datetimepicker">Datum & Tijd</label>--}}
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <select wire:model="people" class="form-select" id="select1">
@@ -313,8 +354,6 @@
             </div>
         </div>
     <!-- Reservation End -->
-
-
     @php
     $approvedReviews = $reviews->where('is_approved', 1);
 @endphp
@@ -392,9 +431,8 @@
 </div>
 <!-- Testimonial End -->
 
-
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 </body>
 

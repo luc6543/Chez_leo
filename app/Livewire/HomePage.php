@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Mail\NewTemporaryPasswordMail;
 use App\Models\Product;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Livewire\Component;
 use App\Models\Reservation;
@@ -59,6 +60,7 @@ class HomePage extends Component
 
     public function createReservation()
     {
+        $this->start_time = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
         try {
             $errorMessage = '';
 
@@ -110,10 +112,11 @@ class HomePage extends Component
                         'password' => Hash::make($temporaryPassword),
                     ]);
 
-                    // Send an email with the temporary password
-                    Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
-                }
-            }
+            // Send an email with the temporary password
+            Password::sendResetLink(['email' => $this->email]);
+//            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+        }
+    }
 
             // Convert start_time and end_time to the proper format
             $startTime = Carbon::parse($this->start_time);
@@ -186,6 +189,7 @@ class HomePage extends Component
             $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
 
         } catch (Exception $e) {
+            throw $e;
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
 
