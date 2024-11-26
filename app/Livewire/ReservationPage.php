@@ -37,6 +37,7 @@ class ReservationPage extends Component
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
     public $originalTableId;
+    public $originalTableIds = [];
     public $special_request;
     public $maxChairs;
     public $showGuestNameInput = false;
@@ -88,9 +89,9 @@ class ReservationPage extends Component
                 ->pluck('reservation_tables.table_id')
                 ->toArray();
 
-            // Include the original table attached to the reservation being edited
-            if ($this->originalTableId) {
-                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
+            // Include the original tables attached to the reservation being edited
+            if ($this->originalTableIds) {
+                $usedTableIds = array_diff($usedTableIds, $this->originalTableIds);
             }
 
             $this->tables = Table::whereNotIn('id', $usedTableIds)->get();
@@ -135,6 +136,7 @@ class ReservationPage extends Component
         $this->active = false;
         $this->people = '';
         $this->originalTableId = null;
+        $this->originalTableIds = [];
         $this->special_request = '';
     }
 
@@ -278,6 +280,7 @@ class ReservationPage extends Component
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
         $this->originalTableId = $reservation->table_id;
+        $this->originalTableIds = $reservation->tables->pluck('id')->toArray();
 
         $this->dispatch('open-modal');
     }
