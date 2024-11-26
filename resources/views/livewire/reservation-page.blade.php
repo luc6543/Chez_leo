@@ -7,42 +7,60 @@
         @include('flatpickr::components.style')
     @endpush
     @push('scripts')
-        @include('flatpickr::components.script')
+    @include('flatpickr::components.script')
 
-        <script>
-            function handleChange(selectedDates, dateStr, instance) {
-                console.log({ selectedDates, dateStr, instance });
+    <script>
+        function handleChange(selectedDates, dateStr, instance) {
+            console.log({ selectedDates, dateStr, instance });
 
-                if (!selectedDates.length) return; // If no date is selected, return.
+            if (!selectedDates.length) return; // If no date is selected, return.
 
-                const selectedDate = selectedDates[0];
-                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-                let minTime = null;
+            const selectedDate = selectedDates[0];
+            const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+            let minTime = null;
 
-                switch (dayOfWeek) {
-                    case 0: // Sunday
-                    case 5: // Friday
-                    case 6: // Saturday
-                        minTime = "12:00"; // 12 PM
-                        break;
-                    case 3: // Wednesday
-                        minTime = "17:00"; // 5 PM
-                        break;
-                    case 4: // Thursday
-                        minTime = "12:00"; // 12 PM
-                        break;
-                    default: // Monday and Tuesday (Closed)
-                        instance.close(); // Close the calendar for closed days
-                        alert("Gesloten (Closed) on this day.");
-                        return;
-                }
-
-                // Set the new minTime for Flatpickr
-                instance.set("minTime", minTime);
-                console.log(`Min time set to: ${minTime}`);
+            switch (dayOfWeek) {
+                case 0: // Sunday
+                case 5: // Friday
+                case 6: // Saturday
+                    minTime = "12:00"; // 12 PM
+                    break;
+                case 3: // Wednesday
+                    minTime = "17:00"; // 5 PM
+                    break;
+                case 4: // Thursday
+                    minTime = "12:00"; // 12 PM
+                    break;
+                default: // Monday and Tuesday (Closed)
+                    instance.close(); // Close the calendar for closed days
+                    // alert("Gesloten (Closed) on this day.");
+                    return;
             }
-        </script>
-    @endpush
+
+            // Set the new minTime for Flatpickr
+            instance.set("minTime", minTime);
+            console.log(`Min time set to: ${minTime}`);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            flatpickr("#flatPickr", {
+                enableTime: true,
+                maxTime: "20:30",
+                time_24hr: true,
+                minuteIncrement: 15,
+                onChange: handleChange,
+                dateFormat: "d-m-Y H:i",
+                minDate: "today",
+                disable: [
+                    function(date) {
+                        // return true to disable
+                        return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                    }
+                ]
+            });
+        });
+    </script>
+@endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
@@ -185,7 +203,7 @@
         </div>
     </div>
     <div x-show="modalOpened" x-cloak
-        class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+        class="fixed inset-0 z-[51] flex items-center justify-center bg-black bg-opacity-50">
         <div x-transition class="bg-white rounded-lg p-6 w-1/3">
             <h2 class="text-lg font-semibold mb-2">
                 {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
@@ -226,9 +244,14 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30"
-                        onChange="handleChange" :disable="['monday', 'tuesday']" class="h-full mt-1 block w-full !rounded-md bg-white !border-gray-300" date-format="d-m-Y"
-                        placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
+                  <div class="" id="date3" data-target-input="nearest">
+                        <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300" placeholder="Datum & Tijd" wire:model="start_time">
+                    </div>
+                    @error('start_time')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                    @enderror
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
