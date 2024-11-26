@@ -63,3 +63,57 @@
         @endauth
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const stars = document.querySelectorAll('.star');
+        let selectedRating = 0; // Houdt de geselecteerde rating bij
+
+        stars.forEach((star) => {
+            star.addEventListener('mouseover', function () {
+                if (selectedRating > 0) return; // Geen hover-effect als er een ster is geselecteerd
+
+                const rating = parseInt(this.getAttribute('data-rating'));
+
+                // Kleur sterren tot en met de gehoverde ster
+                stars.forEach((s) => {
+                    const starRating = parseInt(s.getAttribute('data-rating'));
+                    if (starRating <= rating) {
+                        s.classList.add('text-yellow-400');
+                        s.classList.remove('text-gray-300');
+                    } else {
+                        s.classList.add('text-gray-300');
+                        s.classList.remove('text-yellow-400');
+                    }
+                });
+            });
+
+            star.addEventListener('mouseout', function () {
+                if (selectedRating > 0) return; // Geen reset als er een ster is geselecteerd
+
+                // Reset kleuren naar standaard (allemaal grijs)
+                stars.forEach((s) => {
+                    s.classList.add('text-gray-300');
+                    s.classList.remove('text-yellow-400');
+                });
+            });
+
+            star.addEventListener('click', function () {
+                // Sla de geselecteerde rating op
+                selectedRating = parseInt(this.getAttribute('data-rating'));
+
+                // Kleur sterren tot en met de geselecteerde ster
+                stars.forEach((s) => {
+                    const starRating = parseInt(s.getAttribute('data-rating'));
+                    if (starRating <= selectedRating) {
+                        s.classList.add('text-yellow-400');
+                        s.classList.remove('text-gray-300');
+                    } else {
+                        s.classList.add('text-gray-300');
+                        s.classList.remove('text-yellow-400');
+                    }
+                });
+            });
+        });
+    });
+</script>
