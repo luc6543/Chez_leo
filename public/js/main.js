@@ -55,26 +55,26 @@ $(document).ready(function ($) {
     // });
 
     // Initialize the flatpickr en set the rules/options
-    flatpickr("#datetimepicker", {
-        enableTime: true,
-        dateFormat: "Y-m-d H:i",
-        minDate: "today",
-        time_24hr: true,
-        minuteIncrement: 15,
-        minTime: "12:00",
-        maxTime: "20:30",
-        disable: [
-            function (date) {
-                return date.getDay() === 1 || date.getDay() === 2;
-            },
-        ],
-        onReady: function (selectedDates, dateStr, instance) {
-            setMinTime(instance);
-        },
-        onChange: function (selectedDates, dateStr, instance) {
-            setMinTime(instance);
-        },
-    });
+    // flatpickr("#datetimepicker", {
+    //     enableTime: true,
+    //     dateFormat: "d-m-Y H:i",
+    //     minDate: "today",
+    //     time_24hr: true,
+    //     minuteIncrement: 15,
+    //     minTime: "12:00",
+    //     maxTime: "20:30",
+    //     disable: [
+    //         function (date) {
+    //             return date.getDay() === 1 || date.getDay() === 2;
+    //         },
+    //     ],
+    //     onReady: function (selectedDates, dateStr, instance) {
+    //         setMinTime(instance);
+    //     },
+    //     onChange: function (selectedDates, dateStr, instance) {
+    //         setMinTime(instance);
+    //     },
+    // });
 
     // Set the minTime based on the selected date
     function setMinTime(instance) {
