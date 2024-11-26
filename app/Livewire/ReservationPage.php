@@ -232,7 +232,14 @@ class ReservationPage extends Component
 
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
+
+        // Format the start_time property
         $format_start_time = Carbon::parse($this->start_time)->format('Y-m-d H:i:s');
+
+        // Check if the guest_name is empty or contains only spaces
+        if (empty(trim($this->guest_name))) {
+            $this->guest_name = null;
+        }
 
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
