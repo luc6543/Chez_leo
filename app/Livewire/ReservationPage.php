@@ -23,6 +23,7 @@ class ReservationPage extends Component
     public $reservations;
     public $reservationId;
     public $user_id;
+    public $guest_name;
     public $table_id;
     public $start_time;
     public $end_time;
@@ -36,10 +37,12 @@ class ReservationPage extends Component
     public $originalTableId;
     public $special_request;
     public $maxChairs;
+    public $showGuestNameInput = false;
 
     // Validatieregels voor invoervelden
     protected $rules = [
         'user_id' => 'nullable',
+        'guest_name' => 'nullable',
         'table_id' => 'required',
         'start_time' => 'required|date|after:today',
         'active' => 'boolean',
@@ -48,7 +51,6 @@ class ReservationPage extends Component
     public function messages()
     {
         return [
-            'user_id.required' => 'De gebruiker is verplicht.',
             'table_id.required' => 'De tafel is verplicht.',
             'start_time.required' => 'De starttijd is verplicht.',
             'start_time.date' => 'De starttijd moet een geldige datum zijn.',
@@ -116,11 +118,17 @@ class ReservationPage extends Component
         $this->showNonActiveReservations = !$this->showNonActiveReservations;
     }
 
+    public function toggleGuestInput()
+    {
+        $this->showGuestNameInput = !$this->showGuestNameInput;
+    }
+
     // Invoervelden resetten
     public function resetInputFields()
     {
         $this->reservationId = null;
         $this->user_id = null;
+        $this->guest_name = '';
         $this->table_id = '';
         $this->start_time = '';
         $this->end_time = '';
@@ -225,12 +233,21 @@ class ReservationPage extends Component
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
 
+        // Format the start_time property
+        $format_start_time = Carbon::parse($this->start_time)->format('Y-m-d H:i:s');
+
+        // Check if the guest_name is empty or contains only spaces
+        if (empty(trim($this->guest_name))) {
+            $this->guest_name = null;
+        }
+
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
             [
                 'user_id' => $this->user_id,
+                'guest_name' => $this->guest_name,
                 'table_id' => $this->table_id,
-                'start_time' => $this->start_time,
+                'start_time' => $format_start_time,
                 'end_time' => $this->end_time,
                 'active' => $this->active,
                 'people' => $this->people,
@@ -251,9 +268,10 @@ class ReservationPage extends Component
 
         $this->reservationId = $reservation->id;
         $this->user_id = $reservation->user_id;
+        $this->guest_name = $reservation->guest_name;
         $this->table_id = $reservation->table_id;
         $this->start_time = date('d-m-Y H:i', strtotime($reservation->start_time));
-        $this->end_time = date('Y-m-d', strtotime($reservation->start_time)) . ' 23:59:00';
+        $this->end_time = date('Y-m-d', strtotime($reservation->start_time));
         $this->active = $reservation->active;
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
