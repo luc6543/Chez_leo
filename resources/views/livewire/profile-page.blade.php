@@ -1,4 +1,44 @@
-<div class="flex flex-col mt-24 lg:mt-44 gap-5 justify-center items-center mb-5">
+<div class="my-28" x-data="{modalOpened : false}" @close-modal=" modalOpened = false " @open-modal="modalOpened = true">
+    @push('styles')
+        @include('flatpickr::components.style')
+    @endpush
+    @push('scripts')
+        @include('flatpickr::components.script')
+
+        <script>
+            function handleChange(selectedDates, dateStr, instance) {
+                console.log({ selectedDates, dateStr, instance });
+
+                if (!selectedDates.length) return; // If no date is selected, return.
+
+                const selectedDate = selectedDates[0];
+                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                let minTime = null;
+
+                switch (dayOfWeek) {
+                    case 0: // Sunday
+                    case 5: // Friday
+                    case 6: // Saturday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    case 3: // Wednesday
+                        minTime = "17:00"; // 5 PM
+                        break;
+                    case 4: // Thursday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    default: // Monday and Tuesday (Closed)
+                        instance.close(); // Close the calendar for closed days
+                        alert("Gesloten (Closed) on this day.");
+                        return;
+                }
+
+                // Set the new minTime for Flatpickr
+                instance.set("minTime", minTime);
+                console.log(`Min time set to: ${minTime}`);
+            }
+        </script>
+    @endpush
     @if (session()->has('message'))
         <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
@@ -106,7 +146,7 @@
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
                                             <a href="/bill/{{ $reservation->bill->id }}" class="hover:underline">Bekijken</a>
                                         </td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a class="hover:underline cursor-pointer" @click="">Aanpassen</a></td>
+                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500"><a class="hover:underline cursor-pointer" @click="modalOpened = true" wire:click="edit({{$reservation->id}})">Aanpassen</a></td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><a class="hover:underline cursor-pointer text-red-500 hover:text-red-400" wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a></td>
                                         {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button></td> --}}
                                     </tr>
@@ -119,4 +159,44 @@
             </div>
         </div>
     </div>
+    <div x-show="modalOpened" x-cloak
+            class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
+            <div x-transition class="bg-white rounded-lg p-6 w-1/3">
+                <h2 class="text-lg font-semibold mb-2">
+                    {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
+                </h2>
+
+                <form wire:submit.prevent="store">
+                    <div class="mb-4 mt-2">
+                    </div>
+                    <div class="mb-4">
+                        <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" onChange="handleChange"
+                            :disable="['monday', 'tuesday']" class="mt-1 h-full block resize-none bg-white w-full !rounded-md !border-gray-300" date-format="d-m-Y" placeholder="Datum & Tijd"
+                            :min-date="today()" wire:model="start_time" show-time />
+                        @error('start_time')
+                            <div class="alert alert-danger text-red-500">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                    </div>
+                    <div class="mb-4">
+                        <label class="block text-sm font-medium">Speciaal verzoek</label>
+                        <textarea maxlength="255"  wire:model.defer="special_request"
+                            class="mt-1 block resize-none w-full rounded-md border-gray-300"></textarea>
+                        @error('special_request')
+                        <div class="alert alert-danger text-red-500">
+                            {{ $message }}
+                        </div>
+                        @enderror
+                        <small class="text-xs">*Als je met met meer personen wilt komen neem dan contact met ons op</small>
+                    </div>
+                    
+                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Verander</button>
+                    <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
+                        class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
+
