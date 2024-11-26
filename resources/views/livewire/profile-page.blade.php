@@ -43,7 +43,7 @@
         </script>
     @endpush
     @if (session()->has('message'))
-        <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+        <div class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
                 {{ session('message') }}
             </div>
@@ -184,9 +184,9 @@
             </div>
         </div>
     </div>
-    <div x-show="modalOpened" x-cloak
+    <div x-show="modalOpened" x-cloak  
             class="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50">
-            <div x-transition class="bg-white rounded-lg p-6 w-1/3">
+            <div @click.away="modalOpened = false" x-transition class="bg-white rounded-lg p-6 w-1/3">
                 <h2 class="text-lg font-semibold mb-2">
                     {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
                 </h2>
@@ -218,7 +218,8 @@
                     
                     <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Verander</button>
                     <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
-                        class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
+                        class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer
+                    </button>
                 </form>
             </div>
         </div>

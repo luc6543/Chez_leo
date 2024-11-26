@@ -106,6 +106,7 @@ class ProfilePage extends Component
         );
     
         session()->flash('message', 'Reservation edited successfully.');
+        $this->dispatch('close-modal');
         $this->resetInputFields();
     }
     // Reservering bewerken
