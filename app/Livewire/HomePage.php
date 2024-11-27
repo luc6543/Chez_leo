@@ -147,11 +147,23 @@ class HomePage extends Component
             $this->end_time = $endTime->format('Y-m-d H:i:s');
 
             // Find an available table with the required number of chairs
-            $date = Carbon::parse($this->start_time)->format('Y-m-d');
+            $startTime = Carbon::parse($this->start_time);
+            $endTime = $this->calculateEndTime($startTime);
 
             $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
-                ->whereDate('reservations.start_time', '<=', $date)
-                ->whereDate('reservations.end_time', '>=', $date)
+                ->where('reservations.id', '!=', $this->reservationId) // Exclude the current reservation being edited
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->where(function ($query) use ($startTime) {
+                        $query->where('reservations.start_time', '<', $startTime)
+                            ->where('reservations.end_time', '>', $startTime);
+                    })->orWhere(function ($query) use ($endTime) {
+                        $query->where('reservations.start_time', '<', $endTime)
+                            ->where('reservations.end_time', '>', $endTime);
+                    })->orWhere(function ($query) use ($startTime, $endTime) {
+                        $query->where('reservations.start_time', '>=', $startTime)
+                            ->where('reservations.end_time', '<=', $endTime);
+                    });
+                })
                 ->pluck('reservation_tables.table_id')
                 ->toArray();
 
@@ -196,6 +208,29 @@ class HomePage extends Component
         } catch (Exception $e) {
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
+    }
 
+    private function calculateEndTime($startTime)
+    {
+        $dayOfWeek = $startTime->dayOfWeek;
+        $hour = $startTime->hour;
+
+        if ($hour >= 12 && $hour < 18) {
+            // Afternoon: reservation lasts 1.5 hours
+            $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
+        } else {
+            // Evening: reservation lasts 3 hours
+            $endTime = $startTime->copy()->addHours(3);
+        }
+
+        if (isset(self::TIME_RANGES[$dayOfWeek])) {
+            $closingHour = self::TIME_RANGES[$dayOfWeek][1];
+            $closingTime = $startTime->copy()->setTime($closingHour, 0);
+
+            if ($endTime->greaterThan($closingTime)) {
+                $endTime = $closingTime;
+            }
+        }
+        return $endTime;
     }
 }
