@@ -33,7 +33,7 @@ class AdminRecenties extends Component
             // Fetch only the selected reviews
             $selectedReviews = Review::whereIn('id', $this->selectedReviews)->pluck('review')->implode("\n");
 
-            $reviews = 'reageer op het volgende met een li in html eromheen: op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews laat ook zien op basis van welke specifieke texten deze zijn bedacht: ' . $selectedReviews;
+            $reviews = 'op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews laat ook zien op basis van welke specifieke texten deze zijn bedacht: ' . $selectedReviews;
 
             $wordLimit = 20000000;
             $wordsArray = explode(' ', $reviews);
@@ -44,8 +44,20 @@ class AdminRecenties extends Component
             $response = $client->geminiPro()->generateContent(
                 new TextPart($reviews),
             );
+            $responseText = $response->text();
 
-            $this->AIGenerated = $response->text();
+            // Split the string into an array by double newlines (\n\n)
+            $paragraphs = explode("\n\n", $responseText);
+
+            // Process each paragraph
+            foreach ($paragraphs as &$paragraph) {
+                // Replace all occurrences of ** with <h1> and </h1>
+                $paragraph = preg_replace('/\*\*(.*?)\*\*/', '<h4>$1</h4>', $paragraph);
+            }
+
+            // Wrap the paragraphs in <ul><li>...</li></ul>
+            $this->AIGenerated = "<ul><li>" . implode("</li><li>", $paragraphs) . "</li></ul>";
+
         } catch (\Exception $e) {
             $this->AIGenerated = "Er is een rate limit op het ophalen van verbeter punten probeer het over een kleine minuut nog eens.";
         }

@@ -53,6 +53,15 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->created_at)) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->updated_at)) }}</td>
+                            <td id="approve-{{ $review->id }}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? 'hidden' : '' }}">
+                                <button wire:click="RecensieBevestiging({{ $review->id }})" class="hover:text-[#FEA116]">sta toe</button>
+                            </td>
+                            <td id="no_approve-{{ $review->id }}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? '' : 'hidden' }}">
+                                <button wire:click="RecensieBevestiging({{ $review->id }})" class="hover:text-[#FEA116]">sta niet toe</button>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
+                                <button wire:click="verwijderRecensie({{ $review->id }})" class="hover:text-red-600">verwijder</button>
+                            </td>
                         </tr>
                     @endforeach
                     </tbody>
@@ -61,8 +70,6 @@
                     <button type="submit" wire:click="getVerbeterPunten" class="bg-sky-500 rounded shadow text-white p-2 px-4 mb-5">Laat AI de geselecteerde reviews analyseren</button>
                 </div>
         @endif
-        <ul class="list-disc">
             {!! $AIGenerated !!}
-        </ul>
     </div>
 </div>
