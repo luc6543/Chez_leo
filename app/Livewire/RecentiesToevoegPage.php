@@ -41,63 +41,62 @@ class RecentiesToevoegPage extends Component
     // Valideer de invoer
     $this->validate();
 
-    // Controleer of de gebruiker al een recensie heeft
-    $existingReview = Review::where('user_id', Auth::id())->first();
+    // Als reviewId bestaat, werk dan de recensie bij
+    if ($this->reviewId) {
+        $this->updateReview();
+    } else {
+        // Als geen reviewId bestaat, voeg een nieuwe recensie toe
+        $this->createReview();
+    }
+}
 
-    if ($existingReview) {
-        // Als er al een recensie bestaat, toon een foutmelding
+public function createReview()
+{
+    // Controleer of de gebruiker al een recensie heeft
+    if ($this->checkIfReviewExists()) {
         session()->flash('error', 'Je hebt al een recensie geplaatst!');
         return;
     }
 
-    // Controleer of er een reviewId is en werk de recensie bij
-    if ($this->reviewId) {
-        $review = Review::where('id', $this->reviewId)
-                        ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
-                        ->first();
+    // Voeg de nieuwe recensie toe
+    Review::create([
+        'user_id' => Auth::id(),
+        'review' => $this->review,
+        'rating' => $this->rating,
+    ]);
 
-        if ($review) {
-            // Update de bestaande recensie
-            $review->update([
-                'review' => $this->review,
-                'rating' => $this->rating,
-            ]);
-            session()->flash('message', 'Recensie succesvol bijgewerkt!');
-        } else {
-            session()->flash('error', 'Geen toegang om deze recensie te bewerken.');
-        }
-    } else {
-        // Voeg een nieuwe recensie toe als er geen reviewId is
-        Review::create([
-            'user_id' => Auth::id(), // Ingelogde gebruiker
-            'review' => $this->review, // Tekst van de review
-            'rating' => $this->rating, // Rating van de review
-        ]);
-        session()->flash('message', 'Recensie succesvol toegevoegd!');
-    }
-
-    // Reset velden na opslaan
-    $this->reset(['review', 'rating', 'reviewId']);
-
-    // Redirect naar recensies overzicht
+    session()->flash('message', 'Recensie succesvol toegevoegd!');
     return redirect('/recensies');
 }
 
-    public function editReview($reviewId, $data)
-    {
-        // Zoek de recensie op basis van het ID en de gebruiker
-        $review = Review::where('id', $reviewId)
-            ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
-            ->first();
-            
-            if ($review) {
-                // Werk de recensie bij met de nieuwe gegevens
-                $review->update($data);
-                session()->flash('message', 'Recensie succesvol bijgewerkt!');
-            } else {
-                session()->flash('error', 'Geen toegang om deze recensie te bewerken.');
-            }
+public function updateReview()
+{
+    // Zoek de recensie die moet worden bijgewerkt
+    $review = Review::where('id', $this->reviewId)
+                    ->where('user_id', Auth::id()) // Zorg ervoor dat het de ingelogde gebruiker is
+                    ->first();
+
+    if ($review) {
+        // Werk de bestaande recensie bij
+        $review->update([
+            'review' => $this->review,
+            'rating' => $this->rating,
+        ]);
+
+        session()->flash('message', 'Recensie succesvol bijgewerkt!');
+        return redirect('/recensies');
+    } else {
+        // Als de recensie niet bestaat, toon dan een foutmelding
+        session()->flash('error', 'Geen toegang om deze recensie bij te werken.');
     }
+}
+
+public function checkIfReviewExists()
+{
+    // Controleer of de gebruiker al een recensie heeft
+    return Review::where('user_id', Auth::id())->exists();
+}
+
 
     // Laat de pagina zien
     public function render()
