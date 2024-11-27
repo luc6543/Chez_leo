@@ -33,7 +33,7 @@ class ReservedTableViewPage extends Component
         $this->reservations = Reservation::where(function ($query) use ($date) {
             $query->whereDate('start_time', '<=', $date)
                 ->whereDate('end_time', '>=', $date);
-        })->get();
+        })->where('active', true)->get();
     }
 
     // Bijwerken van specifieke eigenschappen

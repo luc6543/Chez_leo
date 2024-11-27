@@ -23,7 +23,7 @@
                                     $date = Carbon::parse($date_time)->format('Y-m-d');
                                     return Carbon::parse($reservation->start_time)->format('Y-m-d') <= $date &&
                                         Carbon::parse($reservation->end_time)->format('Y-m-d') >= $date;
-                                });
+                                })->sortBy('start_time');
                             @endphp
                             @if($tableReservations->isNotEmpty())
                                 <div class="bg-white p-4 rounded shadow">
