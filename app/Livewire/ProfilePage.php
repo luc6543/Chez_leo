@@ -32,7 +32,6 @@ class ProfilePage extends Component
     public $users;
 
 
-
     // Validatieregels voor invoervelden
     protected $rules = [
         'start_time' => 'required|date|after:today',
@@ -43,9 +42,11 @@ class ProfilePage extends Component
         return view('livewire.profile-page');
     }
 
-    public function mount() {
+    public function mount()
+    {
         $this->reservations = Reservation::all();
-        $this->users= User::all();
+        $this->users = User::all();
+        $this->reviews = Review::where('user_id', Auth::id())->get();
     }
 
     // Invoervelden resetten
@@ -112,6 +113,7 @@ class ProfilePage extends Component
         $this->resetInputFields();
         $this->reviews = Review::where('user_id', Auth::id())->get();
     }
+
     // Reservering bewerken
     public function edit($id)
     {

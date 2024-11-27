@@ -222,34 +222,35 @@
                 </form>
             </div>
         </div>
-    </div>
-
-    <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
-    <div class="lg:w-3/4 w-full mt-8 bg-white rounded shadow p-4">
-        <h2 class="text-xl font-semibold mb-4">Recensies</h2>
-        <div class="flex justify-between items-center mb-4">
-            <div>
-                @if(Auth::user()->reviews()->exists())
-                    <p class="text-green-500">Je hebt al een recensie geplaatst!</p>
-                @else
-                    <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
-                @endif
-            </div>
-            <div>
-                @foreach($reviews as $review)
-                    @if($review->user_id == Auth::id())  <!-- Zorg ervoor dat alleen de recensies van de ingelogde gebruiker worden getoond -->
-                        <a href="{{ route('recenties.bijwerken', $review->id) }}"
-                           class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                            Bewerk je recensie
-                        </a>
-                        <!-- Verwijderen button -->
-                        <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                wire:click="deleteReview({{ $review->id }})">
-                            Verwijderen
-                        </button>
+        <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
+        <div class="lg:w-3/4 mx-auto w-full mt-8 bg-white rounded shadow p-4">
+            <h2 class="text-xl font-semibold mb-4">Recensies</h2>
+            <div class="flex justify-between items-center mb-4">
+                <div>
+                    @if(Auth::user()->reviews()->exists())
+                        <p class="text-green-500">Je hebt al een recensie geplaatst!</p>
+                    @else
+                        <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
                     @endif
-                @endforeach
+                </div>
+                <div>
+                    @foreach($reviews as $review)
+                        @if($review->user_id == Auth::id())  <!-- Zorg ervoor dat alleen de recensies van de ingelogde gebruiker worden getoond -->
+                            <a href="{{ route('recenties.bijwerken', $review->id) }}"
+                            class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                                Bewerk je recensie
+                            </a>
+                            <!-- Verwijderen button -->
+                            <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                    wire:click="deleteReview({{ $review->id }})">
+                                Verwijderen
+                            </button>
+                        @endif
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>
 </div>
+
+
