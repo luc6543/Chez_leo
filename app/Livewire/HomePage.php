@@ -11,6 +11,7 @@ use App\Models\Reservation;
 use App\Models\Review;
 use App\Models\Table;
 use App\Models\User;
+use App\Models\ReservationTable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -112,11 +113,11 @@ class HomePage extends Component
                         'password' => Hash::make($temporaryPassword),
                     ]);
 
-            // Send an email with the temporary password
-            Password::sendResetLink(['email' => $this->email]);
-//            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
-        }
-    }
+                    // Send an email with the temporary password
+                    Password::sendResetLink(['email' => $this->email]);
+                    //            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+                }
+            }
 
             // Convert start_time and end_time to the proper format
             $startTime = Carbon::parse($this->start_time);
@@ -148,9 +149,10 @@ class HomePage extends Component
             // Find an available table with the required number of chairs
             $date = Carbon::parse($this->start_time)->format('Y-m-d');
 
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
+            $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
+                ->whereDate('reservations.start_time', '<=', $date)
+                ->whereDate('reservations.end_time', '>=', $date)
+                ->pluck('reservation_tables.table_id')
                 ->toArray();
 
             $availableTables = Table::where('chairs', '>=', $this->people)
@@ -162,10 +164,10 @@ class HomePage extends Component
 
             if ($this->table_id) {
                 // Create the reservation
-                Reservation::create([
+                $reservation = Reservation::create([
                     'id' => $this->reservationId,
                     'user_id' => $user->id,
-                    'table_id' => $this->table_id,
+                    'table_id' => 1,
                     'people' => (int) $this->people,
                     'special_request' => $this->special_request,
                     'paid' => false,
@@ -173,6 +175,9 @@ class HomePage extends Component
                     'start_time' => $this->start_time,
                     'end_time' => $this->end_time,
                 ]);
+
+                $reservation->tables()->sync([$this->table_id]);
+
                 // Show a success message
                 $successMessage = 'Uw reservering is succesvol aangemaakt.';
                 if (!Auth::check()) {
