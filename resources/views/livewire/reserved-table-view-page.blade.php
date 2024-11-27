@@ -9,8 +9,7 @@
             <h1 class="text-2xl font-bold">
                 {{ $date_time ? 'Tafels en reserveringen voor de gekozen datum:' : 'Tafels en reserveringen voor vandaag' }}
             </h1>
-            <input type="datetime-local" wire:model.live.debounce.20ms="date_time"
-                class="block w-1/3 rounded-md border-gray-300">
+            <input type="date" wire:model.live.debounce.20ms="date_time" class="block w-1/3 rounded-md border-gray-300">
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             @if($tables->isEmpty() || $reservations->isEmpty())
