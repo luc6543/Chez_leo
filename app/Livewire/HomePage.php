@@ -194,7 +194,6 @@ class HomePage extends Component
             $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
 
         } catch (Exception $e) {
-            throw $e;
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
 
