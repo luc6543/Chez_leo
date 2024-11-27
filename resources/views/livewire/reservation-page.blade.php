@@ -59,6 +59,10 @@
                 ]
             });
         });
+
+            function onClose() {
+                @this.updateTableList();
+            }
     </script>
 @endpush
     <div class="bg-white py-10 mt-16">
@@ -250,6 +254,9 @@
                         <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300" placeholder="Datum & Tijd" wire:model.defer="start_time"
                         @blur="Livewire.emit('getTables')">
                     </div>
+                    <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" onChange="handleChange"
+                        onClose="onClose" :disable="['monday', 'tuesday']" class="h-full" date-format="d-m-Y"
+                        placeholder="Datum & Tijd" :min-date="today()" wire:model.defer="start_time" show-time />
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
