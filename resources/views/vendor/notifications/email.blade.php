@@ -31,7 +31,7 @@
 
 {{-- Outro Lines --}}
 {{$line = "Als u deze mail ontvangt zonder iets te hebben gedaan,
-    neem dan contact met ons op via +31 06 345 67890"}}
+    neem dan contact met ons op via +31 06 556 232 50"}}
 
 {{-- Salutation --}}
 @if (! empty($salutation))

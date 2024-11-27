@@ -30,7 +30,7 @@
                             break;
                         default: // Monday and Tuesday (Closed)
                             instance.close(); // Close the calendar for closed days
-                            alert("Gesloten (Closed) on this day.");
+                            // alert("Gesloten (Closed) on this day.");
                             return;
                     }
 
@@ -38,9 +38,26 @@
                     instance.set("minTime", minTime);
                     console.log(`Min time set to: ${minTime}`);
                 }
+                document.addEventListener('DOMContentLoaded', function() {
+                    flatpickr("#flatPickr", {
+                        enableTime: true,
+                        maxTime: "20:30",
+                        time_24hr: true,
+                        minuteIncrement: 15,
+                        onChange: handleChange,
+                        dateFormat: "d-m-Y H:i",
+                        minDate: "today",
+                        disable: [
+                            function(date) {
+                                // return true to disable
+                                return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                            }
+                        ]
+                    });
+                });
             </script>
         @endpush
-    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
+    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen mt-10 h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -314,10 +331,8 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-                                    <div class="form-floating date" id="date3" data-target-input="nearest">
-                                        <x-flatpickr id="flatPickr" max-time="20:30" onChange="handleChange" :disable="['monday','tuesday']" class="bg-white py-3" date-format="d-m-Y" placeholder="Datum & Tijd" :min-date="today()" wire:model="start_time" show-time />
-                                        {{-- <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />--}}
-                                        {{--<label for="datetimepicker">Datum & Tijd</label>--}}
+                                    <div class="form-floating date " id="date3" data-target-input="nearest">
+                                        <input type="text" id="flatPickr" class="bg-white py-3 px-14" placeholder="Datum & Tijd" wire:model="start_time">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
