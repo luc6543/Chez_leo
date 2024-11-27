@@ -24,14 +24,16 @@ class ReservedTableViewPage extends Component
     {
         // Get the date selected or the current date
         $date_time = $this->date_time ? Carbon::parse($this->date_time) : Carbon::now();
+        $date = $date_time->format('Y-m-d');
 
         // Fetch all tables
         $this->tables = Table::all();
 
-        // Fetch reservations for the current day
-        $this->reservations = Reservation::whereDate('start_time', $date_time)
-            ->orWhereDate('end_time', $date_time)
-            ->get();
+        // Fetch reservations that overlap with the selected date
+        $this->reservations = Reservation::where(function ($query) use ($date) {
+            $query->whereDate('start_time', '<=', $date)
+                ->whereDate('end_time', '>=', $date);
+        })->get();
     }
 
     // Bijwerken van specifieke eigenschappen
