@@ -257,7 +257,7 @@
                 <div class="mb-4">
                     <div class="" id="date3" data-target-input="nearest">
                         <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300"
-                            placeholder="Datum & Tijd" wire:model.defer="start_time" @blur="Livewire.emit('getTables')">
+                            placeholder="Datum & Tijd" wire:model.defer="start_time">
                     </div>
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
