@@ -417,7 +417,7 @@
                 <div class="swiper-wrapper !h-[100%]">
                     @foreach ($approvedReviews as $review)
                         <div class="swiper-slide shadow-sm  bg-white border rounded-md p-4 !flex flex-col justify-between">
-                            <p class="text-black break-all">{{ $review->review }}</p>
+                            <p class="text-black text-break">{{ $review->review }}</p>
                             <div class="d-flex align-items-center mt-auto mb-4">
                                 <img
                                     class="img-fluid flex-shrink-0 rounded-circle"
