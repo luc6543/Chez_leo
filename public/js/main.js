@@ -24,7 +24,7 @@ $(document).ready(function ($) {
     });
 
     // Validate de datum en tijd van de flatpickr/datepicker
-    const validate = dateString => {
+    const validate = (dateString) => {
         const date = new Date(dateString);
         const day = date.getDay();
         const hours = date.getHours();
@@ -35,58 +35,61 @@ $(document).ready(function ($) {
             4: [12, 22], // Thursday
             5: [12, 23], // Friday
             6: [12, 23], // Saturday
-            0: [12, 23]  // Sunday
-        }
+            0: [12, 23], // Sunday
+        };
 
         if (day == 1 || day == 2) return false; // Monday or Tuesday
         if (timeRanges[day]) {
             const [start, end] = timeRanges[day];
-            if (hours < start || (hours == end && minutes > 0) || hours > end) return false;
+            if (hours < start || (hours == end && minutes > 0) || hours > end)
+                return false;
         }
 
         return true;
-    }
+    };
 
-    document.querySelector('#datetimepicker').addEventListener('input', evt => {
-        if (!validate(evt.target.value)) {
-            evt.target.value = '';
-        }
-    });
+    // document.querySelector('#datetimepicker').addEventListener('input', evt => {
+    //     if (!validate(evt.target.value)) {
+    //         evt.target.value = '';
+    //     }
+    // });
 
     // Initialize the flatpickr en set the rules/options
-flatpickr("#datetimepicker", {
-enableTime: true,
-dateFormat: "Y-m-d H:i",
-minDate: "today",
-time_24hr: true,
-minuteIncrement: 15,
-minTime: "12:00",
-maxTime: "20:30",
-disable: [
-function(date) {
-return (date.getDay() === 1 || date.getDay() === 2);
-}
-],
-onReady: function(selectedDates, dateStr, instance) {
-setMinTime(instance);
-},
-onChange: function(selectedDates, dateStr, instance) {
-setMinTime(instance);
-}
-});
+    // flatpickr("#datetimepicker", {
+    //     enableTime: true,
+    //     dateFormat: "d-m-Y H:i",
+    //     minDate: "today",
+    //     time_24hr: true,
+    //     minuteIncrement: 15,
+    //     minTime: "12:00",
+    //     maxTime: "20:30",
+    //     disable: [
+    //         function (date) {
+    //             return date.getDay() === 1 || date.getDay() === 2;
+    //         },
+    //     ],
+    //     onReady: function (selectedDates, dateStr, instance) {
+    //         setMinTime(instance);
+    //     },
+    //     onChange: function (selectedDates, dateStr, instance) {
+    //         setMinTime(instance);
+    //     },
+    // });
 
     // Set the minTime based on the selected date
-function setMinTime(instance) {
-const date = instance.selectedDates[0];
-if (!date) return;
+    function setMinTime(instance) {
+        const date = instance.selectedDates[0];
+        if (!date) return;
 
-const day = date.getDay();
-if (day === 3) { // Wednesday
-instance.set('minTime', '17:00');
-} else if (day === 4 || day === 5 || day === 6 || day === 0) { // Thursday, Friday, Saturday, Sunday
-instance.set('minTime', '12:00');
-}
-}
+        const day = date.getDay();
+        if (day === 3) {
+            // Wednesday
+            instance.set("minTime", "17:00");
+        } else if (day === 4 || day === 5 || day === 6 || day === 0) {
+            // Thursday, Friday, Saturday, Sunday
+            instance.set("minTime", "12:00");
+        }
+    }
 
     // Dropdown on mouse hover
     const $dropdown = $(".dropdown");

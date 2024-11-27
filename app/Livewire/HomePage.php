@@ -60,6 +60,7 @@ class HomePage extends Component
 
     public function createReservation()
     {
+        $this->start_time = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
         try {
             $errorMessage = '';
 
@@ -188,6 +189,7 @@ class HomePage extends Component
             $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
 
         } catch (Exception $e) {
+            throw $e;
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
 

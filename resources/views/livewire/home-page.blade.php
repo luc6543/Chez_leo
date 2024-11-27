@@ -1,5 +1,63 @@
 <div lang="en" x-data="{videoModal: false}">
-    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen h-screen left-0 top-0 bg-black/75 z-30 hidden"
+
+    @push('styles')
+        @include('flatpickr::components.style')
+    @endpush
+        @push('scripts')
+            @include('flatpickr::components.script')
+
+            <script>
+                function handleChange(selectedDates, dateStr, instance) {
+                    console.log({ selectedDates, dateStr, instance });
+
+                    if (!selectedDates.length) return; // If no date is selected, return.
+
+                    const selectedDate = selectedDates[0];
+                    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                    let minTime = null;
+
+                    switch (dayOfWeek) {
+                        case 0: // Sunday
+                        case 5: // Friday
+                        case 6: // Saturday
+                            minTime = "12:00"; // 12 PM
+                            break;
+                        case 3: // Wednesday
+                            minTime = "17:00"; // 5 PM
+                            break;
+                        case 4: // Thursday
+                            minTime = "12:00"; // 12 PM
+                            break;
+                        default: // Monday and Tuesday (Closed)
+                            instance.close(); // Close the calendar for closed days
+                            // alert("Gesloten (Closed) on this day.");
+                            return;
+                    }
+
+                    // Set the new minTime for Flatpickr
+                    instance.set("minTime", minTime);
+                    console.log(`Min time set to: ${minTime}`);
+                }
+                document.addEventListener('DOMContentLoaded', function() {
+                    flatpickr("#flatPickr", {
+                        enableTime: true,
+                        maxTime: "20:30",
+                        time_24hr: true,
+                        minuteIncrement: 15,
+                        onChange: handleChange,
+                        dateFormat: "d-m-Y H:i",
+                        minDate: "today",
+                        disable: [
+                            function(date) {
+                                // return true to disable
+                                return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                            }
+                        ]
+                    });
+                });
+            </script>
+        @endpush
+    <div style="display: none" class="fixed lg:flex justify-center items-center w-screen mt-10 h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
         <div class="bg-white p-10 rounded flex flex-col gap-5" @click.away="videoModal = false">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/uHgt8giw1LY?si=cNeC4LSzLKPzw3oF&amp;controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -273,11 +331,10 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-        <div class="form-floating date" id="date3" data-target-input="nearest">
-            <input id="datetimepicker" wire:model="start_time" type="text" class="form-control datetimepicker-input" placeholder="Datum & Tijd" />
-            <label for="datetimepicker">Datum & Tijd</label>
-        </div>
-    </div>
+                                    <div class="form-floating date " id="date3" data-target-input="nearest">
+                                        <input type="text" id="flatPickr" class="bg-white py-3 px-14" placeholder="Datum & Tijd" wire:model="start_time">
+                                    </div>
+                                </div>
                                 <div class="col-md-6">
                                     <div class="form-floating">
                                         <select wire:model="people" class="form-select" id="select1">
@@ -389,9 +446,8 @@
 </div>
 <!-- Testimonial End -->
 
-
     <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    <a href="" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
 </div>
 </body>
 

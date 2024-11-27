@@ -5,7 +5,7 @@
             <div class="row g-5">
                 <div class="col-lg-3 col-md-6">
                     <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Bedrijf</h4>
-                    <a class="btn btn-link" href="/over-ons">Over Ons</a>
+{{--                    <a class="btn btn-link" href="/over-ons">Over Ons</a>--}}
                     <a class="btn btn-link" href="/#Reserveer">Reserveren</a>
                     {{-- <a class="btn btn-link" href="">Privacybeleid</a>
                     <a class="btn btn-link" href="">Algemene voorwaarden</a> --}}
@@ -13,7 +13,7 @@
                 <div class="col-lg-3 col-md-6">
                     <h4 class="section-title ff-secondary text-start text-primary fw-normal mb-4">Contact</h4>
                     <p class="mb-2"><i class="fa fa-map-marker-alt me-3"></i>EenStraat 109, 3651 EenPlek, Nederland</p>
-                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+31 06 345 67890</p>
+                    <p class="mb-2"><i class="fa fa-phone-alt me-3"></i>+31 06 556 232 50</p>
                     <p class="mb-2"><i class="fa fa-envelope me-3"></i>info@chezleo.nl</p>
                     <div class="d-flex pt-2">
                         <a class="btn btn-outline-light btn-social" href=""><i class="fab fa-twitter"></i></a>
@@ -38,9 +38,9 @@
                     <p>Dolor amet sit justo amet elitr clita ipsum elitr est.</p>
                     <div class="position-relative mx-auto" style="max-width: 400px;">
                         <input class="form-control border-primary w-100 py-3 ps-4 pe-5" type="text"
-                               placeholder="Uw email">
+                            placeholder="Uw email">
                         <button type="button"
-                                class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Inschrijven</button>
+                            class="btn btn-primary py-2 position-absolute top-0 end-0 mt-2 me-2">Inschrijven</button>
                     </div>
                 </div>
             </div>
