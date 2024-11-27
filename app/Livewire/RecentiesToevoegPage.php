@@ -35,39 +35,49 @@ class RecentiesToevoegPage extends Component
         }
     }
 
-    // Slaat de recensie op
+    //Slaat de recensie op op
     public function saveReview()
     {
-        // Valideert eerst de uitvoering
-        $this->validate();
+    
+        // Valideert eerst de invoer
+    $this->validate();
 
-        if($this->reviewId) {
-            // Werkt de recensie bij
-            $review = Review::findOrFail($this->reviewId);
-            $review->update([
-                'review' => $this->review,
-                'rating' => $this->rating,
-            ]);
+    if ($this->reviewId) {
+        $this->updateReview(); // Bijwerken als er een reviewId is
+    } else {
+        $this->storeReview(); // Aanmaken als er geen reviewId is
+    }
 
-            session()->flash('message', 'Recensie is bijgewerkt!');
-        } else {
-            // Maakt nieuwe recensie aan
-            Review::create([
-                'user_id' => Auth::id(), // Ingelogde gebruiker
-                'review' => $this->review, // Tekst van de recensie
-                'rating' => $this->rating, // Beoordeling van de recensie
-            ]);
+    // Reset velden na opslaan
+    $this->reset(['review', 'rating']);
 
-            session()->flash('message', 'Recensie is toegevoegd!');
-        }
-        
-        // Reset velden na opslaan
-        $this->reset(['review', 'rating']);
+    // Redirect naar recensiespagina
+    return redirect('/recensies');
+    }
 
-        // Succesbericht
-       // session()->flash('message', 'Recensie is toegevoegd!');
+    public function storeReview()
+    {
+    // Maakt een nieuwe recensie aan
+    Review::create([
+        'user_id' => Auth::id(), // De ingelogde gebruiker
+        'review' => $this->review, // Tekst van de recensie
+        'rating' => $this->rating, // Beoordeling
+    ]);
 
-        return redirect('/recensies');
+    session()->flash('message', 'Recensie is succesvol toegevoegd!');
+    }
+
+    public function updateReview()
+    {
+    // Werkt een bestaande recensie bij
+    $review = Review::findOrFail($this->reviewId);
+
+    $review->update([
+        'review' => $this->review, // Bijgewerkte tekst
+        'rating' => $this->rating, // Bijgewerkte beoordeling
+    ]);
+
+    session()->flash('message', 'Recensie is succesvol bijgewerkt!');
     }
 
     // Laat de pagina zien
