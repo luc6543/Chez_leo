@@ -28,7 +28,7 @@
         
         <!-- Check if the user has reviews -->
         @if ($reviews->isEmpty())
-            <p class="text-gray-500">Je hebt nog geen recensies geplaatst.</p>
+            <p class="text-gray-500">Je hebt nog geen recensie geplaatst.</p>
         @else
             @foreach ($reviews as $review)
                 <div class="border border-gray-300 rounded-lg mb-4 p-4">

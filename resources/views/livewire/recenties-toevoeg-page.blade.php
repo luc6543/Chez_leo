@@ -9,6 +9,12 @@
                 </div>
             @endif
 
+            @if (session()->has('error'))
+                <div class="alert alert-error bg-red-500 text-white p-4 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Formulier voor ingelogde gebruikers -->
             <form wire:submit.prevent="saveReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
                 <div class="mb-4">

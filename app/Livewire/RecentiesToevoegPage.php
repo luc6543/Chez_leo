@@ -38,10 +38,19 @@ class RecentiesToevoegPage extends Component
     // Voegt review toe
     public function saveReview()
 {
-    // Valideert eerst de uitvoering
+    // Valideer de invoer
     $this->validate();
 
-    // Controleert of er een reviewId is en werkt de recensie bij
+    // Controleer of de gebruiker al een recensie heeft
+    $existingReview = Review::where('user_id', Auth::id())->first();
+
+    if ($existingReview) {
+        // Als er al een recensie bestaat, toon een foutmelding
+        session()->flash('error', 'Je hebt al een recensie geplaatst!');
+        return;
+    }
+
+    // Controleer of er een reviewId is en werk de recensie bij
     if ($this->reviewId) {
         $review = Review::where('id', $this->reviewId)
                         ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
@@ -73,7 +82,6 @@ class RecentiesToevoegPage extends Component
     // Redirect naar recensies overzicht
     return redirect('/recensies');
 }
-
 
     public function editReview($reviewId, $data)
     {
