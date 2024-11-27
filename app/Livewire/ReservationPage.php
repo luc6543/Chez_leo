@@ -36,7 +36,6 @@ class ReservationPage extends Component
     public $tables;
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
-    public $originalTableId;
     public $originalTableIds = [];
     public $special_request;
     public $maxChairs;
@@ -135,7 +134,6 @@ class ReservationPage extends Component
         $this->end_time = '';
         $this->active = false;
         $this->people = '';
-        $this->originalTableId = null;
         $this->originalTableIds = [];
         $this->special_request = '';
     }
@@ -150,7 +148,7 @@ class ReservationPage extends Component
     // Bijwerken van de lijst met beschikbare tafels
     public function updateTableList()
     {
-        if (!$this->people || $this->people > Table::max('chairs')) {
+        if (!$this->people) {
             $this->tables = Table::all();
             return;
         }
@@ -158,15 +156,12 @@ class ReservationPage extends Component
         if ($this->start_time) {
             $date = Carbon::parse($this->start_time)->format('Y-m-d');
 
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
+            $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
+                ->whereDate('reservations.start_time', '<=', $date)
+                ->whereDate('reservations.end_time', '>=', $date)
+                ->where('reservations.id', '!=', $this->reservationId) // Exclude the current reservation being edited
+                ->pluck('reservation_tables.table_id')
                 ->toArray();
-
-            // Include the original tables attached to the reservation being edited
-            if ($this->originalTableIds) {
-                $usedTableIds = array_diff($usedTableIds, $this->originalTableIds);
-            }
 
             $this->tables = Table::where('chairs', '>=', $this->people)
                 ->whereNotIn('id', $usedTableIds)
@@ -272,13 +267,11 @@ class ReservationPage extends Component
         $this->reservationId = $reservation->id;
         $this->user_id = $reservation->user_id;
         $this->guest_name = $reservation->guest_name;
-        $this->table_id = $reservation->table_id;
         $this->start_time = date('d-m-Y H:i', strtotime($reservation->start_time));
         $this->end_time = date('Y-m-d', strtotime($reservation->start_time));
         $this->active = $reservation->active;
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
-        $this->originalTableId = $reservation->table_id;
         $this->originalTableIds = $reservation->tables->pluck('id')->toArray();
 
         $this->dispatch('open-modal');
