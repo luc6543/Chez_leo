@@ -1,5 +1,7 @@
 <div class="mx-auto p-4 mt-24">
-    <div wire:loading.flex class="bg-black/75 inset-0 fixed flex items-center justify-center transition-opacity duration-500 ease-out delay-500 z-[99999]">
+    <div wire:loading.flex class="bg-black/75 inset-0 fixed items-center justify-center transition-opacity duration-500
+    ease-out
+    delay-500 z-[99999]">
         <div class="border-4 border-yellow-500 border-t-transparent rounded-full w-12 h-12 animate-spin" role="status">
             <span class="sr-only">Laden...</span>
         </div>
@@ -70,6 +72,6 @@
                     <button type="submit" wire:click="getVerbeterPunten" class="bg-sky-500 rounded shadow text-white p-2 px-4 mb-5">Laat AI de geselecteerde reviews analyseren</button>
                 </div>
         @endif
-            {!! $AIGenerated !!}
+        <span wire:stream="AIGenerated"><ul class="list-disc">{!! $AIGenerated !!}</ul></span>
     </div>
 </div>
