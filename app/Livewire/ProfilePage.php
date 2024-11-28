@@ -9,6 +9,7 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use App\Models\Review;
 
 class ProfilePage extends Component
 {
@@ -21,6 +22,7 @@ class ProfilePage extends Component
     ];
     public $newPass;
     public $newPassConfirm;
+    public $reviews;
     public $reservations;
     public $reservationId;
     public $user_id;
@@ -29,8 +31,7 @@ class ProfilePage extends Component
     public $special_request;
     public $users;
 
-    
-    
+
     // Validatieregels voor invoervelden
     protected $rules = [
         'start_time' => 'required|date|after:today',
@@ -41,9 +42,11 @@ class ProfilePage extends Component
         return view('livewire.profile-page');
     }
 
-    public function mount() {
+    public function mount()
+    {
         $this->reservations = Reservation::all();
-        $this->users= User::all();
+        $this->users = User::all();
+        $this->reviews = Review::where('user_id', Auth::id())->get();
     }
 
     // Invoervelden resetten
@@ -59,7 +62,7 @@ class ProfilePage extends Component
     public function store()
     {
         $this->validate();
-    
+
         try {
             // Ensure the date string matches the expected format
             $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
@@ -68,11 +71,11 @@ class ProfilePage extends Component
             session()->flash('error', 'Invalid start time format.');
             return;
         }
-    
+
         // Convert start_time and end_time to the proper format
         $dayOfWeek = $startTime->dayOfWeek;
         $hour = $startTime->hour;
-    
+
         // Determine the reservation duration
         if ($hour >= 12 && $hour < 18) {
             // Afternoon: reservation lasts 1.5 hours
@@ -81,20 +84,20 @@ class ProfilePage extends Component
             // Evening: reservation lasts 3 hours
             $endTime = $startTime->copy()->addHours(3);
         }
-    
+
         // Check if the end time exceeds the closing time
         if (isset(self::TIME_RANGES[$dayOfWeek])) {
             $closingHour = self::TIME_RANGES[$dayOfWeek][1];
             $closingTime = $startTime->copy()->setTime($closingHour, 0);
-    
+
             if ($endTime->greaterThan($closingTime)) {
                 $endTime = $closingTime;
             }
         }
-    
+
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
-    
+
         // Save or update the reservation
         Reservation::updateOrCreate(
             ['id' => $this->reservationId],
@@ -104,11 +107,13 @@ class ProfilePage extends Component
                 'special_request' => $this->special_request,
             ]
         );
-    
+
         session()->flash('message', 'Reservation edited successfully.');
         $this->dispatch('close-modal');
         $this->resetInputFields();
+        $this->reviews = Review::where('user_id', Auth::id())->get();
     }
+
     // Reservering bewerken
     public function edit($id)
     {
@@ -120,6 +125,21 @@ class ProfilePage extends Component
         $this->special_request = $reservation->special_request;
         $this->dispatch('open-modal');
     }
+
+    public function deleteReview($reviewId)
+    {
+        $review = Review::where('id', $reviewId)
+                        ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
+                        ->first();
+
+        if ($review) {
+            $review->delete();
+            session()->flash('message', 'Recensie succesvol verwijderd!');
+        } else {
+            session()->flash('error', 'Geen toegang om deze recensie te verwijderen.');
+        }
+    }
+
 
     //reservering annuleren
     public function annuleerReservering($id){
