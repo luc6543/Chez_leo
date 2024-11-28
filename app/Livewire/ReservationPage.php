@@ -32,7 +32,6 @@ class ReservationPage extends Component
     public $special_request;
     public $maxChairs;
     public $showGuestNameInput = false;
-
     // Validatieregels voor invoervelden
     protected $rules = [
         'user_id' => 'nullable',
@@ -40,7 +39,9 @@ class ReservationPage extends Component
         'start_time' => 'required|date|after:today',
         'active' => 'boolean',
         'people' => 'required',
+        'table_ids' => 'required|array|min:1',
     ];
+
     public function messages()
     {
         return [
@@ -49,6 +50,8 @@ class ReservationPage extends Component
             'start_time.after' => 'De starttijd moet na vandaag zijn.',
             'active.boolean' => 'De status moet een waar of onwaar waarde zijn.',
             'people.required' => 'Het aantal personen is verplicht.',
+            'table_ids.required' => 'Er moet minimaal één tafel worden geselecteerd.',
+            'table_ids.min' => 'Er moet minimaal één tafel worden geselecteerd.',
         ];
     }
 

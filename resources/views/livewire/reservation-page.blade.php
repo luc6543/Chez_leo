@@ -286,7 +286,7 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('table_id')
+                    @error('table_ids')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
                         </div>
