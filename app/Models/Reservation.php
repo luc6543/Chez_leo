@@ -36,11 +36,16 @@ class Reservation extends Model
     {
         return $this->belongsTo(Table::class);
     }
+    public function tables()
+    {
+        return $this->belongsToMany(Table::class, 'reservation_tables');
+    }
 
-    public static function getCurrentReservations() {
+    public static function getCurrentReservations()
+    {
         return Reservation::where('start_time', '<=', now())->where('end_time', '>=', now())->whereHas('bill', function ($query) {
-                $query->where('paid', '!=', '1'); // Filter related bill records
-            })->get();
+            $query->where('paid', '!=', '1'); // Filter related bill records
+        })->get();
     }
     public function bill()
     {

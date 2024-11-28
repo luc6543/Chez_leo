@@ -7,60 +7,69 @@
         @include('flatpickr::components.style')
     @endpush
     @push('scripts')
-    @include('flatpickr::components.script')
+        @include('flatpickr::components.script')
 
-    <script>
-        function handleChange(selectedDates, dateStr, instance) {
-            console.log({ selectedDates, dateStr, instance });
+        <script>
+            function handleChange(selectedDates, dateStr, instance) {
+                console.log({ selectedDates, dateStr, instance });
 
-            if (!selectedDates.length) return; // If no date is selected, return.
+                if (!selectedDates.length) return; // If no date is selected, return.
 
-            const selectedDate = selectedDates[0];
-            const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-            let minTime = null;
+                const selectedDate = selectedDates[0];
+                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
+                let minTime = null;
 
-            switch (dayOfWeek) {
-                case 0: // Sunday
-                case 5: // Friday
-                case 6: // Saturday
-                    minTime = "12:00"; // 12 PM
-                    break;
-                case 3: // Wednesday
-                    minTime = "17:00"; // 5 PM
-                    break;
-                case 4: // Thursday
-                    minTime = "12:00"; // 12 PM
-                    break;
-                default: // Monday and Tuesday (Closed)
-                    instance.close(); // Close the calendar for closed days
-                    // alert("Gesloten (Closed) on this day.");
-                    return;
+                switch (dayOfWeek) {
+                    case 0: // Sunday
+                    case 5: // Friday
+                    case 6: // Saturday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    case 3: // Wednesday
+                        minTime = "17:00"; // 5 PM
+                        break;
+                    case 4: // Thursday
+                        minTime = "12:00"; // 12 PM
+                        break;
+                    default: // Monday and Tuesday (Closed)
+                        instance.close(); // Close the calendar for closed days
+                        // alert("Gesloten (Closed) on this day.");
+                        return;
+                }
+
+                // Set the new minTime for Flatpickr
+                instance.set("minTime", minTime);
+                console.log(`Min time set to: ${minTime}`);
             }
 
-            // Set the new minTime for Flatpickr
-            instance.set("minTime", minTime);
-            console.log(`Min time set to: ${minTime}`);
-        }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            flatpickr("#flatPickr", {
-                enableTime: true,
-                maxTime: "20:30",
-                time_24hr: true,
-                minuteIncrement: 15,
-                onChange: handleChange,
-                dateFormat: "d-m-Y H:i",
-                minDate: "today",
-                disable: [
-                    function(date) {
-                        // return true to disable
-                        return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+            function onClose() {
+                @this.updateTableList();
+            }
+
+            document.addEventListener('DOMContentLoaded', function () {
+                flatpickr("#flatPickr", {
+                    enableTime: true,
+                    maxTime: "20:30",
+                    time_24hr: true,
+                    minuteIncrement: 15,
+                    onChange: handleChange,
+                    dateFormat: "d-m-Y H:i",
+                    minDate: "today",
+                    disable: [
+                        function (date) {
+                            // return true to disable
+                            return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                        }
+                    ],
+                    onClose: function () {
+                        onClose();
                     }
-                ]
+                });
             });
-        });
-    </script>
-@endpush
+
+        </script>
+    @endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center">
@@ -100,7 +109,7 @@
                                                 Personen</th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
-                                                Tafelnummer</th>
+                                                Tafelnummers</th>
                                             <th scope="col"
                                                 class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actief
                                             </th>
@@ -133,7 +142,9 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    {{ $reservation->table->table_number }}
+                                                    @foreach ($reservation->tables as $table)
+                                                        {{ $table->table_number }}{{ $loop->last ? '' : ', ' }}
+                                                    @endforeach
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
@@ -244,14 +255,10 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                  <div class="" id="date3" data-target-input="nearest">
-                        <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300" placeholder="Datum & Tijd" wire:model="start_time">
+                    <div class="" id="date3" data-target-input="nearest">
+                        <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300"
+                            placeholder="Datum & Tijd" wire:model.defer="start_time">
                     </div>
-                    @error('start_time')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                     @error('start_time')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
@@ -259,9 +266,9 @@
                     @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Personen</label>
-                    <input wire:model.live.debounce.20ms="people" wire:change="updateTableList" type="number" min="1"
-                        max="6" class="mt-1 block w-full rounded-md border-gray-300">
+                    <label class="block text-sm font-medium">Personen ({{ $maxChairs }} max)</label>
+                    <input wire:model.live.debounce.20ms="people" type="number" min="1" max="{{ $maxChairs }}"
+                        class="mt-1 block w-full rounded-md border-gray-300">
                     @error('people')
                         <div class="alert alert-danger text-red-500">
                             {{ $message }}
@@ -270,7 +277,8 @@
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Tafel</label>
-                    <select wire:model.defer="table_id" class="mt-1 block w-full rounded-md border-gray-300">
+                    <select name="options[]" multiple wire:model.defer="table_ids"
+                        class="mt-1 block w-full rounded-md border-gray-300">
                         <option value="">Selecteer een tafel</option>
                         @foreach($tables as $table)
                             <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}

@@ -7,6 +7,7 @@ use Livewire\Component;
 use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
+use App\Models\ReservationTable;
 use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 
@@ -24,7 +25,7 @@ class ReservationPage extends Component
     public $reservationId;
     public $user_id;
     public $guest_name;
-    public $table_id;
+    public $table_ids = [];
     public $start_time;
     public $end_time;
     public $active = false;
@@ -34,7 +35,7 @@ class ReservationPage extends Component
     public $tables;
     public $showPastReservations = false;
     public $showNonActiveReservations = false;
-    public $originalTableId;
+    public $originalTableIds = [];
     public $special_request;
     public $maxChairs;
     public $showGuestNameInput = false;
@@ -43,7 +44,6 @@ class ReservationPage extends Component
     protected $rules = [
         'user_id' => 'nullable',
         'guest_name' => 'nullable',
-        'table_id' => 'required',
         'start_time' => 'required|date|after:today',
         'active' => 'boolean',
         'people' => 'required',
@@ -51,7 +51,6 @@ class ReservationPage extends Component
     public function messages()
     {
         return [
-            'table_id.required' => 'De tafel is verplicht.',
             'start_time.required' => 'De starttijd is verplicht.',
             'start_time.date' => 'De starttijd moet een geldige datum zijn.',
             'start_time.after' => 'De starttijd moet na vandaag zijn.',
@@ -80,23 +79,8 @@ class ReservationPage extends Component
         // Ophalen van reserveringen
         $this->reservations = $query->get();
 
-        // Beschikbare tafels ophalen
-        if ($this->start_time) {
-            $date = Carbon::parse($this->start_time)->format('Y-m-d');
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
-                ->toArray();
-
-            // Include the original table attached to the reservation being edited
-            if ($this->originalTableId) {
-                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
-            }
-
-            $this->tables = Table::whereNotIn('id', $usedTableIds)->get();
-        } else {
-            $this->tables = Table::all();
-        }
+        // Ophalen van beschikbare tafels
+        $this->updateTableList();
 
         // Berekenen van het maximale aantal stoelen
         $this->calculateMaxChairs();
@@ -129,56 +113,79 @@ class ReservationPage extends Component
         $this->reservationId = null;
         $this->user_id = null;
         $this->guest_name = '';
-        $this->table_id = '';
         $this->start_time = '';
         $this->end_time = '';
         $this->active = false;
         $this->people = '';
-        $this->originalTableId = null;
+        $this->originalTableIds = [];
         $this->special_request = '';
     }
 
     // Bijwerken van specifieke eigenschappen
     public function updated($propertyName, $value)
     {
-        $this->$propertyName = $value;
-
-        $this->updateTableList();
+        $this->calculateMaxChairs();
     }
 
     // Bijwerken van de lijst met beschikbare tafels
     public function updateTableList()
     {
-        if (!$this->people || $this->people > Table::max('chairs')) {
-            $this->tables = Table::all();
-            return;
-        }
-
         if ($this->start_time) {
-            $date = Carbon::parse($this->start_time)->format('Y-m-d');
+            $startTime = Carbon::parse($this->start_time);
+            $endTime = $this->calculateEndTime($startTime);
 
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
+            $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
+                ->where('reservations.id', '!=', $this->reservationId) // Exclude the current reservation being edited
+                ->where(function ($query) use ($startTime, $endTime) {
+                    $query->where(function ($query) use ($startTime) {
+                        $query->where('reservations.start_time', '<', $startTime)
+                            ->where('reservations.end_time', '>', $startTime);
+                    })->orWhere(function ($query) use ($endTime) {
+                        $query->where('reservations.start_time', '<', $endTime)
+                            ->where('reservations.end_time', '>', $endTime);
+                    })->orWhere(function ($query) use ($startTime, $endTime) {
+                        $query->where('reservations.start_time', '>=', $startTime)
+                            ->where('reservations.end_time', '<=', $endTime);
+                    });
+                })
+                ->pluck('reservation_tables.table_id')
                 ->toArray();
 
-            // Include the original table attached to the reservation being edited
-            if ($this->originalTableId) {
-                $usedTableIds = array_diff($usedTableIds, [$this->originalTableId]);
-            }
-
-            $this->tables = Table::where('chairs', '>=', $this->people)
-                ->whereNotIn('id', $usedTableIds)
+            // Fetch tables that are available
+            $this->tables = Table::whereNotIn('id', $usedTableIds)
                 ->orderBy('chairs', 'asc')
                 ->get();
         } else {
-            $this->tables = Table::where('chairs', '>=', $this->people)
-                ->orderBy('chairs', 'asc')
-                ->get();
+            // Fetch all tables when no specific time is selected
+            $this->tables = Table::orderBy('chairs', 'asc')->get();
+        }
+    }
+
+    private function calculateEndTime($startTime)
+    {
+        $dayOfWeek = $startTime->dayOfWeek;
+        $hour = $startTime->hour;
+
+        if ($hour >= 12 && $hour < 18) {
+            // Afternoon: reservation lasts 1.5 hours
+            $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
+        } else {
+            // Evening: reservation lasts 3 hours
+            $endTime = $startTime->copy()->addHours(3);
         }
 
-        $this->table_id = $this->tables->count() > 0 ? $this->tables->first()->id : null;
+        if (isset(self::TIME_RANGES[$dayOfWeek])) {
+            $closingHour = self::TIME_RANGES[$dayOfWeek][1];
+            $closingTime = $startTime->copy()->setTime($closingHour, 0);
+
+            if ($endTime->greaterThan($closingTime)) {
+                $endTime = $closingTime;
+            }
+        }
+        return $endTime;
     }
+
+
 
     public function calculateMaxChairs()
     {
@@ -189,46 +196,14 @@ class ReservationPage extends Component
         $this->maxChairs = $tempMaxChairs;
     }
 
-    // Nieuwe reservering aanmaken
-    public function create()
-    {
-        $reservation = new Reservation();
-        $reservation->start_time = date('Y-m-d', strtotime(now())) . ' 23:59:00';
-        $reservation->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
-        $reservation->user_id = Auth::user()->id;
-        $reservation->table_id = 2;
-        $reservation->save();
-    }
-
     // Reservering opslaan of bijwerken
     public function store()
     {
         $this->validate();
 
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
-        // Convert start_time and end_time to the proper format
-        $dayOfWeek = $startTime->dayOfWeek;
-        $hour = $startTime->hour;
 
-
-        // Determine the reservation duration
-        if ($hour >= 12 && $hour < 18) {
-            // Afternoon: reservation lasts 1.5 hours
-            $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
-        } else {
-            // Evening: reservation lasts 3 hours
-            $endTime = $startTime->copy()->addHours(3);
-        }
-
-        // Check if the end time exceeds the closing time
-        if (isset(self::TIME_RANGES[$dayOfWeek])) {
-            $closingHour = self::TIME_RANGES[$dayOfWeek][1];
-            $closingTime = $startTime->copy()->setTime($closingHour, 0);
-
-            if ($endTime->greaterThan($closingTime)) {
-                $endTime = $closingTime;
-            }
-        }
+        $endTime = $this->calculateEndTime($startTime);
 
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
@@ -246,7 +221,6 @@ class ReservationPage extends Component
             [
                 'user_id' => $this->user_id,
                 'guest_name' => $this->guest_name,
-                'table_id' => $this->table_id,
                 'start_time' => $format_start_time,
                 'end_time' => $this->end_time,
                 'active' => $this->active,
@@ -254,6 +228,10 @@ class ReservationPage extends Component
                 'special_request' => $this->special_request,
             ]
         );
+
+        if ($this->table_ids) {
+            $reservation->tables()->sync($this->table_ids);
+        }
 
         session()->flash('message', $this->reservationId ? 'Reservering bijgewerkt.' : 'Reservering aangemaakt.');
 
@@ -269,13 +247,12 @@ class ReservationPage extends Component
         $this->reservationId = $reservation->id;
         $this->user_id = $reservation->user_id;
         $this->guest_name = $reservation->guest_name;
-        $this->table_id = $reservation->table_id;
         $this->start_time = date('d-m-Y H:i', strtotime($reservation->start_time));
         $this->end_time = date('Y-m-d', strtotime($reservation->start_time));
         $this->active = $reservation->active;
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
-        $this->originalTableId = $reservation->table_id;
+        $this->originalTableIds = $reservation->tables->pluck('id')->toArray();
 
         $this->dispatch('open-modal');
     }
