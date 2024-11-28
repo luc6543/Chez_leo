@@ -118,8 +118,6 @@
                             </div>
                         @endif
                     </div>
-                            </div>
-                        </div>
                     @endforeach
                 </div>
                 <div class="hidden md:block">
@@ -223,7 +221,7 @@
             </div>
         </div>
         <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
-        <div class="lg:w-3/4 mx-auto w-full mt-8 bg-white rounded shadow p-4">
+        <div class="lg:w-3/4 mx-auto mb-10 w-full mt-8 bg-white rounded shadow p-4">
             <h2 class="text-xl font-semibold mb-4">Recensies</h2>
             <div class="flex justify-between items-center mb-4">
                 <div>
@@ -233,7 +231,7 @@
                         <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
                     @endif
                 </div>
-                <div>
+                <div class="flex gap-3">
                     @foreach($reviews as $review)
                         @if($review->user_id == Auth::id())  <!-- Zorg ervoor dat alleen de recensies van de ingelogde gebruiker worden getoond -->
                             <a href="{{ route('recenties.bijwerken', $review->id) }}"
@@ -252,5 +250,5 @@
         </div>
     </div>
 </div>
-
+ 
 
