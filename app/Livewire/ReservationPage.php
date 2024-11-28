@@ -8,7 +8,6 @@ use App\Models\Reservation;
 use App\Models\User;
 use App\Models\Table;
 use App\Models\ReservationTable;
-use Illuminate\Validation\ValidationException;
 use Carbon\Carbon;
 
 class ReservationPage extends Component
@@ -42,17 +41,26 @@ class ReservationPage extends Component
         'table_ids' => 'required|array|min:1',
     ];
 
-    public function messages()
+    public function validateFields()
     {
-        return [
-            'start_time.required' => 'De starttijd is verplicht.',
-            'start_time.date' => 'De starttijd moet een geldige datum zijn.',
-            'start_time.after' => 'De starttijd moet na vandaag zijn.',
-            'active.boolean' => 'De status moet een waar of onwaar waarde zijn.',
-            'people.required' => 'Het aantal personen is verplicht.',
-            'table_ids.required' => 'Er moet minimaal één tafel worden geselecteerd.',
-            'table_ids.min' => 'Er moet minimaal één tafel worden geselecteerd.',
-        ];
+        $errorMessage = '';
+        if (empty($this->user_id) && empty($this->guest_name)) {
+            $errorMessage .= 'Er moet een gebruiker of gastnaam worden geselecteerd.<br>';
+        }
+        if (empty($this->start_time)) {
+            $errorMessage .= 'Er moet een starttijd worden geselecteerd.<br>';
+        }
+        if (empty($this->people)) {
+            $errorMessage .= 'Er moet een aantal personen worden ingevuld.<br>';
+        }
+        if (empty($this->table_ids)) {
+            $errorMessage .= 'Er moet minimaal één tafel worden geselecteerd.<br>';
+        }
+
+        if ($errorMessage) {
+            session()->flash('error', $errorMessage);
+            return;
+        }
     }
 
     // Renderen van de component
@@ -154,8 +162,8 @@ class ReservationPage extends Component
     // Reservering opslaan of bijwerken
     public function store()
     {
+        $this->validateFields();
         $this->validate();
-
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
 
         $endTime = Reservation::calculateEndTime($startTime);
@@ -207,6 +215,7 @@ class ReservationPage extends Component
         $this->active = $reservation->active;
         $this->people = $reservation->people;
         $this->special_request = $reservation->special_request;
+        $this->table_ids = $reservation->tables->pluck('id')->toArray();
         $this->originalTableIds = $reservation->tables->pluck('id')->toArray();
 
         $this->dispatch('open-modal');

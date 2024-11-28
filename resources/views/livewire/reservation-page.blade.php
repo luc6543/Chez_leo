@@ -214,15 +214,14 @@
         </div>
     </div>
     <div x-show="modalOpened" x-cloak
-        class="fixed inset-0 z-[51] flex items-center justify-center bg-black bg-opacity-50">
-        <div x-transition class="bg-white rounded-lg p-6 w-1/3">
+        class="fixed inset-0 z-[51] flex items-center justify-center bg-black bg-opacity-50 overflow-y-scroll">
+        <div x-transition class="bg-white rounded-lg px-6 pt-2 w-1/3">
             <h2 class="text-lg font-semibold mb-2">
                 {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
             </h2>
 
             <form wire:submit.prevent="store">
                 <div class="mb-4 mt-2">
-                    <label class="block text-sm font-medium">Klant</label>
                     <div class="flex items-center justify-between">
 
                         @if ($showGuestNameInput)
@@ -247,33 +246,17 @@
                             </svg>
                         </button>
                     </div>
-
-                    @error('user_id')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
                     <div class="" id="date3" data-target-input="nearest">
                         <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300"
                             placeholder="Datum & Tijd" wire:model.defer="start_time">
                     </div>
-                    @error('start_time')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Personen ({{ $maxChairs }} max)</label>
                     <input wire:model.live.debounce.20ms="people" type="number" min="1" max="{{ $maxChairs }}"
-                        class="mt-1 block w-full rounded-md border-gray-300">
-                    @error('people')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                        class="mt-1 block w-full rounded-md border-gray-300"
+                        placeholder="Personen ({{ $maxChairs }} max)">
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Tafel</label>
@@ -286,31 +269,23 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('table_ids')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
                     <label class="block text-sm font-medium">Speciaal verzoek</label>
                     <textarea maxlength="255" wire:model.defer="special_request"
                         class="mt-1 block w-full resize-none rounded-md border-gray-300"></textarea>
-                    @error('special_request')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
-                <div class="mb-4">
+                <div class="mb-4 flex items-center gap-4">
                     <label class="block text-sm font-medium">Actief</label>
-                    <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
-                    @error('active')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    <input type="checkbox" wire:model.defer="active" class="block rounded-md border-gray-300">
                 </div>
+
+                @if (session()->has('error'))
+                    <div class="alert alert-danger text-red-500">
+                        {!! session('error') !!}
+                    </div>
+                @endif
+
                 <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
                 <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
                     class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
