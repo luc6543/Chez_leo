@@ -11,6 +11,7 @@ use App\Models\Reservation;
 use App\Models\Review;
 use App\Models\Table;
 use App\Models\User;
+use App\Models\ReservationTable;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -19,13 +20,6 @@ use Carbon\Carbon;
 
 class HomePage extends Component
 {
-    const TIME_RANGES = [
-        3 => [17, 22], // Wednesday
-        4 => [12, 22], // Thursday
-        5 => [12, 23], // Friday
-        6 => [12, 23], // Saturday
-        0 => [12, 23]  // Sunday
-    ];
     public $products;
     public $category = "Lunch";
     public $name;
@@ -112,46 +106,23 @@ class HomePage extends Component
                         'password' => Hash::make($temporaryPassword),
                     ]);
 
-            // Send an email with the temporary password
-            Password::sendResetLink(['email' => $this->email]);
-//            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
-        }
-    }
+                    // Send an email with the temporary password
+                    Password::sendResetLink(['email' => $this->email]);
+                    //            Mail::to($this->email)->send(new NewTemporaryPasswordMail($user, $temporaryPassword));
+                }
+            }
 
             // Convert start_time and end_time to the proper format
             $startTime = Carbon::parse($this->start_time);
-            $dayOfWeek = $startTime->dayOfWeek;
-            $hour = $startTime->hour;
-
-            // Determine the reservation duration
-            if ($hour >= 12 && $hour < 18) {
-                // Afternoon: reservation lasts 1.5 hours
-                $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
-            } else {
-                // Evening: reservation lasts 3 hours
-                $endTime = $startTime->copy()->addHours(3);
-            }
-
-            // Check if the end time exceeds the closing time
-            if (isset(self::TIME_RANGES[$dayOfWeek])) {
-                $closingHour = self::TIME_RANGES[$dayOfWeek][1];
-                $closingTime = $startTime->copy()->setTime($closingHour, 0);
-
-                if ($endTime->greaterThan($closingTime)) {
-                    $endTime = $closingTime;
-                }
-            }
+            $endTime = Reservation::calculateEndTime($startTime);
 
             // Set the end_time property
             $this->end_time = $endTime->format('Y-m-d H:i:s');
 
             // Find an available table with the required number of chairs
-            $date = Carbon::parse($this->start_time)->format('Y-m-d');
+            $startTime = Carbon::parse($this->start_time);
 
-            $usedTableIds = Reservation::whereDate('start_time', '<=', $date)
-                ->whereDate('end_time', '>=', $date)
-                ->pluck('table_id')
-                ->toArray();
+            $usedTableIds = ReservationTable::getUsedTableIds($this->reservationId, $startTime, $endTime);
 
             $availableTables = Table::where('chairs', '>=', $this->people)
                 ->whereNotIn('id', $usedTableIds)
@@ -162,10 +133,10 @@ class HomePage extends Component
 
             if ($this->table_id) {
                 // Create the reservation
-                Reservation::create([
+                $reservation = Reservation::create([
                     'id' => $this->reservationId,
                     'user_id' => $user->id,
-                    'table_id' => $this->table_id,
+                    'table_id' => 1,
                     'people' => (int) $this->people,
                     'special_request' => $this->special_request,
                     'paid' => false,
@@ -173,6 +144,9 @@ class HomePage extends Component
                     'start_time' => $this->start_time,
                     'end_time' => $this->end_time,
                 ]);
+
+                $reservation->tables()->sync([$this->table_id]);
+
                 // Show a success message
                 $successMessage = 'Uw reservering is succesvol aangemaakt.';
                 if (!Auth::check()) {
@@ -189,9 +163,7 @@ class HomePage extends Component
             $this->reset(['name', 'email', 'start_time', 'people', 'special_request']);
 
         } catch (Exception $e) {
-            throw $e;
             session()->flash('error', 'Er is een fout opgetreden bij het maken van de reservering.');
         }
-
     }
 }

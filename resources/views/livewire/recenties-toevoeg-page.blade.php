@@ -9,8 +9,14 @@
                 </div>
             @endif
 
+            @if (session()->has('error'))
+                <div class="alert alert-error bg-red-500 text-white p-4 rounded mb-4">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <!-- Formulier voor ingelogde gebruikers -->
-            <form wire:submit.prevent="addReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
+            <form wire:submit.prevent="saveReview" class="bg-white shadow-md rounded px-8 pt-6 pb-8">
                 <div class="mb-4">
                     <label for="review" class="block text-gray-700 text-sm font-bold mb-2">Review:</label>
                     <textarea 
@@ -41,10 +47,11 @@
                     @error('rating') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
                 </div>
 
+                <!-- Dynamische knoptekst -->
                 <button 
                     type="submit" 
                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">
-                    Plaats Review
+                    {{ $reviewId ? 'Update Review' : 'Plaats Review' }}
                 </button>
             </form>
         <!-- @else
@@ -116,4 +123,3 @@
         });
     });
 </script>
-

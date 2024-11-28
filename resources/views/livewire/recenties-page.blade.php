@@ -25,6 +25,27 @@
             </div>
 
             <div class="mt-6">
+                <h3 class="text-lg font-medium text-gray-900">Beoordelingsoverzicht</h3>
+                <dl class="mt-2 space-y-4">
+                    @foreach ($percentages as $stars => $percentage)
+                        <div class="flex items-center text-sm">
+                            <dt class="flex items-center">
+                                <span class="text-gray-900">{{ $stars }} ster{{ $stars > 1 ? 'ren' : '' }}</span>
+                            </dt>
+                            <div class="ml-4 flex-1">
+                                <div class="relative h-3 rounded-full bg-gray-200">
+                                    <div 
+                                        class="absolute inset-0 rounded-full bg-yellow-400" 
+                                        style="width: {{ $percentage }}%;"></div>
+                                </div>
+                            </div>
+                            <dd class="ml-3 text-sm text-gray-900">{{ $percentage }}%</dd>
+                        </div>
+                    @endforeach
+                </dl>
+            </div>
+
+            <div class="mt-6">
                 <h3 class="text-lg font-medium text-gray-900">Deel jouw mening</h3>
                 <p class="mt-1 text-sm text-gray-600">Was het allemaal goed bevallen? Laat het ons weten!</p>
                 <a href="/recensies/toevoegen" wire:navigate
@@ -58,7 +79,7 @@
                                     <p class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</p>
                                 </div>
                             </div>
-                            <div class="mt-4 space-y-6 text-base text-gray-600 break-all">
+                            <div class="mt-4 space-y-6 text-base text-gray-600 break-normal">
                                 <p>{{ $review->review }}</p>
                             </div>
                         </div>
