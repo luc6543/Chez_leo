@@ -284,7 +284,9 @@
                     </div>
                 @endif
 
-                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
+                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">
+                    {{ $reservationId ? 'Verander' : 'Reserveer' }}
+                </button>
                 <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
                     class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
             </form>
