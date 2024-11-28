@@ -43,7 +43,7 @@
                                         @endif
                                     </p>
                                     <div x-show="expanded" x-cloak class="mt-2 p-2 rounded">
-                                        <p class="whitespace-pre-wrap break-all">{{$review->review}}</p>
+                                        <p class="whitespace-pre-wrap break-normal">{{$review->review}}</p>
                                         <button class="text-blue-500 hover:underline ml-2" @click="expanded = false">Lees minder</button>
                                     </div>
                                 </div>

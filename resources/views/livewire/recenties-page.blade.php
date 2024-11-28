@@ -79,7 +79,7 @@
                                     <p class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</p>
                                 </div>
                             </div>
-                            <div class="mt-4 space-y-6 text-base text-gray-600 break-all">
+                            <div class="mt-4 space-y-6 text-base text-gray-600 break-normal">
                                 <p>{{ $review->review }}</p>
                             </div>
                         </div>
