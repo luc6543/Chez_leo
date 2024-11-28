@@ -59,11 +59,11 @@
             <h3 class="sr-only">Lijst van recensies</h3>
             <div class="flow-root">
                 <div class="-my-12 divide-y divide-gray-200">
-                    @foreach ($reviews as $review)
+                    @foreach ($reviews->where('is_approved', 1) as $review) <!-- Filter alleen goedgekeurde recensies -->
                         <div class="py-12">
                             <div class="flex items-center">
                                 <img src="{{ $review->user->profile_photo_url ?? 'https://via.placeholder.com/256' }}"
-                                    alt="{{ $review->user->name }}" class="w-12 h-12 rounded-full">
+                                alt="{{ $review->user->name }}" class="w-12 h-12 rounded-full">
                                 <div class="ml-4">
                                     <h4 class="text-sm font-bold text-gray-900">{{ $review->user->name }}</h4>
                                     <div class="mt-1 flex items-center">
@@ -79,7 +79,7 @@
                                     <p class="text-sm text-gray-500">{{ $review->created_at->format('F j, Y') }}</p>
                                 </div>
                             </div>
-                            <div class="mt-4 space-y-6 text-base text-gray-600 break-normal">
+                            <div class="mt-4 space-y-6 text-base text-gray-600 break-all">
                                 <p>{{ $review->review }}</p>
                             </div>
                         </div>
