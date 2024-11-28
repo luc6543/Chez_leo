@@ -14,7 +14,7 @@ class TablesSeeder extends Seeder
     public function run(): void
     {
         // Remove all existing tables
-        Table::truncate();
+        Table::query()->delete();
 
         // Define the tables based on the number of chairs and the count of tables given by the client
         $tables = [
