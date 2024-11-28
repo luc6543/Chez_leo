@@ -65,7 +65,7 @@ class Reservation extends Model
         $dayOfWeek = $startTime->dayOfWeek;
         $hour = $startTime->hour;
 
-        if ($hour >= 12 && $hour < 18) {
+        if ($hour >= 12 && $hour < 17) {
             // Afternoon: reservation lasts 1.5 hours
             $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
         } else {
