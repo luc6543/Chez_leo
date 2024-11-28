@@ -163,7 +163,10 @@ class ReservationPage extends Component
     public function store()
     {
         $this->validateFields();
-        $this->validate();
+        $this->validate([
+            'user_id' => 'required_without:guest_name',
+            'guest_name' => 'required_without:user_id',
+        ]);
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
 
         $endTime = Reservation::calculateEndTime($startTime);
