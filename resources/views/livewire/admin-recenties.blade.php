@@ -31,7 +31,7 @@
                                         @endif
                                     </p>
                                     <div x-show="expanded" x-cloak class="mt-2 p-2 rounded">
-                                        <p class="whitespace-pre-wrap break-all">{{$review->review}}</p>
+                                        <p class="whitespace-pre-wrap break-normal">{{$review->review}}</p>
                                         <button class="text-blue-500 hover:underline ml-2" @click="expanded = false">Lees minder</button>
                                     </div>
                                 </div>
@@ -41,29 +41,29 @@
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $review->user->email }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->created_at)) }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($review->updated_at)) }}</td>
-                            <td 
-                                id="approve-{{ $review->id }}" 
-                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? 'hidden' : '' }}" 
+                            <td
+                                id="approve-{{ $review->id }}"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? 'hidden' : '' }}"
                                 >
-                                <button 
-                                    wire:click="RecensieBevestiging({{ $review->id }})" 
+                                <button
+                                    wire:click="RecensieBevestiging({{ $review->id }})"
                                     class="hover:text-[#FEA116]">
                                     sta toe
                                 </button>
                             </td>
-                            <td 
-                                id="no_approve-{{ $review->id }}" 
-                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? '' : 'hidden' }}" 
+                            <td
+                                id="no_approve-{{ $review->id }}"
+                                class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_approved ? '' : 'hidden' }}"
                                 >
-                                <button 
-                                    wire:click="RecensieBevestiging({{ $review->id }})" 
+                                <button
+                                    wire:click="RecensieBevestiging({{ $review->id }})"
                                     class="hover:text-[#FEA116]">
                                     sta niet toe
                                 </button>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
-                                <button 
-                                    wire:click="verwijderRecensie({{ $review->id }})" 
+                                <button
+                                    wire:click="verwijderRecensie({{ $review->id }})"
                                     class="hover:text-red-600">
                                     verwijder
                                 </button>
