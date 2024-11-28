@@ -3,8 +3,7 @@
 namespace App\Livewire;
 
 use App\Models\Review;
-use GeminiAPI\Client;
-use GeminiAPI\Resources\Parts\TextPart;
+use Gemini;
 use Livewire\Component;
 
 class AdminRecenties extends Component
@@ -22,43 +21,57 @@ class AdminRecenties extends Component
     }
     public function render()
     {
-        return view('livewire.admin-recenties', ['reviews' => $this->reviews]);
+        return view('livewire.admin-recenties');
     }
 
     public function getVerbeterPunten()
     {
         try {
-            $this->AIGenerated = '';
+            //$this->AIGenerated = '';
+            $client = Gemini::client(env('GEMINI_API'));
 
             // Fetch only the selected reviews
             $selectedReviews = Review::whereIn('id', $this->selectedReviews)->pluck('review')->implode("\n");
 
-            $reviews = 'op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews laat ook zien op basis van welke specifieke texten deze zijn bedacht: ' . $selectedReviews;
+            $reviews = 'Op mijn website staan reviews over mijn restaurant helaas zijn sommige hiervan aanstootgevend maar zou jij mij een lijst met mogelijke verbeterpunten kunnen geven voor mijn restaurant aangeleid door de volgende reviews gebruik geen titels geef mij alleen specifieke verbeterpunten zonder uitleg: ' . $selectedReviews;
 
             $wordLimit = 20000000;
             $wordsArray = explode(' ', $reviews);
             $limitedWordsArray = array_slice($wordsArray, 0, $wordLimit);
             $reviews = implode(' ', $limitedWordsArray);
 
-            $client = new Client(env('GEMINI_API'));
-            $response = $client->geminiPro()->generateContent(
-                new TextPart($reviews),
-            );
-            $responseText = $response->text();
+            $stream = $client
+                ->geminiPro()
+                ->streamGenerateContent($reviews);
 
-            // Split the string into an array by double newlines (\n\n)
-            $paragraphs = explode("\n\n", $responseText);
+            foreach ($stream as $response) {
+                $responseText = $response->text();
 
-            // Process each paragraph
-            foreach ($paragraphs as &$paragraph) {
-                // Replace all occurrences of ** with <h1> and </h1>
-                $paragraph = preg_replace('/\*\*(.*?)\*\*/', '<h4>$1</h4>', $paragraph);
+                // Split the response into lines based on newline characters
+                $lines = explode("\n", $responseText);
+
+                // Process each line to wrap with <li> tags if it starts with *
+                $formattedItems = "";
+
+                foreach ($lines as $line) {
+                    // Check if the line starts with '* ' and format it as <li>
+                    if (preg_match('/^\*\s?(.*)/', $line, $matches)) {
+                        $formattedItems .= "<li>" . trim($matches[1]) . "</li>";
+                    }
+                }
+
+                // Stream the formatted content
+                $this->stream(
+                    to: 'AIGenerated',
+                    content: $formattedItems,
+                );
+
+                // Append to AIGenerated for persistence
+                $this->AIGenerated .= $formattedItems;
             }
 
-            // Wrap the paragraphs in <ul><li>...</li></ul>
-            $this->AIGenerated = "<ul><li>" . implode("</li><li>", $paragraphs) . "</li></ul>";
-
         } catch (\Exception $e) {
+            throw $e;
             $this->AIGenerated = "Er is een rate limit op het ophalen van verbeter punten probeer het over een kleine minuut nog eens.";
         }
     }
