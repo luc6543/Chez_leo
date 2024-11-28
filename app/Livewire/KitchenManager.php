@@ -75,8 +75,10 @@ class KitchenManager extends Component
             }
         }
 
-        $this->products = $products;
+        // Group products by table_number
+        $this->products = $products->groupBy('table_number');
     }
+
 
     /**
      * Toggle the visibility of completed products.
