@@ -14,13 +14,6 @@ use Carbon\Carbon;
 class ReservationPage extends Component
 {
     // Declareren van publieke eigenschappen
-    const TIME_RANGES = [
-        3 => [17, 22], // Wednesday
-        4 => [12, 22], // Thursday
-        5 => [12, 23], // Friday
-        6 => [12, 23], // Saturday
-        0 => [12, 23]  // Sunday
-    ];
     public $reservations;
     public $reservationId;
     public $user_id;
@@ -132,24 +125,9 @@ class ReservationPage extends Component
     {
         if ($this->start_time) {
             $startTime = Carbon::parse($this->start_time);
-            $endTime = $this->calculateEndTime($startTime);
+            $endTime = Reservation::calculateEndTime($startTime);
 
-            $usedTableIds = ReservationTable::join('reservations', 'reservation_tables.reservation_id', '=', 'reservations.id')
-                ->where('reservations.id', '!=', $this->reservationId) // Exclude the current reservation being edited
-                ->where(function ($query) use ($startTime, $endTime) {
-                    $query->where(function ($query) use ($startTime) {
-                        $query->where('reservations.start_time', '<', $startTime)
-                            ->where('reservations.end_time', '>', $startTime);
-                    })->orWhere(function ($query) use ($endTime) {
-                        $query->where('reservations.start_time', '<', $endTime)
-                            ->where('reservations.end_time', '>', $endTime);
-                    })->orWhere(function ($query) use ($startTime, $endTime) {
-                        $query->where('reservations.start_time', '>=', $startTime)
-                            ->where('reservations.end_time', '<=', $endTime);
-                    });
-                })
-                ->pluck('reservation_tables.table_id')
-                ->toArray();
+            $usedTableIds = ReservationTable::getUsedTableIds($this->reservationId, $startTime, $endTime);
 
             // Fetch tables that are available
             $this->tables = Table::whereNotIn('id', $usedTableIds)
@@ -160,32 +138,6 @@ class ReservationPage extends Component
             $this->tables = Table::orderBy('chairs', 'asc')->get();
         }
     }
-
-    private function calculateEndTime($startTime)
-    {
-        $dayOfWeek = $startTime->dayOfWeek;
-        $hour = $startTime->hour;
-
-        if ($hour >= 12 && $hour < 18) {
-            // Afternoon: reservation lasts 1.5 hours
-            $endTime = $startTime->copy()->addHours(1)->addMinutes(30);
-        } else {
-            // Evening: reservation lasts 3 hours
-            $endTime = $startTime->copy()->addHours(3);
-        }
-
-        if (isset(self::TIME_RANGES[$dayOfWeek])) {
-            $closingHour = self::TIME_RANGES[$dayOfWeek][1];
-            $closingTime = $startTime->copy()->setTime($closingHour, 0);
-
-            if ($endTime->greaterThan($closingTime)) {
-                $endTime = $closingTime;
-            }
-        }
-        return $endTime;
-    }
-
-
 
     public function calculateMaxChairs()
     {
@@ -203,7 +155,7 @@ class ReservationPage extends Component
 
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
 
-        $endTime = $this->calculateEndTime($startTime);
+        $endTime = Reservation::calculateEndTime($startTime);
 
         // Set the end_time property
         $this->end_time = $endTime->format('Y-m-d H:i:s');
