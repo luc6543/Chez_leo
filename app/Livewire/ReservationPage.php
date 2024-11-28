@@ -25,7 +25,6 @@ class ReservationPage extends Component
     public $reservationId;
     public $user_id;
     public $guest_name;
-    public $table_id = 1;
     public $table_ids = [];
     public $start_time;
     public $end_time;
@@ -114,7 +113,6 @@ class ReservationPage extends Component
         $this->reservationId = null;
         $this->user_id = null;
         $this->guest_name = '';
-        $this->table_id = '';
         $this->start_time = '';
         $this->end_time = '';
         $this->active = false;
@@ -198,17 +196,6 @@ class ReservationPage extends Component
         $this->maxChairs = $tempMaxChairs;
     }
 
-    // Nieuwe reservering aanmaken
-    public function create()
-    {
-        $reservation = new Reservation();
-        $reservation->start_time = date('Y-m-d', strtotime(now())) . ' 23:59:00';
-        $reservation->end_time = date('Y-m-d', strtotime($this->start_time)) . ' 23:59:00';
-        $reservation->user_id = Auth::user()->id;
-        $reservation->table_id = 2;
-        $reservation->save();
-    }
-
     // Reservering opslaan of bijwerken
     public function store()
     {
@@ -234,7 +221,6 @@ class ReservationPage extends Component
             [
                 'user_id' => $this->user_id,
                 'guest_name' => $this->guest_name,
-                'table_id' => $this->table_id,
                 'start_time' => $format_start_time,
                 'end_time' => $this->end_time,
                 'active' => $this->active,
