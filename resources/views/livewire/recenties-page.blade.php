@@ -8,7 +8,7 @@
                 <div>
                     <!-- Gemiddelde beoordeling -->
                     @php
-                        $averageRating = $reviews->avg('rating');
+                        $averageRating = ceil($reviews->avg('rating') ?? 0);
                     @endphp
                     <div class="flex items-center">
                         @for ($i = 1; $i <= 5; $i++)
