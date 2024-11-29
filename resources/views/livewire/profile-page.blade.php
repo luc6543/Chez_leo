@@ -43,7 +43,7 @@
         </script>
     @endpush
     @if (session()->has('message'))
-        <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+        <div class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
                 {{ session('message') }}
             </div>
