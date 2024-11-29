@@ -8,8 +8,14 @@
     @endpush
     @push('scripts')
         @include('flatpickr::components.script')
-
-        <script>
+        <script wire:ignore>
+                // Check if the page has already been reloaded
+                if (!localStorage.getItem('page-reloaded')) {
+                    localStorage.setItem('page-reloaded', 'true');
+                    window.location.reload();  // Reload the page
+                } else {
+                    localStorage.removeItem('page-reloaded');  // Remove the flag after reloading
+                }
             function handleChange(selectedDates, dateStr, instance) {
                 console.log({ selectedDates, dateStr, instance });
 
@@ -67,7 +73,6 @@
                     }
                 });
             });
-
         </script>
     @endpush
     <div class="bg-white py-10 mt-16">

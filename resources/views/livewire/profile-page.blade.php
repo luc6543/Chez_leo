@@ -89,7 +89,7 @@
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span class="font-extrabold">Tafel nummer:</span>
-                                <span class="font-light">{{ $reservation->table->table_number }}</span>
+                                <span class="font-light">{{ $reservation->tables }}</span>
                             </div>
                             <div class="flex justify-between text-sm">
                                 <span class="font-extrabold">Datum:</span>
@@ -149,7 +149,11 @@
                                     @foreach(Auth::user()->reservations as $reservation)
                                     <tr>
                                         <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $reservation->id }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->table->table_number }}</td>
+                                        @foreach ($reservation->tables as $table)
+                                        <td class="whitespace-nowrap  px-[1.8rem] py-4 text-sm text-gray-500">
+                                            {{ $table->table_number }}{{ $loop->last ? '' : ', ' }}
+                                        </td>
+                                        @endforeach
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
                                         <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>

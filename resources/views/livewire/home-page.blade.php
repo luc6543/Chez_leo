@@ -9,9 +9,6 @@
             <script>
                 function handleChange(selectedDates, dateStr, instance) {
                     console.log({ selectedDates, dateStr, instance });
-
-                    if (!selectedDates.length) return; // If no date is selected, return.
-
                     const selectedDate = selectedDates[0];
                     const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
                     let minTime = null;
