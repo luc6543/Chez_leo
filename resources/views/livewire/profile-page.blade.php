@@ -283,7 +283,7 @@
                                     Bewerk je recensie
                                 </a>
                                 <!-- Verwijderen button -->
-                                <button class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                                <button onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
                                     wire:click="deleteReview({{ $review->id }})">
                                     Verwijderen
                                 </button>
