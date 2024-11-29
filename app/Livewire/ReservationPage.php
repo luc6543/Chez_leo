@@ -162,6 +162,14 @@ class ReservationPage extends Component
     // Reservering opslaan of bijwerken
     public function store()
     {
+        // This will allow a user to be removed from a reservation without giving an error
+        if (empty(trim($this->user_id))) {
+            $this->user_id = null;
+        }
+        // Check if the guest_name is empty or contains only spaces
+        if (empty(trim($this->guest_name))) {
+            $this->guest_name = null;
+        }
         $this->validateFields();
         $this->validate([
             'user_id' => 'required_without:guest_name',
@@ -176,11 +184,6 @@ class ReservationPage extends Component
 
         // Format the start_time property
         $format_start_time = Carbon::parse($this->start_time)->format('Y-m-d H:i:s');
-
-        // Check if the guest_name is empty or contains only spaces
-        if (empty(trim($this->guest_name))) {
-            $this->guest_name = null;
-        }
 
         $reservation = Reservation::updateOrCreate(
             ['id' => $this->reservationId],
