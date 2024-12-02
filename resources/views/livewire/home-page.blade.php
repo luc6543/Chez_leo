@@ -331,8 +331,8 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-                                    <div class="form-floating date " id="date3" data-target-input="nearest">
-                                        <input type="text" id="flatPickr" class="bg-white py-3 px-14" placeholder="Datum & Tijd" wire:model="start_time">
+                                    <div class="form-floating date" id="date3" data-target-input="nearest">
+                                        <input type="text" id="flatPickr" class="bg-white py-3 w-full" placeholder="Datum & Tijd" wire:model="start_time">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
