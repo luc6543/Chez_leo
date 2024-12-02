@@ -29,22 +29,22 @@
                                 <div class="bg-white p-4 rounded shadow">
                                     <h2 class="text-xl font-semibold">Tafel {{ $table->table_number }}</h2>
                                     <p>{{ $table->chairs }} stoelen</p>
-                                    <ul>
+                                    <div class="grid grid-cols-2 items-center relative">
                                         @foreach($tableReservations as $reservation)
-                                            <h3 class="text-lg font-semibold mt-2">Reservering {{ $reservation->id }}</h3>
-                                            <li>
-                                                <p>Van {{ Carbon::parse($reservation->start_time)->format('H:i') }} tot
-                                                    {{ Carbon::parse($reservation->end_time)->format('H:i') }}
-                                                </p>
-                                                @if ($reservation->user || $reservation->guest_name)
-                                                    <p>Klant: {{ $reservation->user->name ?? $reservation->guest_name }}</p>
-                                                @endif
-                                                <p>{{ $reservation->people }}
-                                                    {{ $reservation->people == 1 ? 'persoon' : 'personen' }}
-                                                </p>
-                                            </li>
+                                            <div class="relative flex flex-col items-center justify-center {{ in_array($loop->iteration, [2, 4]) ? 'border-l-2 border-gray-500 h-2/3' : '' }}">
+                                                <!-- Reservation Content -->
+                                                <div class="text-center w-3/4 pt-2 {{ in_array($loop->iteration, [3, 4, 5]) ? 'border-t-2 border-gray-500' : '' }}">
+                                                    <p class="text-lg font-semibold">
+                                                        {{ Carbon::parse($reservation->start_time)->format('H:i') }} -
+                                                        {{ Carbon::parse($reservation->end_time)->format('H:i') }}</p>
+                                                    @if ($reservation->user || $reservation->guest_name)
+                                                        <p>{{ $reservation->user->name ?? $reservation->guest_name }}</p>
+                                                    @endif
+                                                    <p>{{ $reservation->people }} {{ $reservation->people == 1 ? 'persoon' : 'personen' }}</p>
+                                                </div>
+                                            </div>
                                         @endforeach
-                                    </ul>
+                                    </div>
                                 </div>
                             @endif
                     @endforeach

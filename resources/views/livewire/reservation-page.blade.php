@@ -189,9 +189,9 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    <button wire:click="delete({{ $reservation->id }})"
-                                                        x-data="{ isDeleting: false }" @click="isDeleting = true"
-                                                        :disabled="isDeleting"
+                                                    <button
+                                                        onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
+                                                        wire:click="delete({{ $reservation->id }})"
                                                         class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
                                                     </button>
                                                 </td>
@@ -214,23 +214,22 @@
         </div>
     </div>
     <div x-show="modalOpened" x-cloak
-        class="fixed inset-0 z-[51] flex items-center justify-center bg-black bg-opacity-50">
-        <div x-transition class="bg-white rounded-lg p-6 w-1/3">
-            <h2 class="text-lg font-semibold mb-2">
-                {{ $reservationId ? 'Edit Reservation' : 'Create Reservation' }}
+        class="fixed inset-0 z-[51] flex items-center justify-center bg-black bg-opacity-50 overflow-y-scroll">
+        <div x-transition class="bg-white rounded-lg px-6 pt-3 w-1/3">
+            <h2 class="text-lg font-semibold mb-4">
+                {{ $reservationId ? 'Verander de reservering' : 'Maak een reservering' }}
             </h2>
 
             <form wire:submit.prevent="store">
                 <div class="mb-4 mt-2">
-                    <label class="block text-sm font-medium">Klant</label>
                     <div class="flex items-center justify-between">
 
                         @if ($showGuestNameInput)
-                            <input wire:model.defer="guest_name" id="guest-name"
-                                class="mt-1 w-full rounded-md border-gray-300" placeholder="Type de naam van de klant">
+                            <input wire:model.defer="guest_name" id="guest-name" class="w-full rounded-md border-gray-300"
+                                placeholder="Type de naam van de klant">
                         @else
                             <select id="user-select" wire:model.defer="user_id"
-                                class="mt-1 block w-full rounded-md border-gray-300">
+                                class="block w-full rounded-md border-gray-300">
                                 <option value="">Selecteer een klant</option>
                                 @foreach($users as $user)
                                     <option value="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</option>
@@ -247,71 +246,47 @@
                             </svg>
                         </button>
                     </div>
-
-                    @error('user_id')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
                     <div class="" id="date3" data-target-input="nearest">
-                        <input type="text" id="flatPickr" class="bg-white !rounded-md mt-1 block w-full border-gray-300"
+                        <input type="text" id="flatPickr" class="bg-white !rounded-md block w-full border-gray-300"
                             placeholder="Datum & Tijd" wire:model.defer="start_time">
                     </div>
-                    @error('start_time')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Personen ({{ $maxChairs }} max)</label>
                     <input wire:model.live.debounce.20ms="people" type="number" min="1" max="{{ $maxChairs }}"
-                        class="mt-1 block w-full rounded-md border-gray-300">
-                    @error('people')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                        class="block w-full rounded-md border-gray-300" placeholder="Personen ({{ $maxChairs }} max)">
                 </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium">Tafel</label>
+                <div class="mb-4 ">
+                    <label class="block text-sm font-medium">Selecteer één of meerdere tafels</label>
                     <select name="options[]" multiple wire:model.defer="table_ids"
-                        class="mt-1 block w-full rounded-md border-gray-300">
-                        <option value="">Selecteer een tafel</option>
+                        class="block w-full rounded-md border-gray-300">
                         @foreach($tables as $table)
                             <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
                                 {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
                             </option>
                         @endforeach
                     </select>
-                    @error('table_id')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
                 </div>
                 <div class="mb-4">
-                    <label class="block text-sm font-medium">Speciaal verzoek</label>
                     <textarea maxlength="255" wire:model.defer="special_request"
-                        class="mt-1 block w-full resize-none rounded-md border-gray-300"></textarea>
-                    @error('special_request')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                        class="block w-full resize-none rounded-md border-gray-300"
+                        placeholder="Speciaal verzoek"></textarea>
                 </div>
-                <div class="mb-4">
+                <div class="mb-4 flex items-center gap-4">
                     <label class="block text-sm font-medium">Actief</label>
-                    <input type="checkbox" wire:model.defer="active" class="mt-1 block rounded-md border-gray-300">
-                    @error('active')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
-                    @enderror
+                    <input type="checkbox" wire:model.defer="active" class="block rounded-md border-gray-300">
                 </div>
-                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Opslaan</button>
+
+                @if (session()->has('error'))
+                    <div class="alert alert-danger text-red-500">
+                        {!! session('error') !!}
+                    </div>
+                @endif
+
+                <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">
+                    {{ $reservationId ? 'Verander' : 'Reserveer' }}
+                </button>
                 <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
                     class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer</button>
             </form>

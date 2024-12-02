@@ -126,11 +126,23 @@ class ProfilePage extends Component
         $this->dispatch('open-modal');
     }
 
+    public function activate($id)
+    {
+        $reservation = Reservation::findOrFail($id);
+        $reservation::updateOrCreate(
+            ['id' => $id],
+            [
+                'active' => true,
+            ]
+        );
+        session()->flash('message', 'Reservering geactiveerd!');
+    }
+
     public function deleteReview($reviewId)
     {
         $review = Review::where('id', $reviewId)
-                        ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
-                        ->first();
+            ->where('user_id', Auth::id()) // Alleen recensies van de gebruiker
+            ->first();
 
         if ($review) {
             $review->delete();
@@ -142,7 +154,8 @@ class ProfilePage extends Component
 
 
     //reservering annuleren
-    public function annuleerReservering($id){
+    public function annuleerReservering($id)
+    {
         $reservation = Reservation::findOrFail($id);
 
         $reservation->delete();

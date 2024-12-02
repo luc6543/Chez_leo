@@ -150,8 +150,9 @@ class HomePage extends Component
                 // Show a success message
                 $successMessage = 'Uw reservering is succesvol aangemaakt.';
                 if (!Auth::check()) {
-                    $successMessage .= "<br>U ontvangt een e-mail met uw tijdelijke wachtwoord.";
+                    $successMessage .= "<br>Er is een account voor u aangemaakt met uw gegevens.<br>U ontvangt een e-mail waar u uw wachtwoord kan instellen.";
                 }
+                $successMessage .= "<br>Op uw profiel pagina kunt u uw reservering activeren.";
                 session()->flash('success', $successMessage);
 
             } else {
