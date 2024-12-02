@@ -40,6 +40,23 @@
                 instance.set("minTime", minTime);
                 console.log(`Min time set to: ${minTime}`);
             }
+            document.addEventListener('DOMContentLoaded', function() {
+                    flatpickr("#flatPickr", {
+                        enableTime: true,
+                        maxTime: "20:30",
+                        time_24hr: true,
+                        minuteIncrement: 15,
+                        onChange: handleChange,
+                        dateFormat: "d-m-Y H:i",
+                        minDate: "today",
+                        disable: [
+                            function(date) {
+                                // return true to disable
+                                return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                            }
+                        ]
+                    });
+                });
         </script>
     @endpush
     @if (session()->has('message'))
@@ -196,14 +213,10 @@
                     <div class="mb-4 mt-2">
                     </div>
                     <div class="mb-4">
-                        <x-flatpickr id="flatPickr" value="{{$start_time}}" max-time="20:30" onChange="handleChange"
-                            :disable="['monday', 'tuesday']" class="mt-1 h-full block resize-none bg-white w-full !rounded-md !border-gray-300" date-format="d-m-Y" placeholder="Datum & Tijd"
-                            :min-date="today()" wire:model="start_time" show-time />
-                        @error('start_time')
-                            <div class="alert alert-danger text-red-500">
-                                {{ $message }}
-                            </div>
-                        @enderror
+                        <div class="" id="date3" data-target-input="nearest">
+                            <input type="text" id="flatPickr" class="bg-white !rounded-md block w-full border-gray-300"
+                                placeholder="Datum & Tijd" wire:model.defer="start_time">
+                        </div>
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Speciaal verzoek</label>
