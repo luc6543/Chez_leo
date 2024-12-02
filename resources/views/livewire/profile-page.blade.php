@@ -41,22 +41,22 @@
                 console.log(`Min time set to: ${minTime}`);
             }
             document.addEventListener('DOMContentLoaded', function() {
-                    flatpickr("#flatPickr", {
-                        enableTime: true,
-                        maxTime: "20:30",
-                        time_24hr: true,
-                        minuteIncrement: 15,
-                        onChange: handleChange,
-                        dateFormat: "d-m-Y H:i",
-                        minDate: "today",
-                        disable: [
-                            function(date) {
-                                // return true to disable
-                                return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
-                            }
-                        ]
-                    });
+                flatpickr("#flatPickr", {
+                    enableTime: true,
+                    maxTime: "20:30",
+                    time_24hr: true,
+                    minuteIncrement: 15,
+                    onChange: handleChange,
+                    dateFormat: "d-m-Y H:i",
+                    minDate: "today",
+                    disable: [
+                        function(date) {
+                            // return true to disable
+                            return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
+                        }
+                    ]
                 });
+            });
         </script>
     @endpush
     @if (session()->has('message'))
@@ -140,11 +140,12 @@
                 <div class="hidden md:block">
                     <!-- Desktop Version -->
                     <div>
-                    @if ($reservations->isEmpty())
-                        <div class="flex justify-center items-center">
-                            <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
-                        </div>
-                    @else
+                        @if ($reservations->isEmpty())
+                            <div class="flex justify-center items-center">
+                                <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
+                            </div>
+                        @else
+                    </div>
                     <div class="px-4 py-3">
                         <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de reservering</small>
                     </div>
