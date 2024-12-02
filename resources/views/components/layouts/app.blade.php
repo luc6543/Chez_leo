@@ -20,15 +20,17 @@
         rel="stylesheet">
 
     <!-- Icon Font Stylesheet -->
-    <link wire:ignore href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-    <link wire:ignore href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link wire:ignore href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css"
+        rel="stylesheet">
+    <link wire:ignore href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+        rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
     <link wire:ignore href="{{ asset('lib/animate/animate.min.css') }}" rel="stylesheet">
     <link wire:ignore href="{{ asset('lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
     <link wire:ignore href="{{ asset('lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css') }}" rel="stylesheet" />
-  <!-- Other head elements -->
-  <link wire:ignore rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <!-- Other head elements -->
+    <link wire:ignore rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
 
     <!-- Styles -->
@@ -861,7 +863,7 @@
 <body class="bg-slate-100">
     <livewire:navBar />
     {{ $slot }}
-    @if (!Str::startsWith(Route::currentRouteName(), 'admin'))
+    @if (!Str::startsWith(Route::currentRouteName(), 'noFooter'))
         <livewire:footer-page />
     @endif
 
@@ -875,7 +877,8 @@
     <script wire:ignore src="lib/easing/easing.min.js"></script>
     <script wire:ignore src="lib/waypoints/waypoints.min.js"></script>
     <script wire:ignore src="lib/counterup/counterup.min.js"></script>
-    {{-- <script src="lib/owlcarousel/owl.carousel.min.js"></script> --}}
+    {{--
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script> --}}
     <script wire:ignore src="lib/tempusdominus/js/moment.min.js"></script>
     <script wire:ignore src="lib/tempusdominus/js/moment-timezone.min.js"></script>
     <script wire:ignore src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
