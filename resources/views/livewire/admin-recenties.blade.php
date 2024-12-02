@@ -77,6 +77,12 @@
                                 <button wire:click="RecensieBevestiging({{ $review->id }})" class="hover:text-[#FEA116]">sta
                                     niet toe</button>
                             </td>
+                            <td id="approveHomepage-{{ $review->id }}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_homepage_approved ? 'hidden' : '' }}">
+                                <button wire:click="RecensieHomepage({{ $review->id }})" class="hover:text-[#FEA116]">sta toe op Homepage</button>
+                            </td>
+                            <td id="no_approveHomepage-{{ $review->id }}" class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 {{ $review->is_homepage_approved ? '' : 'hidden' }}">
+                                <button wire:click="RecensieHomepage({{ $review->id }})" class="hover:text-[#FEA116]">sta niet toe op Homepage</button>
+                            </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 ">
                                 <button onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
                                     wire:click="verwijderRecensie({{ $review->id }})"
