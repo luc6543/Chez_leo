@@ -49,7 +49,7 @@
                         @endforeach
                     @endif
                     @if($tableProducts->has('Lunch'))
-                        @foreach($tableProducts['lunch'] as $product)
+                        @foreach($tableProducts['Lunch'] as $product)
                             <div wire:click="complete({{ $product->pivot->id }})" class="@if($product->pivot->completed) bg-red-300 text-white @else bg-white @endif w-fit cursor-pointer shadow rounded-lg p-6" style="grid-column: span {{ $product->colSpan ?? 1 }};grid-row: span {{ $product->rowSpan ?? 1 }};">
                                 <div class="flex justify-between gap-2">
                                     <span class="font-medium">{{ $product->dish_name }}</span>
