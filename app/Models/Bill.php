@@ -10,7 +10,8 @@ class Bill extends Model
     protected $fillable = [
         'reservation_id',
         'user_id',
-        'table_id'
+        'table_id',
+        'paid'
     ];
 
     protected $casts = [

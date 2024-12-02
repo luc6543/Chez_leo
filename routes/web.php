@@ -16,8 +16,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/recensies/toevoegen', \App\Livewire\RecentiesToevoegPage::class)->name('recenties.toevoegen');
     Route::get('/recensies/bijwerken/{id}', \App\Livewire\RecentiesToevoegPage::class)->name('recenties.bijwerken');
     Route::get('/bill/{bill}', \App\Livewire\BillDetailPage::class)->name('bill.detail');
-    Route::get("/admin/recensies", \App\Livewire\AdminRecenties::class)->middleware('role:admin')->name('noFooter.admin-recenties');
+    Route::get("/admin/recensies",\App\Livewire\AdminRecenties::class)->middleware('role:admin');
     Route::get('/profile', \App\Livewire\ProfilePage::class)->name('profile')->name('noFooter.profile');
     Route::get('/admin/kitchen-manager', \App\Livewire\KitchenManager::class)->name('noFooter.kitchen-manager');
+    Route::get('/admin/bills', \App\Livewire\BillOverviewPage::class)->name('admin.bill-overview');
+    Route::get("/admin/recensies", \App\Livewire\AdminRecenties::class)->middleware('role:admin')->name('noFooter.admin-recenties');
 });
 
