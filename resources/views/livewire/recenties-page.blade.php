@@ -91,7 +91,7 @@
     </div>
 </div>
 @else
-<div class="text-center py-16 mt-8">
+<div class="text-center py-16 mt-16">
     <h2 class="text-2xl font-bold text-gray-900">Er zijn nog geen goedgekeurde recensies beschikbaar.</h2>
     <p class="mt-4 text-gray-600">Wees de eerste om een recensie achter te laten!</p>
     <a href="/recensies/toevoegen" class="mt-6 inline-flex items-center justify-center rounded-md border border-gray-300 bg-white px-8 py-2 text-sm font-medium text-gray-900 hover:bg-gray-50">Schrijf een recensie</a>
