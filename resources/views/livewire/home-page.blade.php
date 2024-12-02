@@ -370,7 +370,7 @@
         </div>
     <!-- Reservation End -->
     @php
-    $approvedReviews = $reviews->where('is_approved', 1);
+    $approvedReviews = $reviews->where('is_homepage_approved', 1);
 @endphp
 <!-- Testimonial Start -->
 <div class="py-5 wow fadeInUp" data-wow-delay="0.1s">
