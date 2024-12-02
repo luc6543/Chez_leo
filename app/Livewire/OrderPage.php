@@ -9,6 +9,7 @@ use Livewire\Component;
 class OrderPage extends Component
 {
     public $tables;
+    public $showPrevious = false;
     public function render()
     {
         return view('livewire.order-page');
