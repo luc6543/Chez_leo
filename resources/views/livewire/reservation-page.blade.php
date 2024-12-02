@@ -173,142 +173,38 @@
                             <input wire:model.defer="guest_name" id="guest-name" class="w-full rounded-md border-gray-300"
                                 placeholder="Type de naam van de klant">
                         @else
-
-                            <style>
-                                .select-box {
-                                    position: relative;
-                                    display: flex;
-                                    width: 400px;
-                                    flex-direction: column;
-                                }
-
-                                .select-box .options-container {
-                                    background: #2f3640;
-                                    color: #f5f6fa;
-                                    max-height: 0;
-                                    width: 100%;
-                                    opacity: 0;
-                                    transition: all 0.4s;
-                                    border-radius: 8px;
-                                    overflow: hidden;
-
-                                    order: 1;
-                                }
-
-                                .selected {
-                                    background: #2f3640;
-                                    border-radius: 8px;
-                                    margin-bottom: 8px;
-                                    color: #f5f6fa;
-                                    position: relative;
-
-                                    order: 0;
-                                }
-
-                                .selected::after {
-                                    content: "";
-                                    background: url("img/arrow-down.svg");
-                                    background-size: contain;
-                                    background-repeat: no-repeat;
-
-                                    position: absolute;
-                                    height: 100%;
-                                    width: 32px;
-                                    right: 10px;
-                                    top: 5px;
-
-                                    transition: all 0.4s;
-                                }
-
-                                .select-box .options-container.active {
-                                    max-height: 240px;
-                                    opacity: 1;
-                                    overflow-y: scroll;
-                                    margin-top: 54px;
-                                }
-
-                                .select-box .options-container.active+.selected::after {
-                                    transform: rotateX(180deg);
-                                    top: -6px;
-                                }
-
-                                .select-box .options-container::-webkit-scrollbar {
-                                    width: 8px;
-                                    background: #0d141f;
-                                    border-radius: 0 8px 8px 0;
-                                }
-
-                                .select-box .options-container::-webkit-scrollbar-thumb {
-                                    background: #525861;
-                                    border-radius: 0 8px 8px 0;
-                                }
-
-                                .select-box .option,
-                                .selected {
-                                    padding: 12px 24px;
-                                    cursor: pointer;
-                                }
-
-                                .select-box .option:hover {
-                                    background: #414b57;
-                                }
-
-                                .select-box label {
-                                    cursor: pointer;
-                                }
-
-                                .select-box .option .radio {
-                                    display: none;
-                                }
-
-                                /* Searchbox */
-
-                                .search-box input {
-                                    width: 100%;
-                                    padding: 12px 16px;
-                                    font-family: "Roboto", sans-serif;
-                                    font-size: 16px;
-                                    position: absolute;
-                                    border-radius: 8px 8px 0 0;
-                                    z-index: 100;
-                                    border: 8px solid #2f3640;
-
-                                    opacity: 0;
-                                    pointer-events: none;
-                                    transition: all 0.4s;
-                                }
-
-                                .search-box input:focus {
-                                    outline: none;
-                                }
-
-                                .select-box .options-container.active~.search-box input {
-                                    opacity: 1;
-                                    pointer-events: auto;
-                                }
-                            </style>
-
-                            <div class="select-box">
-                                <div class="options-container">
+                            <div class="select-box relative flex flex-col w-96">
+                                <div
+                                    class="options-container absolute top-full left-0 w-full bg-gray-800 text-white max-h-0 opacity-0 overflow-y transition-all duration-300 rounded-lg shadow-lg z-10">
                                     @foreach($users as $user)
-                                        <div class="option">
-                                            <input type="radio" class="radio" id="{{ $user->id }}" name="user_id"
+                                        <div class="option cursor-pointer p-3 hover:bg-gray-600">
+                                            <input type="radio" class="radio hidden" id="{{ $user->id }}" name="user_id"
                                                 wire:model.live="user_id" value="{{ $user->id }}" />
-                                            <label for="{{ $user->id }}">{{ $user->id }}: {{ $user->name }}</label>
+                                            <label for="{{ $user->id }}" class="block">{{ $user->id }}:
+                                                {{ $user->name }}</label>
                                         </div>
                                     @endforeach
                                 </div>
 
-                                <div class="selected">
+                                <div
+                                    class="selected bg-gray-800 text-white p-3 rounded-lg mb-2 cursor-pointer flex items-center justify-between">
                                     @if ($user_id)
-                                        {{ $user->id }}: {{ $users->where('id', $user_id)->first()->name }}
+                                        {{ $user_id }}: {{ $users->where('id', $user_id)->first()->name }}
                                     @else
                                         Selecteer een klant
                                     @endif
+                                    <span class="arrow transform transition-transform duration-300">
+                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M19 9l-7 7-7-7" />
+                                        </svg>
+                                    </span>
                                 </div>
 
-                                <div class="search-box">
-                                    <input type="text" placeholder="Zoek een klant" />
+                                <div class="search-box relative">
+                                    <input type="text" placeholder="Zoek een klant"
+                                        class="w-full p-3 rounded-t-lg border border-gray-700 bg-gray-900 text-white hidden focus:outline-none" />
                                 </div>
                             </div>
 
@@ -316,24 +212,29 @@
                                 const selected = document.querySelector(".selected");
                                 const optionsContainer = document.querySelector(".options-container");
                                 const searchBox = document.querySelector(".search-box input");
-
                                 const optionsList = document.querySelectorAll(".option");
 
                                 selected.addEventListener("click", () => {
-                                    optionsContainer.classList.toggle("active");
+                                    optionsContainer.classList.toggle("max-h-60");
+                                    optionsContainer.classList.toggle("opacity-100");
+                                    optionsContainer.classList.toggle("overflow-y-auto");
 
                                     searchBox.value = "";
                                     filterList("");
 
-                                    if (optionsContainer.classList.contains("active")) {
+                                    if (optionsContainer.classList.contains("max-h-60")) {
+                                        searchBox.classList.remove("hidden");
                                         searchBox.focus();
+                                    } else {
+                                        searchBox.classList.add("hidden");
                                     }
                                 });
 
                                 optionsList.forEach(o => {
                                     o.addEventListener("click", () => {
                                         selected.innerHTML = o.querySelector("label").innerHTML;
-                                        optionsContainer.classList.remove("active");
+                                        optionsContainer.classList.remove("max-h-60", "opacity-100", "overflow-y-auto");
+                                        searchBox.classList.add("hidden");
                                     });
                                 });
 
@@ -344,12 +245,8 @@
                                 const filterList = searchTerm => {
                                     searchTerm = searchTerm.toLowerCase();
                                     optionsList.forEach(option => {
-                                        let label = option.firstElementChild.nextElementSibling.innerText.toLowerCase();
-                                        if (label.indexOf(searchTerm) != -1) {
-                                            option.style.display = "block";
-                                        } else {
-                                            option.style.display = "none";
-                                        }
+                                        let label = option.querySelector("label").innerText.toLowerCase();
+                                        option.style.display = label.includes(searchTerm) ? "block" : "none";
                                     });
                                 };
                             </script>
