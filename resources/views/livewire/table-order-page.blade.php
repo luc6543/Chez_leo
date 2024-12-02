@@ -1,4 +1,20 @@
-<div class="mt-20 mb-5 min-w-screen min-h-screen">
+<div class="mt-20 mb-5 min-w-screen min-h-screen" x-data="{ confirmationModal : false }">
+    <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center"
+         x-cloak x-show="confirmationModal">
+        <div class="p-6 shadow bg-white flex flex-col gap-5"
+             @click.away="confirmationModal = false">
+            <h1>Betaling succesvol?</h1>
+            <div class="w-full flex justify-around items-center">
+                <button
+                    onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
+                    wire:click="billPaid"
+                    class="p-2 px-4 rounded shadow bg-red-500 text-white">Ja</button>
+                <button @click="confirmationModal = false"
+                        class="p-2 px-4 rounded shadow bg-indigo-500 text-white">Nee</button>
+            </div>
+        </div>
+    </div>
+
     @if (session()->has('userMessage'))
         <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
@@ -38,7 +54,7 @@
         @endforeach
         <div class="bottom-0 fixed left-0 w-screen flex justify-around">
             <button wire:click.prevent="order" class="w-1/3 p-2 bg-green-500 shadow px-4 text-white">Bestellen</button>
-            <button wire:click.prevent="billPaid"
+            <button @click="confirmationModal = true"
                 class="w-1/3 shadow px-4 text-white bg-emerald-800 p-2 rounded">Rekening betaald <span>Totaal
                     ${{ $reservation->bill->getSum() }}</span></button>
         </div>

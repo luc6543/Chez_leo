@@ -1,6 +1,14 @@
 <div class="mt-20 p-4 flex flex-col lg:flex-row gap-2 lg:gap-10 items-center lg:items-start lg:justify-center">
+    <div class="flex flex-col gap-5">
     <div class="rounded-full flex justify-center items-center p-2 bg-[#11172b] shadow">
         <a href="/profile" wire:navigate class=""><i class=" fa fa-3x fa-arrow-left"></i></a>
+    </div>
+    @role('admin')
+    <div class="flex justify-around gap-5 items-center">
+        <span>Betaald: </span>
+        <input type="checkbox" wire:model.live="paid">
+    </div>
+    @endrole
     </div>
     <div
         class="bg-white flex flex-col w-3/4 lg:w-fit gap-5 p-4 bg-no-repeat bg-cover shadow bg-[url('https://img.freepik.com/free-photo/white-crumpled-paper-background-simple-diy-craft_53876-128183.jpg?semt=ais_hybrid')]">
