@@ -42,6 +42,7 @@
                 optionsContainer.classList.toggle("max-h-60");
                 optionsContainer.classList.toggle("opacity-100");
                 optionsContainer.classList.toggle("overflow-y-auto");
+                optionsContainer.classList.toggle("hidden");
 
                 searchBox.value = "";
                 filterList("");
@@ -236,9 +237,9 @@
                         @else
                             <div class="select-box relative flex flex-col w-96">
                                 <div
-                                    class="options-container absolute top-full left-0 w-full bg-gray-800 text-white max-h-0 opacity-0 overflow-y transition-all duration-300 rounded-lg shadow-lg z-10">
+                                    class="options-container absolute top-full left-0 w-full bg-white text-black max-h-0 opacity-0 overflow-y transition-all duration-300 border border-gray-300 z-10 hidden">
                                     @foreach($users as $user)
-                                        <div class="option cursor-pointer p-3 hover:bg-gray-600">
+                                        <div class="option cursor-pointer p-2 hover:bg-gray-100">
                                             <input type="radio" class="radio hidden" id="{{ $user->id }}" name="user_id"
                                                 wire:model.live="user_id" value="{{ $user->id }}" />
                                             <label for="{{ $user->id }}" class="block">{{ $user->id }}:
@@ -248,7 +249,7 @@
                                 </div>
 
                                 <div
-                                    class="selected bg-gray-800 text-white p-3 rounded-lg mb-2 cursor-pointer flex items-center justify-between">
+                                    class="selected bg-white text-black p-2 border border-gray-300 cursor-pointer flex items-center justify-between">
                                     @if ($user_id)
                                         {{ $user_id }}: {{ $users->where('id', $user_id)->first()->name }}
                                     @else
@@ -265,9 +266,10 @@
 
                                 <div class="search-box relative">
                                     <input type="text" placeholder="Zoek een klant"
-                                        class="w-full p-3 rounded-t-lg border border-gray-700 bg-gray-900 text-white hidden focus:outline-none" />
+                                        class="w-full p-2 border border-gray-300 focus:outline-none hidden" />
                                 </div>
                             </div>
+
                         @endif
 
 
