@@ -12,6 +12,67 @@
             function onClose() {
                 @this.updateTableList();
             }
+
+            function toggleSpecialRequest(reservationId) {
+                const specialRequest = document.getElementById(`specialRequest-${reservationId}`);
+                const tdSrP = document.getElementById(`td-sr-p-${reservationId}`);
+                const chevronDown = document.getElementById(`chevron-down-${reservationId}`);
+                const chevronUp = document.getElementById(`chevron-up-${reservationId}`);
+
+                if (specialRequest.classList.contains('hidden')) {
+                    specialRequest.classList.remove('hidden');
+                    tdSrP.classList.remove('pb-4');
+                    chevronDown.classList.remove('hidden');
+                    chevronUp.classList.add('hidden');
+                } else {
+                    specialRequest.classList.add('hidden');
+                    tdSrP.classList.add('pb-4');
+                    chevronDown.classList.add('hidden');
+                    chevronUp.classList.remove('hidden');
+                }
+            }
+
+
+            const selected = document.querySelector(".selected");
+            const optionsContainer = document.querySelector(".options-container");
+            const searchBox = document.querySelector(".search-box input");
+            const optionsList = document.querySelectorAll(".option");
+
+            selected.addEventListener("click", () => {
+                optionsContainer.classList.toggle("max-h-60");
+                optionsContainer.classList.toggle("opacity-100");
+                optionsContainer.classList.toggle("overflow-y-auto");
+
+                searchBox.value = "";
+                filterList("");
+
+                if (optionsContainer.classList.contains("max-h-60")) {
+                    searchBox.classList.remove("hidden");
+                    searchBox.focus();
+                } else {
+                    searchBox.classList.add("hidden");
+                }
+            });
+
+            optionsList.forEach(o => {
+                o.addEventListener("click", () => {
+                    selected.innerHTML = o.querySelector("label").innerHTML;
+                    optionsContainer.classList.remove("max-h-60", "opacity-100", "overflow-y-auto");
+                    searchBox.classList.add("hidden");
+                });
+            });
+
+            searchBox.addEventListener("keyup", function (e) {
+                filterList(e.target.value);
+            });
+
+            const filterList = searchTerm => {
+                searchTerm = searchTerm.toLowerCase();
+                optionsList.forEach(option => {
+                    let label = option.querySelector("label").innerText.toLowerCase();
+                    option.style.display = label.includes(searchTerm) ? "block" : "none";
+                });
+            };
         </script>
             <script src="/js/flatpickr.js"></script>
     @endpush
@@ -207,49 +268,6 @@
                                         class="w-full p-3 rounded-t-lg border border-gray-700 bg-gray-900 text-white hidden focus:outline-none" />
                                 </div>
                             </div>
-
-                            <script>
-                                const selected = document.querySelector(".selected");
-                                const optionsContainer = document.querySelector(".options-container");
-                                const searchBox = document.querySelector(".search-box input");
-                                const optionsList = document.querySelectorAll(".option");
-
-                                selected.addEventListener("click", () => {
-                                    optionsContainer.classList.toggle("max-h-60");
-                                    optionsContainer.classList.toggle("opacity-100");
-                                    optionsContainer.classList.toggle("overflow-y-auto");
-
-                                    searchBox.value = "";
-                                    filterList("");
-
-                                    if (optionsContainer.classList.contains("max-h-60")) {
-                                        searchBox.classList.remove("hidden");
-                                        searchBox.focus();
-                                    } else {
-                                        searchBox.classList.add("hidden");
-                                    }
-                                });
-
-                                optionsList.forEach(o => {
-                                    o.addEventListener("click", () => {
-                                        selected.innerHTML = o.querySelector("label").innerHTML;
-                                        optionsContainer.classList.remove("max-h-60", "opacity-100", "overflow-y-auto");
-                                        searchBox.classList.add("hidden");
-                                    });
-                                });
-
-                                searchBox.addEventListener("keyup", function (e) {
-                                    filterList(e.target.value);
-                                });
-
-                                const filterList = searchTerm => {
-                                    searchTerm = searchTerm.toLowerCase();
-                                    optionsList.forEach(option => {
-                                        let label = option.querySelector("label").innerText.toLowerCase();
-                                        option.style.display = label.includes(searchTerm) ? "block" : "none";
-                                    });
-                                };
-                            </script>
                         @endif
 
 
@@ -308,25 +326,3 @@
         </div>
     </div>
 </div>
-
-
-<script>
-    function toggleSpecialRequest(reservationId) {
-        const specialRequest = document.getElementById(`specialRequest-${reservationId}`);
-        const tdSrP = document.getElementById(`td-sr-p-${reservationId}`);
-        const chevronDown = document.getElementById(`chevron-down-${reservationId}`);
-        const chevronUp = document.getElementById(`chevron-up-${reservationId}`);
-
-        if (specialRequest.classList.contains('hidden')) {
-            specialRequest.classList.remove('hidden');
-            tdSrP.classList.remove('pb-4');
-            chevronDown.classList.remove('hidden');
-            chevronUp.classList.add('hidden');
-        } else {
-            specialRequest.classList.add('hidden');
-            tdSrP.classList.add('pb-4');
-            chevronDown.classList.add('hidden');
-            chevronUp.classList.remove('hidden');
-        }
-    }
-</script>
