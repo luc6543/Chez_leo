@@ -229,27 +229,22 @@
 
             <form wire:submit.prevent="store">
                 <div class="mb-4 mt-2">
-                    <div class="flex items-center justify-between">
-
+                    <div class="flex items-center  justify-between">
                         <input wire:model.defer="guest_name" id="guest-name"
-                            class=" {{ $showGuestNameInput ? 'block' : 'hidden'}} w-full rounded-md border-gray-300"
-                            placeholder="Type de naam van de klant">
-                        <div
-                            class="{{ !$showGuestNameInput ? 'block' : 'hidden'}} select-box relative flex flex-col w-full">
-                            <div
-                                class="options-container absolute top-full left-0 w-full bg-white max-h-0 opacity-0 overflow-y transition-all duration-300 border rounded-md z-10 hidden">
+                        class="{{ $showGuestNameInput ? 'block' : 'hidden'}} w-full rounded-md border-gray-300 @error('guest_name') border-red-500 @enderror"
+                        placeholder="Type de naam van de klant">                        
+                        <div class="{{ !$showGuestNameInput ? 'block' : 'hidden'}} select-box relative flex flex-col w-full">
+                            <div class="options-container absolute top-full left-0 w-full bg-white max-h-0 opacity-0 overflow-y transition-all duration-300 border rounded-md z-10 hidden">
                                 @foreach($users as $user)
                                     <div class="option cursor-pointer p-2 hover:bg-gray-100">
-                                        <input type="radio" class="radio hidden" id="{{ $user->id }}" name="user_id"
+                                        <input type="radio" class="radio hidden " id="{{ $user->id }}" name="user_id"
                                             wire:model.live="user_id" value="{{ $user->id }}" />
-                                        <label for="{{ $user->id }}" class="block">{{ $user->id }}:
-                                            {{ $user->name }}</label>
+                                        <label for="{{ $user->id }}" class="block">{{ $user->id }}: {{ $user->name }}</label>
                                     </div>
                                 @endforeach
                             </div>
-
-                            <div
-                                class="selected bg-white p-2 border rounded-md cursor-pointer flex items-center justify-between">
+            
+                            <div class="selected bg-white p-2 border rounded-md cursor-pointer flex items-center justify-between">
                                 @if ($user_id)
                                     {{ $user_id }}: {{ $users->where('id', $user_id)->first()->name }}
                                 @else
@@ -263,14 +258,13 @@
                                     </svg>
                                 </span>
                             </div>
-
+            
                             <div class="search-box relative">
                                 <input type="text" placeholder="Zoek een klant"
                                     class="w-full p-2 border rounded-md focus:outline-none hidden" />
                             </div>
                         </div>
-
-
+            
                         <button type="button" wire:click="toggleGuestInput" class="ml-4 mr-3">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                 stroke="currentColor" class="size-6">
@@ -279,18 +273,27 @@
                             </svg>
                         </button>
                     </div>
+                    @error('guest_name')
+                    <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                @enderror
                 </div>
                 <div class="mb-4">
                     <div class="" id="date3" data-target-input="nearest">
                         <input type="text" id="flatPickr" class="bg-white !rounded-md block w-full border-gray-300"
                             placeholder="Datum & Tijd" wire:model.defer="start_time">
                     </div>
+                    @error('start_time')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <input wire:model.live.debounce.20ms="people" type="number" min="1" max="{{ $maxChairs }}"
                         class="block w-full rounded-md border-gray-300" placeholder="Personen ({{ $maxChairs }} max)">
+                    @error('people')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
-                <div class="mb-4 ">
+                <div class="mb-4">
                     @if($table_ids)
                         <div class="flex overflow-x-auto w-full h-min border rounded-md items-center">
                             @foreach ($table_ids as $table_id)
@@ -306,13 +309,14 @@
                             @endforeach
                         </div>
                     @endif
+                
                     <div x-data="{ open: false }" class="relative">
                         <!-- Button to Toggle Dropdown -->
                         <button @click="open = !open" type="button"
                             class="block w-full border rounded-md bg-white p-2 text-left">
                             Selecteer één of meerdere tafels
                         </button>
-
+                
                         <!-- Dropdown Menu -->
                         <div x-show="open" @click.outside="open = false"
                             class="absolute mt-1 w-full rounded-md bg-white border border-gray-300 shadow-lg max-h-60 overflow-auto z-10">
@@ -327,24 +331,31 @@
                             @endforeach
                         </div>
                     </div>
-
+                
+                    <!-- Error Message for table_ids -->
+                    @error('table_ids')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4">
                     <textarea maxlength="255" wire:model.defer="special_request"
                         class="block w-full resize-none rounded-md border-gray-300"
                         placeholder="Speciaal verzoek"></textarea>
+                    @error('special_request')
+                        <div class="text-red-500 text-xs mt-1">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="mb-4 flex items-center gap-4">
                     <label class="block text-sm font-medium">Actief</label>
                     <input type="checkbox" wire:model.defer="active" class="block rounded-md border-gray-300">
                 </div>
-
+            
                 @if (session()->has('error'))
                     <div class="alert alert-danger text-red-500">
                         {!! session('error') !!}
                     </div>
                 @endif
-
+            
                 <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">
                     {{ $reservationId ? 'Verander' : 'Reserveer' }}
                 </button>
