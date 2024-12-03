@@ -7,7 +7,7 @@
         <div class="overflow-y-scroll w-full min-w-screen flex flex-wrap justify-start gap-5 p-4">
             @foreach($groupedReservations as $group)
                 @php $reservation = $group['reservation']; @endphp
-                <div class="w-1/3 lg:w-1/12 @if($reservation) bg-emerald-800 text-white @else bg-red-900 @endif rounded p-4 shadow flex flex-col justify-center items-center">
+                <div wire:click.prevent="createBill({{$group['tables'][0]->id}})" class="w-1/3 cursor-pointer lg:w-1/12 @if($reservation) bg-emerald-800 text-white @else bg-red-900 @endif rounded p-4 shadow flex flex-col justify-center items-center">
                     @if($reservation)
                         <span>Reservation</span>
                         <span>{{ $reservation->id }}</span>
