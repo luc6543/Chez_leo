@@ -871,6 +871,8 @@
     @stack('scripts')
     <!-- jQuery -->
     <script wire:ignore src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <!-- Alpine -->
+    <script src="//cdn.jsdelivr.net/npm/alpinejs" defer></script>
     <!-- Other dependencies -->
     <script wire:ignore src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script wire:ignore src="lib/wow/wow.min.js"></script>
