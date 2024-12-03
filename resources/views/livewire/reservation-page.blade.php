@@ -317,7 +317,7 @@
                         <div x-show="open" @click.outside="open = false"
                             class="absolute mt-1 w-full rounded-md bg-white border border-gray-300 shadow-lg max-h-60 overflow-auto z-10">
                             @foreach($tables as $table)
-                                @if(!in_array($table->id, $table_ids))
+                                @if(empty($table_ids) || !in_array($table->id, (array) $table_ids))
                                     <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
                                         wire:click="toggleTable({{ $table->id }})">
                                         Tafel {{ $table->table_number }}: {{ $table->chairs }}
