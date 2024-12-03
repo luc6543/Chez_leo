@@ -6,56 +6,7 @@
         @push('scripts')
             @include('flatpickr::components.script')
 
-            <script>
-                function handleChange(selectedDates, dateStr, instance) {
-                    console.log({ selectedDates, dateStr, instance });
-
-                    if (!selectedDates.length) return; // If no date is selected, return.
-
-                    const selectedDate = selectedDates[0];
-                    const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-                    let minTime = null;
-
-                    switch (dayOfWeek) {
-                        case 0: // Sunday
-                        case 5: // Friday
-                        case 6: // Saturday
-                            minTime = "12:00"; // 12 PM
-                            break;
-                        case 3: // Wednesday
-                            minTime = "17:00"; // 5 PM
-                            break;
-                        case 4: // Thursday
-                            minTime = "12:00"; // 12 PM
-                            break;
-                        default: // Monday and Tuesday (Closed)
-                            instance.close(); // Close the calendar for closed days
-                            // alert("Gesloten (Closed) on this day.");
-                            return;
-                    }
-
-                    // Set the new minTime for Flatpickr
-                    instance.set("minTime", minTime);
-                    console.log(`Min time set to: ${minTime}`);
-                }
-                document.addEventListener('DOMContentLoaded', function() {
-                    flatpickr("#flatPickr", {
-                        enableTime: true,
-                        maxTime: "20:30",
-                        time_24hr: true,
-                        minuteIncrement: 15,
-                        onChange: handleChange,
-                        dateFormat: "d-m-Y H:i",
-                        minDate: "today",
-                        disable: [
-                            function(date) {
-                                // return true to disable
-                                return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
-                            }
-                        ]
-                    });
-                });
-            </script>
+            <script src="/js/flatpickr.js"></script>
         @endpush
     <div style="display: none" class="fixed lg:flex justify-center items-center w-screen mt-10 h-screen left-0 top-0 bg-black/75 z-30 hidden"
          x-show="videoModal" >
@@ -331,8 +282,8 @@
                                 </div>
                                 @endif
                                 <div class="col-md-6">
-                                    <div class="form-floating date " id="date3" data-target-input="nearest">
-                                        <input type="text" id="flatPickr" class="bg-white py-3 px-14" placeholder="Datum & Tijd" wire:model="start_time">
+                                    <div class="form-floating date" id="date3" data-target-input="nearest">
+                                        <input type="text" id="flatPickr" class="bg-white py-3 w-full" placeholder="Datum & Tijd" wire:model="start_time">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
@@ -370,7 +321,7 @@
         </div>
     <!-- Reservation End -->
     @php
-    $approvedReviews = $reviews->where('is_approved', 1);
+    $approvedReviews = $reviews->where('is_homepage_approved', 1);
 @endphp
 <!-- Testimonial Start -->
 <div class="py-5 wow fadeInUp" data-wow-delay="0.1s">

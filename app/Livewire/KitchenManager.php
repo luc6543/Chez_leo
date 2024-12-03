@@ -53,16 +53,24 @@ class KitchenManager extends Component
     public function refresh()
     {
         // Get products based on the current mode: kitchen = everything except drinks, bar = only drinks
-        $reservations = Reservation::with(['bill.products' => function ($query) {
+        $reservations = Reservation::getCurrentReservationsQuery()->with(['bill.products' => function ($query) {
             if ($this->mode === 'kitchen') {
-                $this->showCompleted == false ? $query->where('category', '!=', 'drank')->where('completed', false) : $query->where('category', '!=', 'drank');
-            } else {
-                $this->showCompleted == false ? $query->where('category', 'drank')->where('completed', false) : $query->where('category', 'drank');
+                $this->showCompleted == false
+                    ? $query->where('category', '!=', 'drank')->where('completed', false)
+                    : $query->where('category', '!=', 'drank');
+            } elseif ($this->mode === 'bar') {
+                $this->showCompleted == false
+                    ? $query->where('category', 'drank')->where('completed', false)
+                    : $query->where('category', 'drank');
+            }
+            else {
+                $this->showCompleted == false
+                    ? $query->where('completed', false)
+                    : '';
             }
         }])->get();
 
         $products = collect();
-
         foreach ($reservations as $reservation) {
             if ($reservation->bill) {
                 // Append each product with the table number
@@ -75,8 +83,13 @@ class KitchenManager extends Component
             }
         }
 
-        $this->products = $products;
+        // Group products by table_number and within each table_number group by category
+        $this->products = $products->groupBy('table_number')->map(function ($tableGroup) {
+            return $tableGroup->groupBy('category');
+        });
+
     }
+
 
     /**
      * Toggle the visibility of completed products.
