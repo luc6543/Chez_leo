@@ -1,21 +1,33 @@
 <div class="mt-16 mb-5 min-w-screen min-h-screen" wire:poll.500ms="refresh">
-    @if($tables->isEmpty())
+    @if($groupedReservations->isEmpty())
         <div class="text-center w-full py-10">
             <p class="text-lg font-semibold">Er zijn geen tafels blijkbaar.</p>
         </div>
     @else
         <div class="overflow-y-scroll w-full min-w-screen flex flex-wrap justify-start gap-5 p-4">
-            @foreach($tables as $table)
-                <a wire:click="createBill({{$table->id}})" class="w-1/3 lg:w-1/12 cursor-pointer @if($table->getCurrentReservation()) bg-emerald-800 text-white @else bg-red-900 @endif rounded p-4 shadow flex flex-col justify-center items-center">
-                    <span>Tafel</span>
-                    <span>{{ $table->table_number }}</span>
-                    @if($table->getCurrentReservation())
-                        @if($table->getCurrentReservation()->user)
-                            <span>{{ $table->getCurrentReservation()->user->name }}</span>
+            @foreach($groupedReservations as $group)
+                @php $reservation = $group['reservation']; @endphp
+                <div class="w-1/3 lg:w-1/12 @if($reservation) bg-emerald-800 text-white @else bg-red-900 @endif rounded p-4 shadow flex flex-col justify-center items-center">
+                    @if($reservation)
+                        <span>Reservation</span>
+                        <span>{{ $reservation->id }}</span>
+                        @if($reservation->user)
+                            <span>{{ $reservation->user->name }}</span>
                         @endif
-                            <span>€ {{ $table->getCurrentReservation()->bill->getSum() }}</span>
+                        <span>€ {{ $reservation->bill->getSum() }}</span>
+                        <div class="mt-2 text-sm">
+                            @foreach($group['tables'] as $table)
+                                <span>Tafel {{ $table->table_number }}</span><br>
+                            @endforeach
+                        </div>
+                    @else
+                        @foreach($group['tables'] as $table)
+                            <a wire:click="createBill({{ $table->id }})" class="cursor-pointer">
+                                <span>Tafel {{ $table->table_number }}</span>
+                            </a>
+                        @endforeach
                     @endif
-                </a>
+                </div>
             @endforeach
         </div>
     @endif
