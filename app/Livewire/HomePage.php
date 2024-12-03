@@ -74,9 +74,9 @@ class HomePage extends Component
                 $errorMessage .= 'Vul een datum in.<br>';
             } else {
                 $startTime = Carbon::parse($this->start_time);
-                if ($startTime->lt(Carbon::now()->addHour())) {
+                if ($startTime->lt(Carbon::now())) {
                     $errorMessage .= 'De datum mag niet in het verleden liggen.<br>';
-                } elseif ($startTime->lt(Carbon::now()->addHour()->addMinutes(29))) {
+                } elseif ($startTime->lt(Carbon::now()->addMinutes(29))) {
                     $errorMessage .= 'Reserveringen moeten minstens 30 minuten van tevoren worden gemaakt.<br>Als u eerder een tafel nodig heeft, neem dan telefonisch contact met ons op.<br>';
                 }
             }
