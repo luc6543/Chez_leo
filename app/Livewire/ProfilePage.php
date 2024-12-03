@@ -145,8 +145,8 @@ class ProfilePage extends Component
             ->first();
 
         if ($review) {
-            $review->delete();
-            session()->flash('message', 'Recensie succesvol verwijderd!');
+            $review->delete();            
+            return redirect('/profile');
         } else {
             session()->flash('error', 'Geen toegang om deze recensie te verwijderen.');
         }

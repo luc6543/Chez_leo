@@ -99,6 +99,17 @@ class AdminRecenties extends Component
         }
     }
 
+    public function RecensieHomepage($reviewId) {
+        $review = Review::find($reviewId);
+
+        if ($review) {
+            $review->is_homepage_approved = !$review->is_homepage_approved;
+            $review->save();
+
+            $this->reviews = Review::all();
+        }
+    }
+
     public function verwijderRecensie($reviewId) {
         $review = Review::find($reviewId);
 

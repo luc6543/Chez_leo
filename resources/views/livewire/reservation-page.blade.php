@@ -8,67 +8,12 @@
     @endpush
     @push('scripts')
         @include('flatpickr::components.script')
-
-        <script>
-            function handleChange(selectedDates, dateStr, instance) {
-                console.log({ selectedDates, dateStr, instance });
-
-                if (!selectedDates.length) return; // If no date is selected, return.
-
-                const selectedDate = selectedDates[0];
-                const dayOfWeek = selectedDate.getDay(); // 0 = Sunday, 1 = Monday, ..., 6 = Saturday
-                let minTime = null;
-
-                switch (dayOfWeek) {
-                    case 0: // Sunday
-                    case 5: // Friday
-                    case 6: // Saturday
-                        minTime = "12:00"; // 12 PM
-                        break;
-                    case 3: // Wednesday
-                        minTime = "17:00"; // 5 PM
-                        break;
-                    case 4: // Thursday
-                        minTime = "12:00"; // 12 PM
-                        break;
-                    default: // Monday and Tuesday (Closed)
-                        instance.close(); // Close the calendar for closed days
-                        // alert("Gesloten (Closed) on this day.");
-                        return;
-                }
-
-                // Set the new minTime for Flatpickr
-                instance.set("minTime", minTime);
-                console.log(`Min time set to: ${minTime}`);
-            }
-
-
+        <script wire:ignore>
             function onClose() {
                 @this.updateTableList();
             }
-
-            document.addEventListener('DOMContentLoaded', function () {
-                flatpickr("#flatPickr", {
-                    enableTime: true,
-                    maxTime: "20:30",
-                    time_24hr: true,
-                    minuteIncrement: 15,
-                    onChange: handleChange,
-                    dateFormat: "d-m-Y H:i",
-                    minDate: "today",
-                    disable: [
-                        function (date) {
-                            // return true to disable
-                            return (date.getDay() === 1 || date.getDay() === 2); // Disable Mondays and Tuesdays
-                        }
-                    ],
-                    onClose: function () {
-                        onClose();
-                    }
-                });
-            });
-
         </script>
+            <script src="/js/flatpickr.js"></script>
     @endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
@@ -189,9 +134,9 @@
                                                 </td>
                                                 <td
                                                     class="whitespace-nowrap pt-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-6">
-                                                    <button wire:click="delete({{ $reservation->id }})"
-                                                        x-data="{ isDeleting: false }" @click="isDeleting = true"
-                                                        :disabled="isDeleting"
+                                                    <button
+                                                        onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
+                                                        wire:click="delete({{ $reservation->id }})"
                                                         class="bg-red-700 px-3 py-2 text-sm font-semibold text-white rounded-md hover:bg-red-600">Verwijder
                                                     </button>
                                                 </td>

@@ -11,6 +11,7 @@ class Review extends Model
         'user_id',  // Gebruiker die de review heeft geplaatst
         'review',   // De review tekst
         'rating',   // De rating (bijv. 1 tot 5)
+        'is_homepage_approved', // Goedgekeurd voor de homepage
         'is_approved', // Goedgekeurd of niet
     ];
 
