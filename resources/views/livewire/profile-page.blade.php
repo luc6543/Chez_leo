@@ -265,7 +265,7 @@
             </div>
             <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
             <div class="lg:w-3/4 mx-auto mb-10 w-full mt-8 bg-white rounded shadow p-4">
-                <h2 class="text-xl font-semibold mb-4">Recensies</h2>
+                <h2 class="text-xl font-semibold mb-4">Recensie</h2>
                 <div class="flex justify-between items-center mb-4">
                     <div>
                         @if(Auth::user()->reviews()->exists())
