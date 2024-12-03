@@ -292,12 +292,29 @@
                 </div>
                 <div class="mb-4 ">
                     <label class="block text-sm font-medium">Selecteer één of meerdere tafels</label>
+                    @if($table_ids)
+                        <div class="flex overflow-x-scroll w-full h-min border rounded-md items-center">
+                            @foreach ($table_ids as $table_id)
+                                <div class="bg-gray-100 border rounded-md h-10 m-1 p-1 flex items-center">
+                                    <label class="w-max text-sm font-medium">Tafel {{ $table_id }}</label>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="size-5 ml-1 hover:text-red-500"
+                                        wire:click="toggleTable({{ $table_id }})">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                     <select name="options[]" multiple wire:model.defer="table_ids"
                         class="block w-full rounded-md border-gray-300">
                         @foreach($tables as $table)
-                            <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
-                                {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
-                            </option>
+                            @if(!in_array($table->id, $table_ids))
+                                <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
+                                    {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
+                                </option>
+                            @endif
                         @endforeach
                     </select>
                 </div>

@@ -159,6 +159,15 @@ class ReservationPage extends Component
         $this->maxChairs = $tempMaxChairs;
     }
 
+    public function toggleTable($id)
+    {
+        if (($key = array_search($id, $this->table_ids)) !== false) {
+            unset($this->table_ids[$key]);
+        } else {
+            $this->table_ids[] = $id;
+        }
+    }
+
     // Reservering opslaan of bijwerken
     public function store()
     {
