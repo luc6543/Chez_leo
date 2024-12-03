@@ -44,23 +44,23 @@ class ReservationPage extends Component
     public function validateFields()
     {
         $errorMessage = '';
-        if (empty(trim($this->user_id)) && empty(trim($this->guest_name))) {
-            $errorMessage .= 'Er moet een gebruiker of gastnaam worden geselecteerd.<br>';
-        }
-        if (empty($this->start_time) || $this->start_time == null) {
-            $errorMessage .= 'Er moet een starttijd worden geselecteerd.<br>';
-        }
-        if (empty($this->people) || $this->people == null) {
-            $errorMessage .= 'Er moet een aantal personen worden ingevuld.<br>';
-        }
-        if (empty($this->table_ids) || $this->table_ids == null) {
-            $errorMessage .= 'Er moet minimaal één tafel worden geselecteerd.<br>';
-        }
+        // if (empty(trim($this->user_id)) && empty(trim($this->guest_name))) {
+        //     $errorMessage .= 'Er moet een gebruiker of gastnaam worden geselecteerd.<br>';
+        // }
+        // if (empty($this->start_time) || $this->start_time == null) {
+        //     $errorMessage .= 'Er moet een starttijd worden geselecteerd.<br>';
+        // }
+        // if (empty($this->people) || $this->people == null) {
+        //     $errorMessage .= 'Er moet een aantal personen worden ingevuld.<br>';
+        // }
+        // if (empty($this->table_ids) || $this->table_ids == null) {
+        //     $errorMessage .= 'Er moet minimaal één tafel worden geselecteerd.<br>';
+        // }
 
-        if ($errorMessage) {
-            session()->flash('error', $errorMessage);
-            return;
-        }
+        // if ($errorMessage) {
+        //     session()->flash('error', $errorMessage);
+        //     return;
+        // }
     }
 
     // Renderen van de component
@@ -173,9 +173,28 @@ class ReservationPage extends Component
     {
         $this->validateFields();
         $this->validate([
-            'user_id' => 'required_without:guest_name',
-            'guest_name' => 'required_without:user_id',
+            'user_id' => 'required_if:guest_name,null',
+            'guest_name' => 'required_if:user_id,null',
+            'start_time' => 'required|date_format:d-m-Y H:i',
+            'people' => 'required|integer|min:1',
+            'table_ids' => 'required|array|min:1',
+        ], [
+            'required_if' => 'Het veld klant is verplicht.',
+            'required' => 'Het veld :attribute is verplicht.',
+            'string' => 'Het veld :attribute moet een tekst zijn.',
+            'max' => 'Het veld :attribute mag niet meer dan :max tekens bevatten.',
+            'min' => 'Het veld :attribute moet minimaal :min tekens bevatten.',
+            'email' => 'Het veld :attribute moet een geldig e-mailadres zijn.',
+            'same' => 'Het veld :attribute en :other moeten overeenkomen.',
+            'integer' => 'Het veld :attribute moet een getal zijn.',
+            'date_format' => 'Het veld :attribute moet een geldige datum en tijd zijn.',
+            'array' => 'Het veld :attribute moet een array zijn.',
+            'table_ids.required' => 'Het veld tafels is verplicht.',
+            'table_ids.array' => 'Het veld tafels moet een array zijn.',
+            'table_ids.min' => 'Selecteer minimaal één tafel.',
         ]);
+        
+        
         $startTime = Carbon::createFromFormat('d-m-Y H:i', $this->start_time);
 
         $endTime = Reservation::calculateEndTime($startTime);
