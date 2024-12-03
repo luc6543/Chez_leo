@@ -291,15 +291,43 @@
                         class="block w-full rounded-md border-gray-300" placeholder="Personen ({{ $maxChairs }} max)">
                 </div>
                 <div class="mb-4 ">
-                    <label class="block text-sm font-medium">Selecteer één of meerdere tafels</label>
-                    <select name="options[]" multiple wire:model.defer="table_ids"
-                        class="block w-full rounded-md border-gray-300">
-                        @foreach($tables as $table)
-                            <option value="{{ $table->id }}">Tafel {{ $table->table_number }}: {{ $table->chairs }}
-                                {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
-                            </option>
-                        @endforeach
-                    </select>
+                    @if($table_ids)
+                        <div class="flex overflow-x-auto w-full h-min border rounded-md items-center">
+                            @foreach ($table_ids as $table_id)
+                                <div class="bg-gray-100 border rounded-md h-10 m-1 p-1 flex items-center">
+                                    <label class="w-max text-sm font-medium">Tafel {{ $table_id }}</label>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                        stroke="currentColor" class="size-5 ml-1 hover:text-red-500"
+                                        wire:click="toggleTable({{ $table_id }})">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    <div x-data="{ open: false }" class="relative">
+                        <!-- Button to Toggle Dropdown -->
+                        <button @click="open = !open" type="button"
+                            class="block w-full border rounded-md bg-white p-2 text-left">
+                            Selecteer één of meerdere tafels
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div x-show="open" @click.outside="open = false"
+                            class="absolute mt-1 w-full rounded-md bg-white border border-gray-300 shadow-lg max-h-60 overflow-auto z-10">
+                            @foreach($tables as $table)
+                                @if(empty($table_ids) || !in_array($table->id, (array) $table_ids))
+                                    <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                        wire:click="toggleTable({{ $table->id }})">
+                                        Tafel {{ $table->table_number }}: {{ $table->chairs }}
+                                        {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
+                    </div>
+
                 </div>
                 <div class="mb-4">
                     <textarea maxlength="255" wire:model.defer="special_request"

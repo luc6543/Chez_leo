@@ -44,16 +44,16 @@ class ReservationPage extends Component
     public function validateFields()
     {
         $errorMessage = '';
-        if (empty($this->user_id) && empty($this->guest_name)) {
+        if (empty(trim($this->user_id)) && empty(trim($this->guest_name))) {
             $errorMessage .= 'Er moet een gebruiker of gastnaam worden geselecteerd.<br>';
         }
-        if (empty($this->start_time)) {
+        if (empty($this->start_time) || $this->start_time == null) {
             $errorMessage .= 'Er moet een starttijd worden geselecteerd.<br>';
         }
-        if (empty($this->people)) {
+        if (empty($this->people) || $this->people == null) {
             $errorMessage .= 'Er moet een aantal personen worden ingevuld.<br>';
         }
-        if (empty($this->table_ids)) {
+        if (empty($this->table_ids) || $this->table_ids == null) {
             $errorMessage .= 'Er moet minimaal één tafel worden geselecteerd.<br>';
         }
 
@@ -159,17 +159,18 @@ class ReservationPage extends Component
         $this->maxChairs = $tempMaxChairs;
     }
 
+    public function toggleTable($id)
+    {
+        if (($key = array_search($id, $this->table_ids)) !== false) {
+            unset($this->table_ids[$key]);
+        } else {
+            $this->table_ids[] = $id;
+        }
+    }
+
     // Reservering opslaan of bijwerken
     public function store()
     {
-        // This will allow a user to be removed from a reservation without giving an error
-        if (empty(trim($this->user_id))) {
-            $this->user_id = null;
-        }
-        // Check if the guest_name is empty or contains only spaces
-        if (empty(trim($this->guest_name))) {
-            $this->guest_name = null;
-        }
         $this->validateFields();
         $this->validate([
             'user_id' => 'required_without:guest_name',
