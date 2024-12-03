@@ -168,6 +168,55 @@ class ReservationPage extends Component
         }
     }
 
+    public function autoSelectTables()
+{
+    // Clear existing selections
+    $this->table_ids = [];
+    
+    // Handle edge cases where there are no people or tables.
+    if (!$this->people || empty($this->tables)) {
+        return;
+    }
+
+    // Sort tables by the number of chairs in ascending order to prioritize minimal use.
+    $sortedTables = $this->tables->sortBy('chairs');
+
+    $remainingPeople = $this->people;
+
+    // Fall back to combining tables if no single table fits.
+    while ($remainingPeople > 0) {
+        // Find the table with the most chairs
+        $largestTable = $sortedTables->last();
+
+        // If the remaining people is higher than the largest table's chairs, select the largest table
+        if ($remainingPeople >= $largestTable->chairs) {
+            $this->table_ids[] = $largestTable->id;
+            $remainingPeople -= $largestTable->chairs;
+        } else {
+            // Otherwise, find the smallest sufficient table
+            foreach ($sortedTables as $table) {
+                if ($table->chairs >= $remainingPeople) {
+                    $this->table_ids[] = $table->id;
+                    $remainingPeople -= $table->chairs;
+                    break;
+                }
+            }
+        }
+
+        // Remove the selected table from the sorted list to avoid re-selection
+        $sortedTables = $sortedTables->filter(function ($table) use ($largestTable) {
+            return $table->id !== $largestTable->id;
+        });
+
+        // If no tables are left to select, break the loop
+        if ($sortedTables->isEmpty()) {
+            break;
+        }
+    }
+}
+
+
+
     // Reservering opslaan of bijwerken
     public function store()
     {

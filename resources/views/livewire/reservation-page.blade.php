@@ -297,7 +297,7 @@
                     @if($table_ids)
                         <div class="flex overflow-x-auto w-full h-min border rounded-md items-center">
                             @foreach ($table_ids as $table_id)
-                                <div class="bg-gray-100 border rounded-md h-10 m-1 p-1 flex items-center">
+                                <div class="bg-gray-100 border rounded-md h-8 m-1 p-1 flex items-center">
                                     <label class="w-max text-sm font-medium">Tafel {{ $table_id }}</label>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                         stroke="currentColor" class="size-5 ml-1 hover:text-red-500"
@@ -309,27 +309,43 @@
                             @endforeach
                         </div>
                     @endif
+                    <div class="flex justify-between items-center">
+                    
+                    <div x-data="{ open: false }" class="relative w-full">
+                            <!-- Button to Toggle Dropdown -->
+                            <button @click="open = !open" type="button"
+                                class="block w-full border rounded-md bg-white p-2 text-left">
+                                Selecteer één of meerdere tafels
+                            </button>
                 
-                    <div x-data="{ open: false }" class="relative">
-                        <!-- Button to Toggle Dropdown -->
-                        <button @click="open = !open" type="button"
-                            class="block w-full border rounded-md bg-white p-2 text-left">
-                            Selecteer één of meerdere tafels
-                        </button>
-                
-                        <!-- Dropdown Menu -->
-                        <div x-show="open" @click.outside="open = false"
-                            class="absolute mt-1 w-full rounded-md bg-white border border-gray-300 shadow-lg max-h-60 overflow-auto z-10">
-                            @foreach($tables as $table)
-                                @if(empty($table_ids) || !in_array($table->id, (array) $table_ids))
-                                    <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                                        wire:click="toggleTable({{ $table->id }})">
-                                        Tafel {{ $table->table_number }}: {{ $table->chairs }}
-                                        {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
-                                    </div>
-                                @endif
-                            @endforeach
+                            <!-- Dropdown Menu -->
+                            <div x-show="open" @click.outside="open = false"
+                                class="absolute mt-1 w-full rounded-md bg-white border border-gray-300 shadow-lg max-h-60 overflow-auto z-10">
+                                @foreach($tables as $table)
+                                    @if(empty($table_ids) || !in_array($table->id, (array) $table_ids))
+                                        <div class="px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                                            wire:click="toggleTable({{ $table->id }})">
+                                            Tafel {{ $table->table_number }}: {{ $table->chairs }}
+                                            {{ $table->chairs == 1 ? 'stoel' : 'stoelen' }}
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
                         </div>
+                        <button type="button"
+                            onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
+                            wire:click="autoSelectTables"
+                            class="ml-4 mr-3 {{ $people && $start_time ? 'block' : 'hidden'}}">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" width="24"
+                                height="24" stroke-width="2">
+                                <path d="M3 6h18"></path>
+                                <path d="M4 6v13"></path>
+                                <path d="M20 19v-13"></path>
+                                <path d="M4 10h16"></path>
+                                <path d="M15 6v8a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                        </button>
                     </div>
                 
                     <!-- Error Message for table_ids -->
