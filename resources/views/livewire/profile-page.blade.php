@@ -17,7 +17,7 @@
             </div>
         </div>
     @endif
-    <div class="{{$reservations->isEmpty() ? 'lg:w-3/4' : 'lg:w-[99%]' }} mt-2 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
+    <div class="{{$reservations->isEmpty() ? 'lg:w-3/4' : 'lg:w-[99%]' }} mx-auto mt-2 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex flex-wrap justify-around items-center w-full">
             <span
                 class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-500">
@@ -193,6 +193,9 @@
                 </div>
             </div>
         </div>
+        @if ($reservations->isEmpty())
+    </div>
+        @endif
         <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
         <div class="lg:w-3/4 mx-auto mb-10 w-full mt-8 bg-white rounded shadow p-4">
             <h2 class="text-xl font-semibold mb-4">Recensie</h2>
