@@ -1,8 +1,7 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="my-28" x-data="{modalOpened : false}" @close-modal=" modalOpened = false " @open-modal="modalOpened = true">
-    @push('styles')
+<div class="my-28" x-data="{modalOpened: false, showMessage: {{ session()->has('message') ? 'true' : 'false' }}}" @close-modal="modalOpened = false" @open-modal="modalOpened = true">    @push('styles')
         @include('flatpickr::components.style')
     @endpush
     @push('scripts')
@@ -11,7 +10,7 @@
             <script src="/js/flatpickr.js"></script>
     @endpush
     @if (session()->has('message'))
-        <div class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+        <div x-show="showMessage" x-init="setTimeout(() => showMessage = false, 3000)" class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
                 {{ session('message') }}
             </div>
