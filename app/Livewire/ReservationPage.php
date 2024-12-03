@@ -183,20 +183,35 @@ class ReservationPage extends Component
 
     $remainingPeople = $this->people;
 
-    // Check for an exact match or the smallest sufficient table.
-    foreach ($sortedTables as $table) {
-        if ($table->chairs >= $remainingPeople) {
-            $this->table_ids[] = $table->id;
-            return;
-        }
-    }
-
     // Fall back to combining tables if no single table fits.
-    foreach ($sortedTables as $table) {
-        if ($remainingPeople <= 0) break;
+    while ($remainingPeople > 0) {
+        // Find the table with the most chairs
+        $largestTable = $sortedTables->last();
 
-        $this->table_ids[] = $table->id;
-        $remainingPeople -= $table->chairs;
+        // If the remaining people is higher than the largest table's chairs, select the largest table
+        if ($remainingPeople >= $largestTable->chairs) {
+            $this->table_ids[] = $largestTable->id;
+            $remainingPeople -= $largestTable->chairs;
+        } else {
+            // Otherwise, find the smallest sufficient table
+            foreach ($sortedTables as $table) {
+                if ($table->chairs >= $remainingPeople) {
+                    $this->table_ids[] = $table->id;
+                    $remainingPeople -= $table->chairs;
+                    break;
+                }
+            }
+        }
+
+        // Remove the selected table from the sorted list to avoid re-selection
+        $sortedTables = $sortedTables->filter(function ($table) use ($largestTable) {
+            return $table->id !== $largestTable->id;
+        });
+
+        // If no tables are left to select, break the loop
+        if ($sortedTables->isEmpty()) {
+            break;
+        }
     }
 }
 
