@@ -75,7 +75,7 @@
                 });
             };
         </script>
-            <script src="/js/flatpickr.js"></script>
+        <script src="/js/flatpickr.js"></script>
     @endpush
     <div class="bg-white py-10 mt-16">
         <div class="px-4 sm:px-6 lg:px-8">
@@ -231,46 +231,44 @@
                 <div class="mb-4 mt-2">
                     <div class="flex items-center justify-between">
 
-                        @if ($showGuestNameInput)
-                            <input wire:model.defer="guest_name" id="guest-name" class="w-full rounded-md border-gray-300"
-                                placeholder="Type de naam van de klant">
-                        @else
-                            <div class="select-box relative flex flex-col w-96">
-                                <div
-                                    class="options-container absolute top-full left-0 w-full bg-white text-black max-h-0 opacity-0 overflow-y transition-all duration-300 border border-gray-300 z-10 hidden">
-                                    @foreach($users as $user)
-                                        <div class="option cursor-pointer p-2 hover:bg-gray-100">
-                                            <input type="radio" class="radio hidden" id="{{ $user->id }}" name="user_id"
-                                                wire:model.live="user_id" value="{{ $user->id }}" />
-                                            <label for="{{ $user->id }}" class="block">{{ $user->id }}:
-                                                {{ $user->name }}</label>
-                                        </div>
-                                    @endforeach
-                                </div>
-
-                                <div
-                                    class="selected bg-white text-black p-2 border border-gray-300 cursor-pointer flex items-center justify-between">
-                                    @if ($user_id)
-                                        {{ $user_id }}: {{ $users->where('id', $user_id)->first()->name }}
-                                    @else
-                                        Selecteer een klant
-                                    @endif
-                                    <span class="arrow transform transition-transform duration-300">
-                                        <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
-                                            viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                d="M19 9l-7 7-7-7" />
-                                        </svg>
-                                    </span>
-                                </div>
-
-                                <div class="search-box relative">
-                                    <input type="text" placeholder="Zoek een klant"
-                                        class="w-full p-2 border border-gray-300 focus:outline-none hidden" />
-                                </div>
+                        <input wire:model.defer="guest_name" id="guest-name"
+                            class=" {{ $showGuestNameInput ? 'block' : 'hidden'}} w-full rounded-md border-gray-300"
+                            placeholder="Type de naam van de klant">
+                        <div
+                            class="{{ !$showGuestNameInput ? 'block' : 'hidden'}} select-box relative flex flex-col w-full">
+                            <div
+                                class="options-container absolute top-full left-0 w-full bg-white max-h-0 opacity-0 overflow-y transition-all duration-300 border rounded-md z-10 hidden">
+                                @foreach($users as $user)
+                                    <div class="option cursor-pointer p-2 hover:bg-gray-100">
+                                        <input type="radio" class="radio hidden" id="{{ $user->id }}" name="user_id"
+                                            wire:model.live="user_id" value="{{ $user->id }}" />
+                                        <label for="{{ $user->id }}" class="block">{{ $user->id }}:
+                                            {{ $user->name }}</label>
+                                    </div>
+                                @endforeach
                             </div>
 
-                        @endif
+                            <div
+                                class="selected bg-white p-2 border rounded-md cursor-pointer flex items-center justify-between">
+                                @if ($user_id)
+                                    {{ $user_id }}: {{ $users->where('id', $user_id)->first()->name }}
+                                @else
+                                    Selecteer een klant
+                                @endif
+                                <span class="arrow transform transition-transform duration-300">
+                                    <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                        viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </span>
+                            </div>
+
+                            <div class="search-box relative">
+                                <input type="text" placeholder="Zoek een klant"
+                                    class="w-full p-2 border rounded-md focus:outline-none hidden" />
+                            </div>
+                        </div>
 
 
                         <button type="button" wire:click="toggleGuestInput" class="ml-4 mr-3">
