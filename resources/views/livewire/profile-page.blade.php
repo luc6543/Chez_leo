@@ -1,25 +1,27 @@
 @php
     use Carbon\Carbon;
 @endphp
-<div class="my-28" x-data="{modalOpened: false, showMessage: {{ session()->has('message') ? 'true' : 'false' }}}" @close-modal="modalOpened = false" @open-modal="modalOpened = true">    @push('styles')
+<div class="my-28" x-data="{modalOpened: false, showMessage: {{ session()->has('message') ? 'true' : 'false' }}}"
+    @close-modal="modalOpened = false" @open-modal="modalOpened = true"> @push('styles')
         @include('flatpickr::components.style')
     @endpush
     @push('scripts')
         @include('flatpickr::components.script')
 
-            <script src="/js/flatpickr.js"></script>
+        <script src="/js/flatpickr.js"></script>
     @endpush
     @if (session()->has('message'))
-        <div x-show="showMessage" x-init="setTimeout(() => showMessage = false, 3000)" class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+        <div x-show="showMessage" x-init="setTimeout(() => showMessage = false, 3000)"
+            class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
             <div class="alert alert-success p-4 mt-10">
                 {{ session('message') }}
             </div>
         </div>
     @endif
-    <div class="{{$reservations->isEmpty() ? 'lg:w-3/4' : 'lg:w-[99%]' }} mx-auto mt-2 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
+    <div
+        class="{{$reservations->isEmpty() ? 'lg:w-3/4' : 'lg:w-[99%]' }} mx-auto mt-2 w-full flex flex-col lg:flex-row bg-white rounded shadow gap-2 items-center">
         <div class="gap-5 p-4 flex flex-wrap justify-around items-center w-full">
-            <span
-                class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-500">
+            <span class="inline-flex h-20 w-20 items-center justify-center rounded-full bg-gray-500">
                 <span class="font-medium leading-none text-white">
                     {{ Auth::user()->getInitials() }}
                 </span>
@@ -77,17 +79,24 @@
                                         class="border rounded-md px-14 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]">
                                         <div class="">Bekijken</div>
                                     </a>
+                                @else
+                                    <a href="/bill/{{ $reservation->bill->id }}" wire:navigate
+                                        class="border rounded-md px-14 py-2 bg-green-500 text-white hover:bg-green-400">
+                                        <div class="">Bekijken</div>
+                                    </a>
                                 @endif
+                            </div>
+                            @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
+                                <div class="flex justify-center">
+                                    <button
+                                        class="border rounded-md px-12 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]">aanpassen</button>
+                                </div>
+                                <div class="flex justify-center">
+                                    <button
+                                        class="border rounded-md px-[3.2rem] py-2 bg-red-500 text-white hover:bg-red-400">annuleren</button>
+                                </div>
+                            @endif
                         </div>
-                        @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
-                            <div class="flex justify-center">
-                                <button class="border rounded-md px-12 py-2 bg-[#FEA116] text-white hover:bg-[#fea116a5]" >aanpassen</button>
-                            </div>
-                            <div class="flex justify-center">
-                                <button class="border rounded-md px-[3.2rem] py-2 bg-red-500 text-white hover:bg-red-400">annuleren</button>
-                            </div>
-                        @endif
-                    </div>
                     @endforeach
                 </div>
                 <div class="hidden md:block">
@@ -98,61 +107,88 @@
                                 <span class="text-xl text-gray-500">Geen reserveringen gevonden</span>
                             </div>
                         @else
-                    </div>
-                    <div class="px-4 py-3">
-                        <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de reservering</small>
-                    </div>
-                        <div class="overflow-hidden md:px-8">
-                            <table class="w-full divide-y divide-gray-300 text-sm">
-                                <thead>
-                                    <tr>
-                                        <th scope="col" class="py-3.5 pl-4 pr-3 text-left font-semibold text-gray-900 sm:pl-0">Reserverings nummer</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Tafel nummer</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Datum</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Rekening</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Voldaan</th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
-                                        <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    @foreach(Auth::user()->reservations as $reservation)
-                                    <tr>
-                                        <td class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">{{ $reservation->id }}</td>
-                                        @foreach ($reservation->tables as $table)
-                                        <td class="whitespace-nowrap  px-[1.8rem] py-4 text-sm text-gray-500">
-                                            {{ $table->table_number }}{{ $loop->last ? '' : ', ' }}
-                                        </td>
+                            </div>
+                            <div class="px-4 py-3">
+                                <small class="text-xs">*Reserveringen kunnen niet meer worden aangepast binnen 24 uur van de
+                                    reservering</small>
+                            </div>
+                            <div class="overflow-hidden md:px-8">
+                                <table class="w-full divide-y divide-gray-300 text-sm">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"
+                                                class="py-3.5 pl-4 pr-3 text-left font-semibold text-gray-900 sm:pl-0">
+                                                Reserverings nummer</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Tafel
+                                                nummer</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Datum</th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Rekening
+                                            </th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900">Voldaan
+                                            </th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                            <th scope="col" class="px-3 py-3.5 text-left font-semibold text-gray-900"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        @foreach(Auth::user()->reservations as $reservation)
+                                            <tr>
+                                                <td
+                                                    class="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900 sm:pl-0">
+                                                    {{ $reservation->id }}
+                                                </td>
+                                                @foreach ($reservation->tables as $table)
+                                                    <td class="whitespace-nowrap  px-[1.8rem] py-4 text-sm text-gray-500">
+                                                        {{ $table->table_number }}{{ $loop->last ? '' : ', ' }}
+                                                    </td>
+                                                @endforeach
+                                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                    {{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}
+                                                </td>
+                                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€
+                                                    {{ $reservation->bill->getSum() }}
+                                                </td>
+                                                <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                    {{ $reservation->bill->paid ? 'Ja' : 'Nee' }}
+                                                </td>
+                                                @if ($reservation->active)
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <a href="/bill/{{ $reservation->bill->id }}"
+                                                            class="hover:underline">Bekijken</a>
+                                                    </td>
+                                                @else
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <a wire:click="activate({{ $reservation->id }})"
+                                                            class="hover:underline text-green-500 hover:text-green-400 cursor-pointer">Activeer</a>
+                                                    </td>
+                                                @endif
+                                                @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <a class="hover:underline cursor-pointer"
+                                                            wire:click="edit({{ $reservation->id }})">Aanpassen</a>
+                                                    </td>
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
+                                                        <a class="hover:underline cursor-pointer text-red-500 hover:text-red-400"
+                                                            wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a>
+                                                    </td>
+                                                @else
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <span class="text-gray-500 cursor-not-allowed">Aanpassen</span>
+                                                    </td>
+                                                    <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
+                                                        <span class="text-gray-500 cursor-not-allowed">annuleren</span>
+                                                    </td>
+                                                @endif
+                                                {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button
+                                                        class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button>
+                                                </td> --}}
+                                            </tr>
                                         @endforeach
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ date('d/m/Y H:i', strtotime($reservation->start_time)) }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">€ {{ $reservation->bill->getSum() }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">{{ $reservation->bill->paid ? 'Ja' : 'Nee' }}</td>
-                                        <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                            <a href="/bill/{{ $reservation->bill->id }}" class="hover:underline">Bekijken</a>
-                                        </td>
-                                        @if(Carbon::parse($reservation->start_time)->gt(Carbon::now()->addHours(24)))
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                <a class="hover:underline cursor-pointer" wire:click="edit({{ $reservation->id }})">Aanpassen</a>
-                                            </td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 ">
-                                                <a class="hover:underline cursor-pointer text-red-500 hover:text-red-400" wire:click="annuleerReservering({{ $reservation->id }})">Annuleren</a>
-                                            </td>
-                                        @else
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                <span class="text-gray-500 cursor-not-allowed">Aanpassen</span>
-                                            </td>
-                                            <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500">
-                                                <span class="text-gray-500 cursor-not-allowed">annuleren</span>
-                                            </td>
-                                        @endif
-                                        {{-- <td class="whitespace-nowrap px-3 py-4 text-sm text-gray-500 "><button class="border rounded-md px-5 py-2 bg-red-500 text-white hover:bg-red-400">Annuleren</button></td> --}}
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                    @endif
+                                    </tbody>
+                                </table>
+                            </div>
+                        @endif
                 </div>
             </div>
         </div>
@@ -174,54 +210,56 @@
                     </div>
                     <div class="mb-4">
                         <label class="block text-sm font-medium">Speciaal verzoek</label>
-                        <textarea maxlength="255"  wire:model.defer="special_request"
+                        <textarea maxlength="255" wire:model.defer="special_request"
                             class="mt-1 block resize-none w-full rounded-md border-gray-300"></textarea>
                         @error('special_request')
-                        <div class="alert alert-danger text-red-500">
-                            {{ $message }}
-                        </div>
+                            <div class="alert alert-danger text-red-500">
+                                {{ $message }}
+                            </div>
                         @enderror
-                        <small class="text-xs">*Als je met met meer personen wilt komen neem dan contact met ons op</small>
+                        <small class="text-xs">*Als je met met meer personen wilt komen neem dan contact met ons
+                            op</small>
                     </div>
 
-                        <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Verander</button>
-                        <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
-                            class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-        @if ($reservations->isEmpty())
-    </div>
-        @endif
-        <!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
-        <div class="lg:w-3/4 mx-auto mb-10 w-full mt-8 bg-white rounded shadow p-4">
-            <h2 class="text-xl font-semibold mb-4">Recensie</h2>
-            <div class="flex justify-between items-center mb-4">
-                <div>
-                    @if(Auth::user()->review()->exists())
-                        <p class="text-green-500">Je hebt al een recensie geplaatst!</p>
-                    @else
-                        <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
-                    @endif
-                </div>
-                <div class="flex gap-3">
-                    @foreach($reviews as $review)
-                        @if($review->user_id == Auth::id())
-                            <!-- Zorg ervoor dat alleen de recensies van de ingelogde gebruiker worden getoond -->
-                            <a href="{{ route('recenties.bijwerken', $review->id) }}"
-                               class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
-                                Bewerk je recensie
-                            </a>
-                            <!-- Verwijderen button -->
-                            <button onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                                    wire:click="deleteReview({{ $review->id }})">
-                                Verwijderen
-                            </button>
-                        @endif
-                    @endforeach
-                </div>
+                    <button type="submit" class="bg-indigo-500 text-white px-4 py-2 rounded-md">Verander</button>
+                    <button type="button" @click="modalOpened = false" wire:click="resetInputFields"
+                        class="ml-2 bg-gray-500 text-white px-4 py-2 rounded-md">Annuleer
+                    </button>
+                </form>
             </div>
         </div>
     </div>
+    @if ($reservations->isEmpty())
+        </div>
+    @endif
+<!-- Recensie sectie - hier komt de nieuwe sectie voor recensies -->
+<div class="lg:w-3/4 mx-auto mb-10 w-full mt-8 bg-white rounded shadow p-4">
+    <h2 class="text-xl font-semibold mb-4">Recensie</h2>
+    <div class="flex justify-between items-center mb-4">
+        <div>
+            @if(Auth::user()->reviews()->exists())
+                <p class="text-green-500">Je hebt al een recensie geplaatst!</p>
+            @else
+                <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
+            @endif
+        </div>
+        <div class="flex gap-3">
+            @foreach($reviews as $review)
+                @if($review->user_id == Auth::id())
+                    <!-- Zorg ervoor dat alleen de recensies van de ingelogde gebruiker worden getoond -->
+                    <a href="{{ route('recenties.bijwerken', $review->id) }}"
+                        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600">
+                        Bewerk je recensie
+                    </a>
+                    <!-- Verwijderen button -->
+                    <button onclick="this.disabled=true; setTimeout(() => { this.disabled=false; }, 1000);"
+                        class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+                        wire:click="deleteReview({{ $review->id }})">
+                        Verwijderen
+                    </button>
+                @endif
+            @endforeach
+        </div>
+    </div>
+</div>
+</div>
