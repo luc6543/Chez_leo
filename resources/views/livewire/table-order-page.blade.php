@@ -1,4 +1,4 @@
-<div class="mt-20 mb-5 min-w-screen min-h-screen" x-data="{ confirmationModal : false }">
+<div class="mt-20 mb-5 min-w-screen min-h-screen" x-data="{ confirmationModal : false, showUserMessage: {{ session()->has('userMessage') ? 'true' : 'false' }} }">
     <div class="fixed bg-black/75 top-0 left-0 z-50 w-screen h-screen flex justify-center items-center"
          x-cloak x-show="confirmationModal">
         <div class="p-6 shadow bg-white flex flex-col gap-5"
@@ -16,11 +16,11 @@
     </div>
 
     @if (session()->has('userMessage'))
-        <div class="fixed z-50 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
-            <div class="alert alert-success p-4 mt-10">
-                {{ session('userMessage') }}
-            </div>
+    <div x-show="showUserMessage" x-init="setTimeout(() => showUserMessage = false, 3000)" class="fixed z-30 top-0 left-0 w-screen p-4 mt-10 flex justify-center">
+        <div class="alert alert-success p-4 mt-10">
+            {{ session('userMessage') }}
         </div>
+    </div>
     @endif
     <div class="w-full h-full flex flex-col gap-10 items-start justify-start">
         <div class="mt-10 ml-5 w-[50%] z-50">
