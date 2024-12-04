@@ -237,7 +237,7 @@
     <h2 class="text-xl font-semibold mb-4">Recensie</h2>
     <div class="flex justify-between items-center mb-4">
         <div>
-            @if(Auth::user()->reviews()->exists())
+            @if(Auth::user()->review()->exists())
                 <p class="text-green-500">Je hebt al een recensie geplaatst!</p>
             @else
                 <p class="text-red-500">Je hebt nog geen recensie geplaatst.</p>
